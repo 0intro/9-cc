@@ -1,0 +1,17 @@
+#                                              -*-makefile-*-
+<../../mkconfig
+
+LIB=libl.a
+
+OFILES=\
+	allprint.$O\
+	main.$O\
+	reject.$O\
+	yyless.$O\
+	yywrap.$O\
+
+HFILES=\
+	$ROOT/$SYSTARG/$OBJTYPE/include/lib9.h\
+	$ROOT/include/bio.h\
+
+<$ROOT/mkfiles/mksyslib-$SHELLTYPE

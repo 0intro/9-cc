@@ -1,0 +1,14 @@
+#                                              -*-makefile-*-
+<../../../mkconfig
+
+TARG=ndate
+
+OFILES=	ndate.$O\
+
+HFILES=
+
+LIBS=9
+
+BIN=$ROOT/$OBJDIR/bin
+
+<$ROOT/mkfiles/mkone-$SHELLTYPE

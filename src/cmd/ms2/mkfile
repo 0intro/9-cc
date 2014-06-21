@@ -1,0 +1,16 @@
+#                                              -*-makefile-*-
+<../../../mkconfig
+
+TARG=ms2
+
+OFILES=	ms2.$O\
+
+HFILES=	\
+	$ROOT/include/bio.h\
+	${ROOT}/include/mach.h\
+
+LIBS=mach bio 9			#order matters
+
+BIN=$ROOT/$OBJDIR/bin
+
+<$ROOT/mkfiles/mkone-$SHELLTYPE

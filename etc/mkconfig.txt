@@ -1,0 +1,32 @@
+#
+#	Set the following three variables.  
+
+#
+#  Path to this directory
+#
+#	On Nt systems, the ROOT path MUST be of the form `drive:/path'
+#
+ROOT=C:/edit/path/to/this/directory
+
+#
+# Build system OS type (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Irix, Plan9)
+#
+# (Windows)
+SYSHOST=Nt
+
+#
+# Target system object type (eg, 386, arm, mips, power, sparc)
+#
+# (Intel)
+OBJTYPE=386
+
+
+#
+#	No changes required beyond this point
+#
+SYSTARG=$SYSHOST
+OBJDIR=$SYSTARG/$OBJTYPE
+
+<$ROOT/mkfiles/mkhost-$SYSHOST			# variables appropriate for host system
+<$ROOT/mkfiles/mkfile-$SYSTARG-$OBJTYPE	# variables used to build target object type
+

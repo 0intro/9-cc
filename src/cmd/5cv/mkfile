@@ -1,0 +1,18 @@
+#                                              -*-makefile-*-
+<../../../mkconfig
+
+TARG=5cv
+
+OFILES=	5cv.$O\
+
+HFILES=\
+	a.out.h\
+	bio.h\
+	mach.h\
+
+LIBS=mach bio 9	# order matters.
+
+
+BIN=$ROOT/$OBJDIR/bin
+
+<$ROOT/mkfiles/mkone-$SHELLTYPE

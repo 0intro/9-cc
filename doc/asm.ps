@@ -1,0 +1,6500 @@
+%!PS-Adobe-2.0
+%%Version: 0.1
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%EndComments
+%
+% Version 3.3.2 prologue for troff files.
+%
+
+/#copies 1 store
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/rotation 1 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation rotation mul rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch neg translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	addmetrics
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/addmetrics {
+	/Symbol /S null Sdefs cf
+	/Times-Roman /S1 StandardEncoding dup length array copy S1defs cf
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newencoding exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put}{pop pop} ifelse} forall
+
+	newencoding type /arraytype eq {newdict /Encoding newencoding put} if
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+% Move braceleftbt a bit - default PostScript character is off a bit.
+%
+
+/Sdefs [
+	/bracketlefttp		[201 500]
+	/bracketleftbt		[201 500]
+	/bracketrighttp		[-81 380]
+	/bracketrightbt		[-83 380]
+	/braceleftbt		[203 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	/radicalex		[-50 0 500 0]
+	/parenleftex		[-20 -170 0 0]
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%
+% Tries to round clipping path dimensions, as stored in array pagebbox, so they
+% match one of the known sizes in the papersizes array. Lower left coordinates
+% are always set to 0.
+%
+
+/roundpagebbox {
+    7 dict begin
+	/papersizes [8.5 inch 11 inch 14 inch 17 inch] def
+
+	/mappapersize {
+		/val exch def
+		/slop .5 inch def
+		/diff slop def
+		/j 0 def
+		0 1 papersizes length 1 sub {
+			/i exch def
+			papersizes i get val sub abs
+			dup diff le {/diff exch def /j i def} {pop} ifelse
+		} for
+		diff slop lt {papersizes j get} {val} ifelse
+	} def
+
+	pagebbox 0 0 put
+	pagebbox 1 0 put
+	pagebbox dup 2 get mappapersize 2 exch put
+	pagebbox dup 3 get mappapersize 3 exch put
+    end
+} bind def
+
+%%EndProlog
+%%BeginSetup
+mark
+%
+% Encoding vector and redefinition of findfont for the ISO Latin1 standard.
+% The 18 characters missing from ROM based fonts on older printers are noted
+% below.
+%
+
+/ISOLatin1Encoding [
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/space
+	/exclam
+	/quotedbl
+	/numbersign
+	/dollar
+	/percent
+	/ampersand
+	/quoteright
+	/parenleft
+	/parenright
+	/asterisk
+	/plus
+	/comma
+	/minus
+	/period
+	/slash
+	/zero
+	/one
+	/two
+	/three
+	/four
+	/five
+	/six
+	/seven
+	/eight
+	/nine
+	/colon
+	/semicolon
+	/less
+	/equal
+	/greater
+	/question
+	/at
+	/A
+	/B
+	/C
+	/D
+	/E
+	/F
+	/G
+	/H
+	/I
+	/J
+	/K
+	/L
+	/M
+	/N
+	/O
+	/P
+	/Q
+	/R
+	/S
+	/T
+	/U
+	/V
+	/W
+	/X
+	/Y
+	/Z
+	/bracketleft
+	/backslash
+	/bracketright
+	/asciicircum
+	/underscore
+	/quoteleft
+	/a
+	/b
+	/c
+	/d
+	/e
+	/f
+	/g
+	/h
+	/i
+	/j
+	/k
+	/l
+	/m
+	/n
+	/o
+	/p
+	/q
+	/r
+	/s
+	/t
+	/u
+	/v
+	/w
+	/x
+	/y
+	/z
+	/braceleft
+	/bar
+	/braceright
+	/asciitilde
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/.notdef
+	/dotlessi
+	/grave
+	/acute
+	/circumflex
+	/tilde
+	/macron
+	/breve
+	/dotaccent
+	/dieresis
+	/.notdef
+	/ring
+	/cedilla
+	/.notdef
+	/hungarumlaut
+	/ogonek
+	/caron
+	/space
+	/exclamdown
+	/cent
+	/sterling
+	/currency
+	/yen
+	/brokenbar		% missing
+	/section
+	/dieresis
+	/copyright
+	/ordfeminine
+	/guillemotleft
+	/logicalnot
+	/hyphen
+	/registered
+	/macron
+	/degree			% missing
+	/plusminus		% missing
+	/twosuperior		% missing
+	/threesuperior		% missing
+	/acute
+	/mu			% missing
+	/paragraph
+	/periodcentered
+	/cedilla
+	/onesuperior		% missing
+	/ordmasculine
+	/guillemotright
+	/onequarter		% missing
+	/onehalf		% missing
+	/threequarters		% missing
+	/questiondown
+	/Agrave
+	/Aacute
+	/Acircumflex
+	/Atilde
+	/Adieresis
+	/Aring
+	/AE
+	/Ccedilla
+	/Egrave
+	/Eacute
+	/Ecircumflex
+	/Edieresis
+	/Igrave
+	/Iacute
+	/Icircumflex
+	/Idieresis
+	/Eth			% missing
+	/Ntilde
+	/Ograve
+	/Oacute
+	/Ocircumflex
+	/Otilde
+	/Odieresis
+	/multiply		% missing
+	/Oslash
+	/Ugrave
+	/Uacute
+	/Ucircumflex
+	/Udieresis
+	/Yacute			% missing
+	/Thorn			% missing
+	/germandbls
+	/agrave
+	/aacute
+	/acircumflex
+	/atilde
+	/adieresis
+	/aring
+	/ae
+	/ccedilla
+	/egrave
+	/eacute
+	/ecircumflex
+	/edieresis
+	/igrave
+	/iacute
+	/icircumflex
+	/idieresis
+	/eth			% missing
+	/ntilde
+	/ograve
+	/oacute
+	/ocircumflex
+	/otilde
+	/odieresis
+	/divide			% missing
+	/oslash
+	/ugrave
+	/uacute
+	/ucircumflex
+	/udieresis
+	/yacute			% missing
+	/thorn			% missing
+	/ydieresis
+] def
+
+/NewFontDirectory FontDirectory maxlength dict def
+
+%
+% Apparently no guarantee findfont is defined in systemdict so the obvious
+%
+%	systemdict /findfont get exec
+%
+% can generate an error. So far the only exception is a VT600 (version 48.0).
+%
+
+userdict /@RealFindfont known not {
+	userdict begin
+		/@RealFindfont systemdict begin /findfont load end def
+	end
+} if
+
+/findfont {
+	dup NewFontDirectory exch known not {
+		dup
+		%dup systemdict /findfont get exec	% not always in systemdict
+		dup userdict /@RealFindfont get exec
+		dup /Encoding get StandardEncoding eq {
+			dup length dict begin
+				{1 index /FID ne {def}{pop pop} ifelse} forall
+				/Encoding ISOLatin1Encoding def
+				currentdict
+			end
+			/DummyFontName exch definefont
+		} if
+		NewFontDirectory 3 1 roll put
+	} if
+	NewFontDirectory exch get
+} bind def
+
+%%Patch from lp
+%%EndPatch from lp
+
+setup
+%%EndSetup
+%%Page: 1 1
+/saveobj save def
+mark
+1 pagesetup
+11 /Palatino-Bold f
+(A) 2012 1320 w
+(Manual) 2126 1320 w
+(for) 2544 1320 w
+(the) 2720 1320 w
+(Plan) 2906 1320 w
+(9) 3159 1320 w
+(assembler) 3242 1320 w
+9 /Palatino-Italic f
+(Rob) 2717 1491 w
+(Pike) 2881 1491 w
+(rob@plan9.bell\255labs.com) 2440 1631 w
+9 /Palatino-Bold f
+(Machines) 720 1862 w
+9 /Palatino-Roman f
+(There) 970 2012 w
+(is) 1225 2012 w
+(an) 1315 2012 w
+(assembler) 1438 2012 w
+(for) 1862 2012 w
+(each) 2004 2012 w
+(of) 2210 2012 w
+(the) 2316 2012 w
+(MIPS,) 2468 2012 w
+(SPARC,) 2737 2012 w
+(Intel) 3083 2012 w
+(386,) 3292 2012 w
+(Motorola) 3477 2012 w
+(68020) 3877 2012 w
+(and) 4129 2012 w
+(68000,) 4308 2012 w
+(IBM) 4583 2012 w
+(Power) 4782 2012 w
+(PC,) 720 2122 w
+(DEC) 893 2122 w
+(Alpha,) 1113 2122 w
+(and) 1415 2122 w
+(ARM.) 1599 2122 w
+(The) 1893 2122 w
+(68020) 2075 2122 w
+(assembler,) 2332 2122 w
+9 /Courier f
+(2a) 2785 2122 w
+9 /Palatino-Roman f
+(,) 2893 2122 w
+(is) 2948 2122 w
+(the) 3043 2122 w
+(oldest) 3199 2122 w
+(and) 3472 2122 w
+(in) 3655 2122 w
+(many) 3764 2122 w
+(ways) 4021 2122 w
+(the) 4260 2122 w
+(prototype.) 4416 2122 w
+(The) 4890 2122 w
+(assemblers) 720 2232 w
+(are) 1189 2232 w
+(really) 1346 2232 w
+(just) 1605 2232 w
+(variations) 1781 2232 w
+(of) 2213 2232 w
+(a) 2326 2232 w
+(single) 2405 2232 w
+(program:) 2674 2232 w
+(they) 3081 2232 w
+(share) 3290 2232 w
+(many) 3538 2232 w
+(properties) 3798 2232 w
+(such) 4242 2232 w
+(as) 4460 2232 w
+(left\255to\255right) 4577 2232 w
+(assignment) 720 2342 w
+(order) 1199 2342 w
+(for) 1445 2342 w
+(instruction) 1587 2342 w
+(operands) 2047 2342 w
+(and) 2446 2342 w
+(the) 2624 2342 w
+(synthesis) 2775 2342 w
+(of) 3168 2342 w
+(macro) 3274 2342 w
+(instructions) 3550 2342 w
+(such) 4048 2342 w
+(as) 4258 2342 w
+9 /Courier f
+(MOVE) 4367 2342 w
+9 /Palatino-Roman f
+(to) 4609 2342 w
+(hide) 4714 2342 w
+(the) 4915 2342 w
+(peculiarities) 720 2452 w
+(of) 1237 2452 w
+(the) 1347 2452 w
+(load) 1502 2452 w
+(and) 1708 2452 w
+(store) 1890 2452 w
+(structure) 2117 2452 w
+(of) 2508 2452 w
+(the) 2618 2452 w
+(machines.) 2773 2452 w
+(To) 3224 2452 w
+(keep) 3359 2452 w
+(things) 3579 2452 w
+(concrete,) 3857 2452 w
+(the) 4244 2452 w
+(first) 4399 2452 w
+(part) 4589 2452 w
+(of) 4784 2452 w
+(this) 4894 2452 w
+(manual) 720 2562 w
+(is) 1045 2562 w
+(specifically) 1133 2562 w
+(about) 1601 2562 w
+(the) 1854 2562 w
+(68020.) 2003 2562 w
+(At) 2298 2562 w
+(the) 2422 2562 w
+(end) 2571 2562 w
+(is) 2745 2562 w
+(a) 2833 2562 w
+(description) 2902 2562 w
+(of) 3376 2562 w
+(the) 3479 2562 w
+(differences) 3627 2562 w
+(among) 4086 2562 w
+(the) 4385 2562 w
+(other) 4533 2562 w
+(assem\255) 4767 2562 w
+(blers.) 720 2672 w
+9 /Palatino-Bold f
+(Registers) 720 2903 w
+9 /Palatino-Roman f
+(All) 970 3053 w
+(pre\255defined) 1121 3053 w
+(symbols) 1617 3053 w
+(in) 1977 3053 w
+(the) 2084 3053 w
+(assembler) 2239 3053 w
+(are) 2667 3053 w
+(upper\255case.) 2821 3053 w
+(Data) 3334 3053 w
+(registers) 3553 3053 w
+(are) 3923 3053 w
+9 /Courier f
+(R0) 4077 3053 w
+9 /Palatino-Roman f
+(through) 4215 3053 w
+9 /Courier f
+(R7) 4569 3053 w
+9 /Palatino-Roman f
+(;) 4677 3053 w
+(address) 4730 3053 w
+(registers) 720 3163 w
+(are) 1083 3163 w
+9 /Courier f
+(A0) 1230 3163 w
+9 /Palatino-Roman f
+(through) 1361 3163 w
+9 /Courier f
+(A7) 1708 3163 w
+9 /Palatino-Roman f
+(;) 1816 3163 w
+(floating\255point) 1862 3163 w
+(registers) 2436 3163 w
+(are) 2799 3163 w
+9 /Courier f
+(F0) 2946 3163 w
+9 /Palatino-Roman f
+(through) 3077 3163 w
+9 /Courier f
+(F7) 3424 3163 w
+9 /Palatino-Roman f
+(.) 3532 3163 w
+(A) 970 3313 w
+(pointer) 1067 3313 w
+(in) 1385 3313 w
+9 /Courier f
+(A6) 1490 3313 w
+9 /Palatino-Roman f
+(is) 1625 3313 w
+(used) 1716 3313 w
+(by) 1933 3313 w
+(the) 2060 3313 w
+(C) 2212 3313 w
+(compiler) 2303 3313 w
+(to) 2684 3313 w
+(point) 2791 3313 w
+(to) 3030 3313 w
+(data,) 3137 3313 w
+(enabling) 3362 3313 w
+(short) 3733 3313 w
+(addresses) 3966 3313 w
+(to) 4385 3313 w
+(be) 4493 3313 w
+(used) 4614 3313 w
+(more) 4832 3313 w
+(often.) 720 3423 w
+(The) 1005 3423 w
+(value) 1189 3423 w
+(of) 1442 3423 w
+9 /Courier f
+(A6) 1556 3423 w
+9 /Palatino-Roman f
+(is) 1698 3423 w
+(constant) 1796 3423 w
+(and) 2167 3423 w
+(must) 2353 3423 w
+(be) 2588 3423 w
+(set) 2715 3423 w
+(during) 2860 3423 w
+(C) 3167 3423 w
+(program) 3265 3423 w
+(initialization) 3649 3423 w
+(to) 4188 3423 w
+(the) 4301 3423 w
+(address) 4459 3423 w
+(of) 4802 3423 w
+(the) 4915 3423 w
+(externally\255defined) 720 3533 w
+(symbol) 1475 3533 w
+9 /Courier f
+(a6base) 1791 3533 w
+9 /Palatino-Roman f
+(.) 2115 3533 w
+(The) 970 3683 w
+(following) 1161 3683 w
+(hardware) 1587 3683 w
+(registers) 2015 3683 w
+(are) 2396 3683 w
+(defined) 2561 3683 w
+(in) 2906 3683 w
+(the) 3025 3683 w
+(assembler;) 3191 3683 w
+(their) 3653 3683 w
+(meaning) 3881 3683 w
+(should) 4269 3683 w
+(be) 4586 3683 w
+(obvious) 4721 3683 w
+(given) 720 3793 w
+(a) 965 3793 w
+(68020) 1033 3793 w
+(manual:) 1281 3793 w
+9 /Courier f
+(CAAR) 1628 3793 w
+9 /Palatino-Roman f
+(,) 1844 3793 w
+9 /Courier f
+(CACR) 1890 3793 w
+9 /Palatino-Roman f
+(,) 2106 3793 w
+9 /Courier f
+(CCR) 2152 3793 w
+9 /Palatino-Roman f
+(,) 2314 3793 w
+9 /Courier f
+(DFC) 2360 3793 w
+9 /Palatino-Roman f
+(,) 2522 3793 w
+9 /Courier f
+(ISP) 2568 3793 w
+9 /Palatino-Roman f
+(,) 2730 3793 w
+9 /Courier f
+(MSP) 2776 3793 w
+9 /Palatino-Roman f
+(,) 2938 3793 w
+9 /Courier f
+(SFC) 2984 3793 w
+9 /Palatino-Roman f
+(,) 3146 3793 w
+9 /Courier f
+(SR) 3192 3793 w
+9 /Palatino-Roman f
+(,) 3300 3793 w
+9 /Courier f
+(USP) 3346 3793 w
+9 /Palatino-Roman f
+(,) 3508 3793 w
+(and) 3554 3793 w
+9 /Courier f
+(VBR) 3729 3793 w
+9 /Palatino-Roman f
+(.) 3891 3793 w
+(The) 970 3943 w
+(assembler) 1144 3943 w
+(also) 1567 3943 w
+(defines) 1751 3943 w
+(several) 2063 3943 w
+(pseudo\255registers) 2370 3943 w
+(that) 3059 3943 w
+(manipulate) 3241 3943 w
+(the) 3720 3943 w
+(stack:) 3870 3943 w
+9 /Courier f
+(FP) 4121 3943 w
+9 /Palatino-Roman f
+(,) 4229 3943 w
+9 /Courier f
+(SP) 4277 3943 w
+9 /Palatino-Roman f
+(,) 4385 3943 w
+(and) 4433 3943 w
+9 /Courier f
+(TOS) 4610 3943 w
+9 /Palatino-Roman f
+(.) 4772 3943 w
+9 /Courier f
+(FP) 4843 3943 w
+9 /Palatino-Roman f
+(is) 4976 3943 w
+(the) 720 4053 w
+(frame) 880 4053 w
+(pointer,) 1148 4053 w
+(so) 1497 4053 w
+9 /Courier f
+(0\(FP\)) 1620 4053 w
+9 /Palatino-Roman f
+(is) 1925 4053 w
+(the) 2024 4053 w
+(first) 2184 4053 w
+(argument,) 2379 4053 w
+9 /Courier f
+(4\(FP\)) 2826 4053 w
+9 /Palatino-Roman f
+(is) 3131 4053 w
+(the) 3230 4053 w
+(second,) 3390 4053 w
+(and) 3726 4053 w
+(so) 3913 4053 w
+(on.) 4035 4053 w
+9 /Courier f
+(SP) 4217 4053 w
+9 /Palatino-Roman f
+(is) 4359 4053 w
+(the) 4457 4053 w
+(local) 4616 4053 w
+(stack) 4837 4053 w
+(pointer,) 720 4163 w
+(where) 1065 4163 w
+(automatic) 1345 4163 w
+(variables) 1775 4163 w
+(are) 2166 4163 w
+(held) 2321 4163 w
+(\(SP) 2528 4163 w
+(is) 2691 4163 w
+(a) 2786 4163 w
+(pseudo\255register) 2862 4163 w
+(only) 3519 4163 w
+(on) 3728 4163 w
+(the) 3861 4163 w
+(68020\);) 4017 4163 w
+9 /Courier f
+(0\(SP\)) 4326 4163 w
+9 /Palatino-Roman f
+(is) 4627 4163 w
+(the) 4723 4163 w
+(first) 4880 4163 w
+(automatic,) 720 4273 w
+(and) 1173 4273 w
+(so) 1356 4273 w
+(on) 1475 4273 w
+(as) 1608 4273 w
+(with) 1722 4273 w
+9 /Courier f
+(FP) 1936 4273 w
+9 /Palatino-Roman f
+(.) 2044 4273 w
+(Finally,) 2121 4273 w
+9 /Courier f
+(TOS) 2450 4273 w
+9 /Palatino-Roman f
+(is) 2643 4273 w
+(the) 2738 4273 w
+(top\255of\255stack) 2894 4273 w
+(register,) 3402 4273 w
+(used) 3758 4273 w
+(for) 3979 4273 w
+(pushing) 4125 4273 w
+(parameters) 4481 4273 w
+(to) 4960 4273 w
+(procedures,) 720 4383 w
+(saving) 1215 4383 w
+(temporary) 1500 4383 w
+(values,) 1946 4383 w
+(and) 2249 4383 w
+(so) 2424 4383 w
+(on.) 2535 4383 w
+(The) 970 4533 w
+(assembler) 1147 4533 w
+(and) 1572 4533 w
+(loader) 1751 4533 w
+(track) 2033 4533 w
+(these) 2261 4533 w
+(pseudo\255registers) 2495 4533 w
+(so) 3187 4533 w
+(the) 3303 4533 w
+(above) 3456 4533 w
+(statements) 3723 4533 w
+(are) 4179 4533 w
+(true) 4331 4533 w
+(regardless) 4522 4533 w
+(of) 4960 4533 w
+(what) 720 4643 w
+(has) 950 4643 w
+(been) 1113 4643 w
+(pushed) 1329 4643 w
+(on) 1653 4643 w
+(the) 1782 4643 w
+(hardware) 1934 4643 w
+(stack,) 2348 4643 w
+(pointed) 2601 4643 w
+(to) 2938 4643 w
+(by) 3045 4643 w
+9 /Courier f
+(A7) 3172 4643 w
+9 /Palatino-Roman f
+(.) 3280 4643 w
+(The) 3353 4643 w
+(name) 3530 4643 w
+9 /Courier f
+(A7) 3776 4643 w
+9 /Palatino-Roman f
+(refers) 3911 4643 w
+(to) 4164 4643 w
+(the) 4271 4643 w
+(hardware) 4423 4643 w
+(stack) 4837 4643 w
+(pointer,) 720 4753 w
+(but) 1058 4753 w
+(beware) 1216 4753 w
+(of) 1532 4753 w
+(mixed) 1636 4753 w
+(use) 1910 4753 w
+(of) 2070 4753 w
+9 /Courier f
+(A7) 2175 4753 w
+9 /Palatino-Roman f
+(and) 2308 4753 w
+(the) 2485 4753 w
+(above) 2635 4753 w
+(stack\255related) 2899 4753 w
+(pseudo\255registers,) 3435 4753 w
+(which) 4147 4753 w
+(will) 4417 4753 w
+(cause) 4595 4753 w
+(trou\255) 4840 4753 w
+(ble.) 720 4863 w
+(Note,) 918 4863 w
+(too,) 1172 4863 w
+(that) 1358 4863 w
+(the) 1548 4863 w
+9 /Courier f
+(PEA) 1706 4863 w
+9 /Palatino-Roman f
+(instruction) 1901 4863 w
+(is) 2368 4863 w
+(observed) 2464 4863 w
+(by) 2862 4863 w
+(the) 2994 4863 w
+(loader) 3151 4863 w
+(to) 3438 4863 w
+(alter) 3550 4863 w
+(SP) 3762 4863 w
+(and) 3896 4863 w
+(thus) 4080 4863 w
+(will) 4286 4863 w
+(insert) 4471 4863 w
+(a) 4728 4863 w
+(corre\255) 4805 4863 w
+(sponding) 720 4973 w
+(pop) 1123 4973 w
+(before) 1307 4973 w
+(all) 1585 4973 w
+(returns.) 1708 4973 w
+(The) 2069 4973 w
+(assembler) 2245 4973 w
+(accepts) 2669 4973 w
+(a) 2985 4973 w
+(label\255like) 3056 4973 w
+(name) 3448 4973 w
+(to) 3694 4973 w
+(be) 3801 4973 w
+(attached) 3921 4973 w
+(to) 4288 4973 w
+9 /Courier f
+(FP) 4395 4973 w
+9 /Palatino-Roman f
+(and) 4530 4973 w
+9 /Courier f
+(SP) 4709 4973 w
+9 /Palatino-Roman f
+(uses,) 4844 4973 w
+(such) 720 5083 w
+(as) 931 5083 w
+9 /Courier f
+(p+0\(FP\)) 1041 5083 w
+9 /Palatino-Roman f
+(,) 1419 5083 w
+(to) 1469 5083 w
+(help) 1576 5083 w
+(document) 1778 5083 w
+(that) 2208 5083 w
+9 /Courier f
+(p) 2392 5083 w
+9 /Palatino-Roman f
+(is) 2473 5083 w
+(the) 2564 5083 w
+(first) 2716 5083 w
+(argument) 2903 5083 w
+(to) 3319 5083 w
+(a) 3426 5083 w
+(routine.) 3498 5083 w
+(The) 3862 5083 w
+(name) 4039 5083 w
+(goes) 4285 5083 w
+(in) 4492 5083 w
+(the) 4596 5083 w
+(symbol) 4747 5083 w
+(table) 720 5193 w
+(but) 937 5193 w
+(has) 1094 5193 w
+(no) 1252 5193 w
+(significance) 1377 5193 w
+(to) 1868 5193 w
+(the) 1971 5193 w
+(result) 2119 5193 w
+(of) 2369 5193 w
+(the) 2472 5193 w
+(program.) 2620 5193 w
+9 /Palatino-Bold f
+(Referring) 720 5424 w
+(to) 1138 5424 w
+(data) 1241 5424 w
+9 /Palatino-Roman f
+(All) 970 5574 w
+(external) 1117 5574 w
+(references) 1464 5574 w
+(must) 1893 5574 w
+(be) 2119 5574 w
+(made) 2237 5574 w
+(relative) 2484 5574 w
+(to) 2809 5574 w
+(some) 2914 5574 w
+(pseudo\255register,) 3150 5574 w
+(either) 3825 5574 w
+9 /Courier f
+(PC) 4081 5574 w
+9 /Palatino-Roman f
+(\(the) 4215 5574 w
+(virtual) 4396 5574 w
+(program) 4690 5574 w
+(counter\)) 720 5684 w
+(or) 1080 5684 w
+9 /Courier f
+(SB) 1191 5684 w
+9 /Palatino-Roman f
+(\(the) 1324 5684 w
+(``static) 1503 5684 w
+(base'') 1786 5684 w
+(register\).) 2036 5684 w
+9 /Courier f
+(PC) 2438 5684 w
+9 /Palatino-Roman f
+(counts) 2570 5684 w
+(instructions,) 2858 5684 w
+(not) 3377 5684 w
+(bytes) 3533 5684 w
+(of) 3768 5684 w
+(data.) 3872 5684 w
+(For) 4117 5684 w
+(example,) 4277 5684 w
+(to) 4661 5684 w
+(branch) 4765 5684 w
+(to) 720 5794 w
+(the) 823 5794 w
+(second) 971 5794 w
+(following) 1272 5794 w
+(instruction,) 1680 5794 w
+(that) 2160 5794 w
+(is,) 2340 5794 w
+(to) 2450 5794 w
+(skip) 2553 5794 w
+(one) 2744 5794 w
+(instruction,) 2912 5794 w
+(one) 3392 5794 w
+(may) 3560 5794 w
+(write) 3757 5794 w
+8 /Courier f
+(BRA 2\(PC\)) 1200 5960 w
+9 /Palatino-Roman f
+(Labels) 720 6136 w
+(are) 1000 6136 w
+(also) 1147 6136 w
+(allowed,) 1329 6136 w
+(as) 1695 6136 w
+(in) 1801 6136 w
+8 /Courier f
+(BRA return) 1200 6302 w
+(NOP) 1200 6402 w
+(return:) 1008 6502 w
+(RTS) 1200 6602 w
+9 /Palatino-Roman f
+(When) 720 6778 w
+(using) 980 6778 w
+(labels,) 1223 6778 w
+(there) 1497 6778 w
+(is) 1724 6778 w
+(no) 1811 6778 w
+9 /Courier f
+(\(PC\)) 1936 6778 w
+9 /Palatino-Roman f
+(annotation.) 2175 6778 w
+(The) 970 6928 w
+(pseudo\255register) 1146 6928 w
+9 /Courier f
+(SB) 1798 6928 w
+9 /Palatino-Roman f
+(refers) 1932 6928 w
+(to) 2184 6928 w
+(the) 2290 6928 w
+(beginning) 2441 6928 w
+(of) 2868 6928 w
+(the) 2974 6928 w
+(address) 3125 6928 w
+(space) 3461 6928 w
+(of) 3707 6928 w
+(the) 3813 6928 w
+(program.) 3964 6928 w
+(Thus,) 4387 6928 w
+(references) 4636 6928 w
+(to) 720 7038 w
+(global) 823 7038 w
+(data) 1093 7038 w
+(and) 1291 7038 w
+(procedures) 1466 7038 w
+(are) 1938 7038 w
+(written) 2085 7038 w
+(as) 2400 7038 w
+(offsets) 2506 7038 w
+(to) 2788 7038 w
+9 /Courier f
+(SB) 2891 7038 w
+9 /Palatino-Roman f
+(,) 2999 7038 w
+(as) 3045 7038 w
+(in) 3151 7038 w
+8 /Courier f
+(MOVL) 1200 7204 w
+($array\(SB\), TOS) 1584 7204 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 1 1
+%%Page: 2 2
+/saveobj save def
+mark
+2 pagesetup
+9 /Palatino-Roman f
+(\255 2 \255) 2804 470 w
+(to) 720 830 w
+(push) 823 830 w
+(the) 1044 830 w
+(address) 1192 830 w
+(of) 1525 830 w
+(a) 1628 830 w
+(global) 1696 830 w
+(array) 1966 830 w
+(on) 2201 830 w
+(the) 2326 830 w
+(stack,) 2474 830 w
+(or) 2723 830 w
+8 /Courier f
+(MOVL) 1200 990 w
+(array+4\(SB\), TOS) 1584 990 w
+9 /Palatino-Roman f
+(to) 720 1160 w
+(push) 828 1160 w
+(the) 1054 1160 w
+(second) 1207 1160 w
+(\(4\255byte\)) 1513 1160 w
+(element) 1849 1160 w
+(of) 2193 1160 w
+(the) 2302 1160 w
+(array.) 2456 1160 w
+(Note) 2743 1160 w
+(the) 2970 1160 w
+(use) 3124 1160 w
+(of) 3288 1160 w
+(an) 3397 1160 w
+(offset;) 3523 1160 w
+(the) 3796 1160 w
+(complete) 3950 1160 w
+(list) 4344 1160 w
+(of) 4493 1160 w
+(addressing) 4602 1160 w
+(modes) 720 1270 w
+(is) 1008 1270 w
+(given) 1095 1270 w
+(below.) 1340 1270 w
+(Similarly,) 1653 1270 w
+(subroutine) 2061 1270 w
+(calls) 2517 1270 w
+(must) 2715 1270 w
+(use) 2939 1270 w
+9 /Courier f
+(SB) 3097 1270 w
+9 /Palatino-Roman f
+(:) 3205 1270 w
+8 /Courier f
+(BSR exit\(SB\)) 1200 1430 w
+9 /Palatino-Roman f
+(File\255static) 720 1600 w
+(variables) 1127 1600 w
+(have) 1510 1600 w
+(syntax) 1724 1600 w
+8 /Courier f
+(local<>+4\(SB\)) 1200 1760 w
+9 /Palatino-Roman f
+(The) 720 1930 w
+9 /Courier f
+(<>) 893 1930 w
+9 /Palatino-Roman f
+(will) 1024 1930 w
+(be) 1200 1930 w
+(filled) 1316 1930 w
+(in) 1545 1930 w
+(at) 1646 1930 w
+(load) 1744 1930 w
+(time) 1943 1930 w
+(by) 2144 1930 w
+(a) 2267 1930 w
+(unique) 2335 1930 w
+(integer.) 2637 1930 w
+(When) 970 2076 w
+(a) 1230 2076 w
+(program) 1298 2076 w
+(starts,) 1671 2076 w
+(it) 1934 2076 w
+(must) 2013 2076 w
+(execute) 2237 2076 w
+8 /Courier f
+(MOVL) 1200 2236 w
+($a6base\(SB\), A6) 1584 2236 w
+9 /Palatino-Roman f
+(before) 720 2406 w
+(accessing) 997 2406 w
+(any) 1395 2406 w
+(global) 1568 2406 w
+(data.) 1841 2406 w
+(\(On) 2088 2406 w
+(machines) 2267 2406 w
+(such) 2668 2406 w
+(as) 2878 2406 w
+(the) 2987 2406 w
+(MIPS) 3138 2406 w
+(and) 3383 2406 w
+(SPARC) 3561 2406 w
+(that) 3883 2406 w
+(cannot) 4066 2406 w
+(load) 4361 2406 w
+(a) 4563 2406 w
+(register) 4634 2406 w
+(in) 4962 2406 w
+(a) 720 2516 w
+(single) 796 2516 w
+(instruction,) 1062 2516 w
+(constants) 1550 2516 w
+(are) 1956 2516 w
+(loaded) 2111 2516 w
+(through) 2415 2516 w
+(the) 2769 2516 w
+(static) 2924 2516 w
+(base) 3163 2516 w
+(register.) 3369 2516 w
+(The) 3747 2516 w
+(loader) 3927 2516 w
+(recognizes) 4212 2516 w
+(code) 4665 2516 w
+(that) 4883 2516 w
+(initializes) 720 2626 w
+(the) 1137 2626 w
+(static) 1296 2626 w
+(base) 1539 2626 w
+(register) 1749 2626 w
+(and) 2085 2626 w
+(treats) 2271 2626 w
+(it) 2527 2626 w
+(specially.) 2617 2626 w
+(You) 3045 2626 w
+(must) 3243 2626 w
+(be) 3479 2626 w
+(careful,) 3607 2626 w
+(however,) 3939 2626 w
+(not) 4347 2626 w
+(to) 4514 2626 w
+(load) 4629 2626 w
+(large) 4840 2626 w
+(constants) 720 2736 w
+(on) 1118 2736 w
+(such) 1243 2736 w
+(machines) 1450 2736 w
+(when) 1848 2736 w
+(the) 2093 2736 w
+(static) 2241 2736 w
+(base) 2473 2736 w
+(register) 2672 2736 w
+(is) 2997 2736 w
+(not) 3084 2736 w
+(set) 3239 2736 w
+(up,) 3373 2736 w
+(such) 3527 2736 w
+(as) 3734 2736 w
+(early) 3840 2736 w
+(in) 4063 2736 w
+(interrupt) 4164 2736 w
+(routines.\)) 4548 2736 w
+9 /Palatino-Bold f
+(Expressions) 720 2956 w
+9 /Palatino-Roman f
+(Expressions) 970 3102 w
+(are) 1474 3102 w
+(mostly) 1625 3102 w
+(what) 1926 3102 w
+(one) 2156 3102 w
+(might) 2329 3102 w
+(expect.) 2594 3102 w
+(Where) 2925 3102 w
+(an) 3217 3102 w
+(offset) 3342 3102 w
+(or) 3591 3102 w
+(a) 3705 3102 w
+(constant) 3778 3102 w
+(is) 4143 3102 w
+(expected,) 4235 3102 w
+(a) 4641 3102 w
+(primary) 4714 3102 w
+(expression) 720 3212 w
+(with) 1170 3212 w
+(unary) 1376 3212 w
+(operators) 1636 3212 w
+(is) 2041 3212 w
+(allowed.) 2128 3212 w
+(A) 2517 3212 w
+(general) 2610 3212 w
+(C) 2928 3212 w
+(constant) 3015 3212 w
+(expression) 3375 3212 w
+(is) 3825 3212 w
+(allowed) 3912 3212 w
+(in) 4255 3212 w
+(parentheses.) 4356 3212 w
+(Source) 970 3358 w
+(files) 1264 3358 w
+(are) 1450 3358 w
+(preprocessed) 1597 3358 w
+(exactly) 2150 3358 w
+(as) 2454 3358 w
+(in) 2560 3358 w
+(the) 2661 3358 w
+(C) 2809 3358 w
+(compiler,) 2896 3358 w
+(so) 3296 3358 w
+9 /Courier f
+(#define) 3407 3358 w
+9 /Palatino-Roman f
+(and) 3808 3358 w
+9 /Courier f
+(#include) 3983 3358 w
+9 /Palatino-Roman f
+(work.) 4438 3358 w
+9 /Palatino-Bold f
+(Addressing) 720 3578 w
+(modes) 1218 3578 w
+9 /Palatino-Roman f
+(The) 970 3724 w
+(simple) 1157 3724 w
+(addressing) 1460 3724 w
+(modes) 1935 3724 w
+(are) 2237 3724 w
+(shared) 2398 3724 w
+(by) 2704 3724 w
+(all) 2841 3724 w
+(the) 2975 3724 w
+(assemblers.) 3137 3724 w
+(Here,) 3656 3724 w
+(for) 3913 3724 w
+(completeness,) 4066 3724 w
+(follows) 4662 3724 w
+(a) 4995 3724 w
+(table) 720 3834 w
+(of) 945 3834 w
+(all) 1056 3834 w
+(the) 1184 3834 w
+(68020) 1340 3834 w
+(addressing) 1596 3834 w
+(modes,) 2065 3834 w
+(since) 2384 3834 w
+(that) 2614 3834 w
+(machine) 2802 3834 w
+(has) 3170 3834 w
+(the) 3336 3834 w
+(richest) 3492 3834 w
+(set.) 3788 3834 w
+(In) 3976 3834 w
+(the) 4089 3834 w
+(table,) 4244 3834 w
+9 /Courier f
+(o) 4491 3834 w
+9 /Palatino-Roman f
+(is) 4575 3834 w
+(an) 4669 3834 w
+(offset,) 4796 3834 w
+(which) 720 3944 w
+(if) 995 3944 w
+(zero) 1081 3944 w
+(may) 1285 3944 w
+(be) 1489 3944 w
+(elided,) 1612 3944 w
+(and) 1913 3944 w
+9 /Courier f
+(d) 2095 3944 w
+9 /Palatino-Roman f
+(is) 2179 3944 w
+(a) 2273 3944 w
+(displacement,) 2349 3944 w
+(which) 2934 3944 w
+(is) 3210 3944 w
+(a) 3305 3944 w
+(constant) 3381 3944 w
+(between) 3749 3944 w
+(\255128) 4116 3944 w
+(and) 4312 3944 w
+(127) 4495 3944 w
+(inclusive.) 4661 3944 w
+(Many) 720 4054 w
+(of) 992 4054 w
+(the) 1111 4054 w
+(modes) 1275 4054 w
+(listed) 1579 4054 w
+(have) 1836 4054 w
+(the) 2066 4054 w
+(same) 2230 4054 w
+(name;) 2474 4054 w
+(scrutiny) 2755 4054 w
+(of) 3120 4054 w
+(the) 3239 4054 w
+(format) 3403 4054 w
+(will) 3712 4054 w
+(show) 3903 4054 w
+(what) 4156 4054 w
+(default) 4396 4054 w
+(is) 4717 4054 w
+(being) 4819 4054 w
+(applied.) 720 4164 w
+(For) 1101 4164 w
+(instance,) 1269 4164 w
+(indexed) 1650 4164 w
+(mode) 2003 4164 w
+(with) 2263 4164 w
+(no) 2479 4164 w
+(address) 2614 4164 w
+(register) 2957 4164 w
+(supplied) 3292 4164 w
+(operates) 3675 4164 w
+(as) 4047 4164 w
+(though) 4163 4164 w
+(a) 4484 4164 w
+(zero\255valued) 4562 4164 w
+(register) 720 4274 w
+(were) 1046 4274 w
+(used.) 1267 4274 w
+(For) 1527 4274 w
+("offset") 1687 4274 w
+(read) 1998 4274 w
+("displacement.") 2201 4274 w
+(For) 2868 4274 w
+(") 3028 4274 w
+9 /Courier f
+(.s) 3061 4274 w
+9 /Palatino-Roman f
+(") 3169 4274 w
+(read) 3226 4274 w
+(one) 3429 4274 w
+(of) 3598 4274 w
+9 /Courier f
+(.L) 3702 4274 w
+9 /Palatino-Roman f
+(,) 3810 4274 w
+(or) 3857 4274 w
+9 /Courier f
+(.W) 3967 4274 w
+9 /Palatino-Roman f
+(followed) 4099 4274 w
+(by) 4478 4274 w
+9 /Courier f
+(*1) 4601 4274 w
+9 /Palatino-Roman f
+(,) 4709 4274 w
+9 /Courier f
+(*2) 4755 4274 w
+9 /Palatino-Roman f
+(,) 4863 4274 w
+9 /Courier f
+(*4) 4909 4274 w
+9 /Palatino-Roman f
+(,) 5017 4274 w
+(or) 720 4384 w
+9 /Courier f
+(*8) 829 4384 w
+9 /Palatino-Roman f
+(to) 960 4384 w
+(indicate) 1063 4384 w
+(the) 1403 4384 w
+(size) 1551 4384 w
+(and) 1726 4384 w
+(scaling) 1901 4384 w
+(of) 2201 4384 w
+(the) 2304 4384 w
+(data.) 2452 4384 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 2 2
+%%Page: 3 3
+/saveobj save def
+mark
+3 pagesetup
+9 /Palatino-Roman f
+(\255 3 \255) 2804 470 w
+(data) 970 830 w
+(register) 1168 830 w
+9 /Courier f
+(R0) 2393 830 w
+9 /Palatino-Roman f
+(address) 970 940 w
+(register) 1303 940 w
+9 /Courier f
+(A0) 2393 940 w
+9 /Palatino-Roman f
+(floating\255point) 970 1050 w
+(register) 1544 1050 w
+9 /Courier f
+(F0) 2393 1050 w
+9 /Palatino-Roman f
+(special) 970 1160 w
+(names) 1265 1160 w
+9 /Courier f
+(CAAR, CACR, etc.) 2393 1160 w
+9 /Palatino-Roman f
+(constant) 970 1270 w
+9 /Courier f
+($con) 2393 1270 w
+9 /Palatino-Roman f
+(floating) 970 1380 w
+(point) 1302 1380 w
+(constant) 1537 1380 w
+9 /Courier f
+($fcon) 2393 1380 w
+9 /Palatino-Roman f
+(external) 970 1490 w
+(symbol) 1315 1490 w
+9 /Courier f
+(name+o\(SB\)) 2393 1490 w
+9 /Palatino-Roman f
+(local) 970 1600 w
+(symbol) 1180 1600 w
+9 /Courier f
+(name<>+o\(SB\)) 2393 1600 w
+9 /Palatino-Roman f
+(automatic) 970 1710 w
+(symbol) 1392 1710 w
+9 /Courier f
+(name+o\(SP\)) 2393 1710 w
+9 /Palatino-Roman f
+(argument) 970 1820 w
+9 /Courier f
+(name+o\(FP\)) 2393 1820 w
+9 /Palatino-Roman f
+(address) 970 1930 w
+(of) 1303 1930 w
+(external) 1406 1930 w
+9 /Courier f
+($name+o\(SB\)) 2393 1930 w
+9 /Palatino-Roman f
+(address) 970 2040 w
+(of) 1303 2040 w
+(local) 1406 2040 w
+9 /Courier f
+($name<>+o\(SB\)) 2393 2040 w
+9 /Palatino-Roman f
+(indirect) 970 2150 w
+(post\255increment) 1301 2150 w
+9 /Courier f
+(\(A0\)+) 2393 2150 w
+9 /Palatino-Roman f
+(indirect) 970 2260 w
+(pre\255decrement) 1301 2260 w
+9 /Courier f
+(\255\(A0\)) 2393 2260 w
+9 /Palatino-Roman f
+(indirect) 970 2370 w
+(with) 1301 2370 w
+(offset) 1507 2370 w
+9 /Courier f
+(o\(A0\)) 2393 2370 w
+9 /Palatino-Roman f
+(indexed) 970 2480 w
+(with) 1314 2480 w
+(offset) 1520 2480 w
+9 /Courier f
+(o\(\)\(R0.s\)) 2393 2480 w
+9 /Palatino-Roman f
+(indexed) 970 2590 w
+(with) 1314 2590 w
+(offset) 1520 2590 w
+9 /Courier f
+(o\(A0\)\(R0.s\)) 2393 2590 w
+9 /Palatino-Roman f
+(external) 970 2700 w
+(indexed) 1315 2700 w
+9 /Courier f
+(name+o\(SB\)\(R0.s\)) 2393 2700 w
+9 /Palatino-Roman f
+(local) 970 2810 w
+(indexed) 1180 2810 w
+9 /Courier f
+(name<>+o\(SB\)\(R0.s\)) 2393 2810 w
+9 /Palatino-Roman f
+(automatic) 970 2920 w
+(indexed) 1392 2920 w
+9 /Courier f
+(name+o\(SP\)\(R0.s\)) 2393 2920 w
+9 /Palatino-Roman f
+(parameter) 970 3030 w
+(indexed) 1404 3030 w
+9 /Courier f
+(name+o\(FP\)\(R0.s\)) 2393 3030 w
+9 /Palatino-Roman f
+(offset) 970 3140 w
+(indirect) 1214 3140 w
+(post\255indexed) 1545 3140 w
+9 /Courier f
+(d\(o\(\)\)\(R0.s\)) 2393 3140 w
+9 /Palatino-Roman f
+(offset) 970 3250 w
+(indirect) 1214 3250 w
+(post\255indexed) 1545 3250 w
+9 /Courier f
+(d\(o\(A0\)\)\(R0.s\)) 2393 3250 w
+9 /Palatino-Roman f
+(external) 970 3360 w
+(indirect) 1315 3360 w
+(post\255indexed) 1646 3360 w
+9 /Courier f
+(d\(name+o\(SB\)\)\(R0.s\)) 2393 3360 w
+9 /Palatino-Roman f
+(local) 970 3470 w
+(indirect) 1180 3470 w
+(post\255indexed) 1511 3470 w
+9 /Courier f
+(d\(name<>+o\(SB\)\)\(R0.s\)) 2393 3470 w
+9 /Palatino-Roman f
+(automatic) 970 3580 w
+(indirect) 1392 3580 w
+(post\255indexed) 1723 3580 w
+9 /Courier f
+(d\(name+o\(SP\)\)\(R0.s\)) 2393 3580 w
+9 /Palatino-Roman f
+(parameter) 970 3690 w
+(indirect) 1404 3690 w
+(post\255indexed) 1735 3690 w
+9 /Courier f
+(d\(name+o\(FP\)\)\(R0.s\)) 2393 3690 w
+9 /Palatino-Roman f
+(offset) 970 3800 w
+(indirect) 1214 3800 w
+(pre\255indexed) 1545 3800 w
+9 /Courier f
+(d\(o\(\)\(R0.s\)\)) 2393 3800 w
+9 /Palatino-Roman f
+(offset) 970 3910 w
+(indirect) 1214 3910 w
+(pre\255indexed) 1545 3910 w
+9 /Courier f
+(d\(o\(A0\)\)) 2393 3910 w
+9 /Palatino-Roman f
+(offset) 970 4020 w
+(indirect) 1214 4020 w
+(pre\255indexed) 1545 4020 w
+9 /Courier f
+(d\(o\(A0\)\(R0.s\)\)) 2393 4020 w
+9 /Palatino-Roman f
+(external) 970 4130 w
+(indirect) 1315 4130 w
+(pre\255indexed) 1646 4130 w
+9 /Courier f
+(d\(name+o\(SB\)\)) 2393 4130 w
+9 /Palatino-Roman f
+(external) 970 4240 w
+(indirect) 1315 4240 w
+(pre\255indexed) 1646 4240 w
+9 /Courier f
+(d\(name+o\(SB\)\(R0.s\)\)) 2393 4240 w
+9 /Palatino-Roman f
+(local) 970 4350 w
+(indirect) 1180 4350 w
+(pre\255indexed) 1511 4350 w
+9 /Courier f
+(d\(name<>+o\(SB\)\)) 2393 4350 w
+9 /Palatino-Roman f
+(local) 970 4460 w
+(indirect) 1180 4460 w
+(pre\255indexed) 1511 4460 w
+9 /Courier f
+(d\(name<>+o\(SB\)\(R0.s\)\)) 2393 4460 w
+9 /Palatino-Roman f
+(automatic) 970 4570 w
+(indirect) 1392 4570 w
+(pre\255indexed) 1723 4570 w
+9 /Courier f
+(d\(name+o\(SP\)\)) 2393 4570 w
+9 /Palatino-Roman f
+(automatic) 970 4680 w
+(indirect) 1392 4680 w
+(pre\255indexed) 1723 4680 w
+9 /Courier f
+(d\(name+o\(SP\)\(R0.s\)\)) 2393 4680 w
+9 /Palatino-Roman f
+(parameter) 970 4790 w
+(indirect) 1404 4790 w
+(pre\255indexed) 1735 4790 w
+9 /Courier f
+(d\(name+o\(FP\)\)) 2393 4790 w
+9 /Palatino-Roman f
+(parameter) 970 4900 w
+(indirect) 1404 4900 w
+(pre\255indexed) 1735 4900 w
+9 /Courier f
+(d\(name+o\(FP\)\(R0.s\)\)) 2393 4900 w
+9 /Palatino-Bold f
+(Laying) 720 5164 w
+(down) 1028 5164 w
+(data) 1286 5164 w
+9 /Palatino-Roman f
+(Placing) 970 5324 w
+(data) 1288 5324 w
+(in) 1488 5324 w
+(the) 1591 5324 w
+(instruction) 1741 5324 w
+(stream,) 2200 5324 w
+(say) 2519 5324 w
+(for) 2677 5324 w
+(interrupt) 2818 5324 w
+(vectors,) 3204 5324 w
+(is) 3540 5324 w
+(easy:) 3629 5324 w
+(the) 3853 5324 w
+(pseudo\255instructions) 4003 5324 w
+9 /Courier f
+(LONG) 4824 5324 w
+9 /Palatino-Roman f
+(and) 720 5434 w
+9 /Courier f
+(WORD) 900 5434 w
+9 /Palatino-Roman f
+(\(but) 1144 5434 w
+(not) 1336 5434 w
+9 /Courier f
+(BYTE) 1496 5434 w
+9 /Palatino-Roman f
+(\)) 1712 5434 w
+(lay) 1770 5434 w
+(down) 1919 5434 w
+(the) 2179 5434 w
+(value) 2332 5434 w
+(of) 2579 5434 w
+(their) 2687 5434 w
+(single) 2902 5434 w
+(argument,) 3165 5434 w
+(of) 3605 5434 w
+(the) 3713 5434 w
+(appropriate) 3865 5434 w
+(size,) 4365 5434 w
+(as) 4567 5434 w
+(if) 4677 5434 w
+(it) 4760 5434 w
+(were) 4843 5434 w
+(an) 720 5544 w
+(instruction:) 840 5544 w
+8 /Courier f
+(LONG) 1200 5728 w
+($12345) 1584 5728 w
+9 /Palatino-Roman f
+(places) 720 5922 w
+(the) 1002 5922 w
+(long) 1163 5922 w
+(12345) 1377 5922 w
+(\(base) 1638 5922 w
+(10\)) 1880 5922 w
+(in) 2036 5922 w
+(the) 2151 5922 w
+(instruction) 2313 5922 w
+(stream.) 2784 5922 w
+(\(On) 3138 5922 w
+(most) 3328 5922 w
+(machines,) 3562 5922 w
+(the) 3997 5922 w
+(only) 4159 5922 w
+(such) 4374 5922 w
+(operator) 4595 5922 w
+(is) 4976 5922 w
+9 /Courier f
+(WORD) 720 6032 w
+9 /Palatino-Roman f
+(and) 967 6032 w
+(it) 1150 6032 w
+(lays) 1237 6032 w
+(down) 1427 6032 w
+(32\255bit) 1690 6032 w
+(quantities.) 1946 6032 w
+(The) 2416 6032 w
+(386) 2596 6032 w
+(has) 2761 6032 w
+(all) 2926 6032 w
+(three:) 3053 6032 w
+9 /Courier f
+(LONG) 3310 6032 w
+9 /Palatino-Roman f
+(,) 3526 6032 w
+9 /Courier f
+(WORD) 3579 6032 w
+9 /Palatino-Roman f
+(,) 3795 6032 w
+(and) 3848 6032 w
+9 /Courier f
+(BYTE) 4030 6032 w
+9 /Palatino-Roman f
+(.) 4246 6032 w
+(The) 4322 6032 w
+(AMD64) 4502 6032 w
+(adds) 4847 6032 w
+9 /Courier f
+(QUAD) 720 6142 w
+9 /Palatino-Roman f
+(for) 959 6142 w
+(64\255bit) 1098 6142 w
+(values.\)) 1347 6142 w
+(Placing) 970 6302 w
+(information) 1289 6302 w
+(in) 1791 6302 w
+(the) 1895 6302 w
+(data) 2046 6302 w
+(section) 2247 6302 w
+(is) 2552 6302 w
+(more) 2642 6302 w
+(painful.) 2876 6302 w
+(The) 3236 6302 w
+(pseudo\255instruction) 3413 6302 w
+9 /Courier f
+(DATA) 4198 6302 w
+9 /Palatino-Roman f
+(does) 4441 6302 w
+(the) 4654 6302 w
+(work,) 4806 6302 w
+(given) 720 6412 w
+(two) 968 6412 w
+(arguments:) 1149 6412 w
+(an) 1625 6412 w
+(address) 1748 6412 w
+(at) 2084 6412 w
+(which) 2185 6412 w
+(to) 2456 6412 w
+(place) 2562 6412 w
+(the) 2796 6412 w
+(item,) 2947 6412 w
+(including) 3174 6412 w
+(its) 3581 6412 w
+(size,) 3701 6412 w
+(and) 3902 6412 w
+(the) 4080 6412 w
+(value) 4231 6412 w
+(to) 4475 6412 w
+(place) 4580 6412 w
+(there.) 4813 6412 w
+(For) 720 6522 w
+(example,) 879 6522 w
+(to) 1262 6522 w
+(define) 1365 6522 w
+(a) 1637 6522 w
+(character) 1705 6522 w
+(array) 2095 6522 w
+9 /Courier f
+(array) 2330 6522 w
+9 /Palatino-Roman f
+(containing) 2623 6522 w
+(the) 3069 6522 w
+(characters) 3217 6522 w
+9 /Courier f
+(abc) 3645 6522 w
+9 /Palatino-Roman f
+(and) 3830 6522 w
+(a) 4005 6522 w
+(terminating) 4073 6522 w
+(null:) 4565 6522 w
+8 /Courier f
+(DATA) 1200 6706 w
+(array+0\(SB\)/1, $'a') 1584 6706 w
+(DATA) 1200 6806 w
+(array+1\(SB\)/1, $'b') 1584 6806 w
+(DATA) 1200 6906 w
+(array+2\(SB\)/1, $'c') 1584 6906 w
+(GLOBL) 1200 7006 w
+(array\(SB\), $4) 1584 7006 w
+9 /Palatino-Roman f
+(or) 720 7200 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 3 3
+%%Page: 4 4
+/saveobj save def
+mark
+4 pagesetup
+9 /Palatino-Roman f
+(\255 4 \255) 2804 470 w
+8 /Courier f
+(DATA) 1200 820 w
+(array+0\(SB\)/4, $"abc\\z") 1584 820 w
+(GLOBL) 1200 920 w
+(array\(SB\), $4) 1584 920 w
+9 /Palatino-Roman f
+(The) 720 1091 w
+9 /Courier f
+(/1) 897 1091 w
+9 /Palatino-Roman f
+(defines) 1032 1091 w
+(the) 1346 1091 w
+(number) 1498 1091 w
+(of) 1839 1091 w
+(bytes) 1946 1091 w
+(to) 2184 1091 w
+(define,) 2291 1091 w
+9 /Courier f
+(GLOBL) 2590 1091 w
+9 /Palatino-Roman f
+(makes) 2887 1091 w
+(the) 3169 1091 w
+(symbol) 3322 1091 w
+(global,) 3643 1091 w
+(and) 3941 1091 w
+(the) 4121 1091 w
+9 /Courier f
+($4) 4274 1091 w
+9 /Palatino-Roman f
+(says) 4410 1091 w
+(how) 4609 1091 w
+(many) 4814 1091 w
+(bytes) 720 1201 w
+(the) 956 1201 w
+(symbol) 1105 1201 w
+(occupies.) 1422 1201 w
+(Uninitialized) 1837 1201 w
+(data) 2383 1201 w
+(is) 2582 1201 w
+(zeroed) 2670 1201 w
+(automatically.) 2966 1201 w
+(The) 3582 1201 w
+(character) 3756 1201 w
+9 /Courier f
+(\\z) 4147 1201 w
+9 /Palatino-Roman f
+(is) 4279 1201 w
+(equivalent) 4367 1201 w
+(to) 4811 1201 w
+(the) 4915 1201 w
+(C) 720 1311 w
+9 /Courier f
+(\\0.) 807 1311 w
+9 /Palatino-Roman f
+(The) 992 1311 w
+(string) 1165 1311 w
+(in) 1420 1311 w
+(a) 1521 1311 w
+9 /Courier f
+(DATA) 1589 1311 w
+9 /Palatino-Roman f
+(statement) 1828 1311 w
+(may) 2241 1311 w
+(contain) 2438 1311 w
+(a) 2756 1311 w
+(maximum) 2824 1311 w
+(of) 3256 1311 w
+(eight) 3359 1311 w
+(bytes;) 3583 1311 w
+(build) 3840 1311 w
+(larger) 4075 1311 w
+(strings) 4335 1311 w
+(piecewise.) 4629 1311 w
+(Two) 720 1421 w
+(pseudo\255instructions,) 927 1421 w
+9 /Courier f
+(DYNT) 1773 1421 w
+9 /Palatino-Roman f
+(and) 2016 1421 w
+9 /Courier f
+(INIT) 2195 1421 w
+9 /Palatino-Roman f
+(,) 2411 1421 w
+(allow) 2461 1421 w
+(the) 2710 1421 w
+(\(obsolete\)) 2862 1421 w
+(Alef) 3279 1421 w
+(compilers) 3475 1421 w
+(to) 3894 1421 w
+(build) 4001 1421 w
+(dynamic) 4239 1421 w
+(type) 4613 1421 w
+(infor\255) 4816 1421 w
+(mation) 720 1531 w
+(during) 1025 1531 w
+(the) 1321 1531 w
+(load) 1469 1531 w
+(phase.) 1668 1531 w
+(The) 1969 1531 w
+9 /Courier f
+(DYNT) 2142 1531 w
+9 /Palatino-Roman f
+(pseudo\255instruction) 2381 1531 w
+(has) 3162 1531 w
+(two) 3320 1531 w
+(forms:) 3498 1531 w
+8 /Courier f
+(DYNT) 1200 1692 w
+(, ALEF_SI_5+0\(SB\)) 1584 1692 w
+(DYNT) 1200 1792 w
+(ALEF_AS+0\(SB\), ALEF_SI_5+0\(SB\)) 1584 1792 w
+9 /Palatino-Roman f
+(In) 720 1963 w
+(the) 826 1963 w
+(first) 974 1963 w
+(form,) 1157 1963 w
+9 /Courier f
+(DYNT) 1398 1963 w
+9 /Palatino-Roman f
+(defines) 1637 1963 w
+(the) 1947 1963 w
+(symbol) 2095 1963 w
+(to) 2411 1963 w
+(be) 2514 1963 w
+(a) 2630 1963 w
+(small) 2698 1963 w
+(unique) 2935 1963 w
+(integer) 3237 1963 w
+(constant,) 3540 1963 w
+(chosen) 3923 1963 w
+(by) 4221 1963 w
+(the) 4344 1963 w
+(loader,) 4493 1963 w
+(which) 4795 1963 w
+(is) 720 2073 w
+(some) 815 2073 w
+(multiple) 1056 2073 w
+(of) 1425 2073 w
+(the) 1536 2073 w
+(word) 1692 2073 w
+(size.) 1939 2073 w
+(In) 2168 2073 w
+(the) 2282 2073 w
+(second) 2438 2073 w
+(form,) 2747 2073 w
+9 /Courier f
+(DYNT) 2996 2073 w
+9 /Palatino-Roman f
+(defines) 3243 2073 w
+(the) 3561 2073 w
+(second) 3717 2073 w
+(symbol) 4026 2073 w
+(in) 4349 2073 w
+(the) 4457 2073 w
+(same) 4612 2073 w
+(way,) 4847 2073 w
+(places) 720 2183 w
+(the) 993 2183 w
+(address) 1145 2183 w
+(of) 1482 2183 w
+(the) 1589 2183 w
+(most) 1741 2183 w
+(recently) 1965 2183 w
+(defined) 2312 2183 w
+(text) 2643 2183 w
+(symbol) 2820 2183 w
+(in) 3140 2183 w
+(the) 3246 2183 w
+(array) 3399 2183 w
+(specified) 3639 2183 w
+(by) 4022 2183 w
+(the) 4150 2183 w
+(first) 4303 2183 w
+(symbol) 4491 2183 w
+(at) 4812 2183 w
+(the) 4915 2183 w
+(index) 720 2293 w
+(defined) 966 2293 w
+(by) 1293 2293 w
+(the) 1416 2293 w
+(value) 1564 2293 w
+(of) 1806 2293 w
+(the) 1909 2293 w
+(second) 2057 2293 w
+(symbol,) 2358 2293 w
+(and) 2697 2293 w
+(then) 2872 2293 w
+(adjusts) 3072 2293 w
+(the) 3376 2293 w
+(size) 3524 2293 w
+(of) 3699 2293 w
+(the) 3802 2293 w
+(array) 3950 2293 w
+(accordingly.) 4185 2293 w
+(The) 970 2440 w
+9 /Courier f
+(INIT) 1150 2440 w
+9 /Palatino-Roman f
+(pseudo\255instruction) 1396 2440 w
+(takes) 2184 2440 w
+(the) 2420 2440 w
+(same) 2575 2440 w
+(parameters) 2810 2440 w
+(as) 3289 2440 w
+(a) 3402 2440 w
+9 /Courier f
+(DATA) 3477 2440 w
+9 /Palatino-Roman f
+(statement.) 3723 2440 w
+(Its) 4189 2440 w
+(symbol) 4318 2440 w
+(is) 4641 2440 w
+(used) 4736 2440 w
+(as) 4957 2440 w
+(the) 720 2550 w
+(base) 869 2550 w
+(of) 1069 2550 w
+(an) 1173 2550 w
+(array) 1294 2550 w
+(and) 1530 2550 w
+(the) 1706 2550 w
+(data) 1855 2550 w
+(item) 2054 2550 w
+(is) 2256 2550 w
+(installed) 2344 2550 w
+(in) 2709 2550 w
+(the) 2811 2550 w
+(array) 2960 2550 w
+(at) 3196 2550 w
+(the) 3295 2550 w
+(offset) 3444 2550 w
+(specified) 3688 2550 w
+(by) 4066 2550 w
+(the) 4189 2550 w
+(most) 4337 2550 w
+(recent) 4557 2550 w
+9 /Courier f
+(DYNT) 4824 2550 w
+9 /Palatino-Roman f
+(pseudo\255instruction.) 720 2660 w
+(The) 1550 2660 w
+(size) 1726 2660 w
+(of) 1904 2660 w
+(the) 2010 2660 w
+(array) 2161 2660 w
+(is) 2400 2660 w
+(adjusted) 2491 2660 w
+(accordingly.) 2859 2660 w
+(The) 3402 2660 w
+9 /Courier f
+(DYNT) 3579 2660 w
+9 /Palatino-Roman f
+(and) 3822 2660 w
+9 /Courier f
+(INIT) 4001 2660 w
+9 /Palatino-Roman f
+(pseudo\255instructions) 4244 2660 w
+(are) 720 2770 w
+(not) 867 2770 w
+(implemented) 1022 2770 w
+(on) 1575 2770 w
+(the) 1700 2770 w
+(68020.) 1848 2770 w
+9 /Palatino-Bold f
+(Defining) 720 2993 w
+(a) 1118 2993 w
+(procedure) 1186 2993 w
+9 /Palatino-Roman f
+(Entry) 970 3140 w
+(points) 1225 3140 w
+(are) 1507 3140 w
+(defined) 1663 3140 w
+(by) 1999 3140 w
+(the) 2131 3140 w
+(pseudo\255operation) 2288 3140 w
+9 /Courier f
+(TEXT) 3030 3140 w
+9 /Palatino-Roman f
+(,) 3246 3140 w
+(which) 3301 3140 w
+(takes) 3578 3140 w
+(as) 3816 3140 w
+(arguments) 3932 3140 w
+(the) 4392 3140 w
+(name) 4550 3140 w
+(of) 4802 3140 w
+(the) 4915 3140 w
+(procedure) 720 3250 w
+(\(including) 1158 3250 w
+(the) 1596 3250 w
+(ubiquitous) 1747 3250 w
+9 /Courier f
+(\(SB\)) 2205 3250 w
+9 /Palatino-Roman f
+(\)) 2421 3250 w
+(and) 2477 3250 w
+(the) 2655 3250 w
+(number) 2806 3250 w
+(of) 3146 3250 w
+(bytes) 3252 3250 w
+(of) 3489 3250 w
+(automatic) 3595 3250 w
+(storage) 4020 3250 w
+(to) 4338 3250 w
+(pre\255allocate) 4444 3250 w
+(on) 4938 3250 w
+(the) 720 3360 w
+(stack,) 872 3360 w
+(which) 1125 3360 w
+(will) 1398 3360 w
+(usually) 1579 3360 w
+(be) 1900 3360 w
+(zero) 2021 3360 w
+(when) 2223 3360 w
+(writing) 2473 3360 w
+(assembly) 2796 3360 w
+(language) 3193 3360 w
+(programs.) 3586 3360 w
+(On) 4048 3360 w
+(machines) 4199 3360 w
+(with) 4602 3360 w
+(a) 4813 3360 w
+(link) 4886 3360 w
+(register,) 720 3470 w
+(such) 1073 3470 w
+(as) 1285 3470 w
+(the) 1396 3470 w
+(MIPS) 1549 3470 w
+(and) 1796 3470 w
+(SPARC,) 1976 3470 w
+(the) 2323 3470 w
+(special) 2476 3470 w
+(value) 2776 3470 w
+(\2554) 3023 3470 w
+(instructs) 3126 3470 w
+(the) 3498 3470 w
+(loader) 3651 3470 w
+(to) 3934 3470 w
+(generate) 4041 3470 w
+(no) 4410 3470 w
+(PC) 4539 3470 w
+(save) 4684 3470 w
+(and) 4888 3470 w
+(restore) 720 3580 w
+(instructions,) 1022 3580 w
+(even) 1543 3580 w
+(if) 1758 3580 w
+(the) 1841 3580 w
+(function) 1993 3580 w
+(is) 2354 3580 w
+(not) 2445 3580 w
+(a) 2604 3580 w
+(leaf.) 2676 3580 w
+(Here) 2893 3580 w
+(is) 3117 3580 w
+(a) 3208 3580 w
+(complete) 3280 3580 w
+(procedure) 3672 3580 w
+(that) 4110 3580 w
+(returns) 4294 3580 w
+(the) 4610 3580 w
+(sum) 4762 3580 w
+(of) 4960 3580 w
+(its) 720 3690 w
+(two) 837 3690 w
+(arguments:) 1015 3690 w
+8 /Courier f
+(TEXT) 1008 3851 w
+(sum\(SB\), $0) 1392 3851 w
+(MOVL) 1200 3951 w
+(arg1+0\(FP\), R0) 1584 3951 w
+(ADDL) 1200 4051 w
+(arg2+4\(FP\), R0) 1584 4051 w
+(RTS) 1200 4151 w
+9 /Palatino-Roman f
+(An) 720 4322 w
+(optional) 867 4322 w
+(middle) 1225 4322 w
+(argument) 1534 4322 w
+(to) 1948 4322 w
+(the) 2053 4322 w
+9 /Courier f
+(TEXT) 2203 4322 w
+9 /Palatino-Roman f
+(pseudo\255op) 2444 4322 w
+(is) 2897 4322 w
+(a) 2986 4322 w
+(bit) 3056 4322 w
+(field) 3187 4322 w
+(of) 3392 4322 w
+(options) 3497 4322 w
+(to) 3823 4322 w
+(the) 3929 4322 w
+(loader.) 4080 4322 w
+(Setting) 4407 4322 w
+(the) 4712 4322 w
+(1) 4863 4322 w
+(bit) 4934 4322 w
+(suspends) 720 4432 w
+(profiling) 1115 4432 w
+(the) 1488 4432 w
+(function) 1636 4432 w
+(when) 1993 4432 w
+(profiling) 2238 4432 w
+(is) 2611 4432 w
+(enabled) 2698 4432 w
+(for) 3035 4432 w
+(the) 3174 4432 w
+(rest) 3322 4432 w
+(of) 3492 4432 w
+(the) 3595 4432 w
+(program.) 3743 4432 w
+(For) 4162 4432 w
+(example,) 4321 4432 w
+8 /Courier f
+(TEXT) 1008 4593 w
+(sum\(SB\), 1, $0) 1392 4593 w
+(MOVL) 1200 4693 w
+(arg1+0\(FP\), R0) 1584 4693 w
+(ADDL) 1200 4793 w
+(arg2+4\(FP\), R0) 1584 4793 w
+(RTS) 1200 4893 w
+9 /Palatino-Roman f
+(will) 720 5064 w
+(not) 902 5064 w
+(be) 1063 5064 w
+(profiled;) 1185 5064 w
+(the) 1557 5064 w
+(first) 1711 5064 w
+(version) 1900 5064 w
+(above) 2225 5064 w
+(would) 2493 5064 w
+(be.) 2782 5064 w
+(Subroutines) 2951 5064 w
+(with) 3462 5064 w
+(peculiar) 3675 5064 w
+(state,) 4029 5064 w
+(such) 4268 5064 w
+(as) 4482 5064 w
+(system) 4595 5064 w
+(call) 4903 5064 w
+(routines,) 720 5174 w
+(should) 1095 5174 w
+(not) 1393 5174 w
+(be) 1548 5174 w
+(profiled.) 1664 5174 w
+(Setting) 970 5321 w
+(the) 1280 5321 w
+(2) 1436 5321 w
+(bit) 1512 5321 w
+(allows) 1650 5321 w
+(multiple) 1942 5321 w
+(definitions) 2312 5321 w
+(of) 2772 5321 w
+(the) 2884 5321 w
+(same) 3041 5321 w
+9 /Courier f
+(TEXT) 3278 5321 w
+9 /Palatino-Roman f
+(symbol) 3526 5321 w
+(in) 3851 5321 w
+(a) 3961 5321 w
+(program;) 4038 5321 w
+(the) 4443 5321 w
+(loader) 4600 5321 w
+(will) 4887 5321 w
+(place) 720 5431 w
+(only) 951 5431 w
+(one) 1152 5431 w
+(such) 1320 5431 w
+(function) 1527 5431 w
+(in) 1884 5431 w
+(the) 1985 5431 w
+(image.) 2133 5431 w
+(It) 2445 5431 w
+(was) 2529 5431 w
+(emitted) 2710 5431 w
+(only) 3039 5431 w
+(by) 3240 5431 w
+(the) 3363 5431 w
+(Alef) 3511 5431 w
+(compilers.) 3703 5431 w
+(Subroutines) 970 5578 w
+(to) 1475 5578 w
+(be) 1579 5578 w
+(called) 1696 5578 w
+(from) 1955 5578 w
+(C) 2174 5578 w
+(should) 2262 5578 w
+(place) 2561 5578 w
+(their) 2793 5578 w
+(result) 3004 5578 w
+(in) 3255 5578 w
+9 /Courier f
+(R0) 3357 5578 w
+9 /Palatino-Roman f
+(,) 3465 5578 w
+(even) 3512 5578 w
+(if) 3725 5578 w
+(it) 3805 5578 w
+(is) 3885 5578 w
+(an) 3973 5578 w
+(address.) 4094 5578 w
+(Floating) 4474 5578 w
+(point) 4828 5578 w
+(values) 720 5688 w
+(are) 1006 5688 w
+(returned) 1159 5688 w
+(in) 1537 5688 w
+9 /Courier f
+(F0) 1644 5688 w
+9 /Palatino-Roman f
+(.) 1752 5688 w
+(Functions) 1827 5688 w
+(that) 2248 5688 w
+(return) 2434 5688 w
+(a) 2714 5688 w
+(structure) 2787 5688 w
+(to) 3176 5688 w
+(a) 3284 5688 w
+(C) 3357 5688 w
+(program) 3449 5688 w
+(receive) 3827 5688 w
+(as) 4137 5688 w
+(their) 4248 5688 w
+(first) 4463 5688 w
+(argument) 4651 5688 w
+(the) 720 5798 w
+(address) 875 5798 w
+(of) 1215 5798 w
+(the) 1325 5798 w
+(location) 1480 5798 w
+(to) 1829 5798 w
+(store) 1939 5798 w
+(the) 2166 5798 w
+(result;) 2321 5798 w
+9 /Courier f
+(R0) 2601 5798 w
+9 /Palatino-Roman f
+(is) 2739 5798 w
+(unused) 2833 5798 w
+(in) 3159 5798 w
+(the) 3267 5798 w
+(calling) 3422 5798 w
+(protocol) 3717 5798 w
+(for) 4083 5798 w
+(such) 4229 5798 w
+(procedures.) 4444 5798 w
+(A) 4970 5798 w
+(subroutine) 720 5908 w
+(is) 1179 5908 w
+(responsible) 1269 5908 w
+(for) 1751 5908 w
+(saving) 1893 5908 w
+(its) 2181 5908 w
+(own) 2301 5908 w
+(registers,) 2504 5908 w
+(and) 2893 5908 w
+(therefore) 3071 5908 w
+(is) 3460 5908 w
+(free) 3550 5908 w
+(to) 3728 5908 w
+(use) 3834 5908 w
+(any) 3995 5908 w
+(registers) 4168 5908 w
+(without) 4534 5908 w
+(sav\255) 4876 5908 w
+(ing) 720 6018 w
+(them) 871 6018 w
+(\(``caller) 1098 6018 w
+(saves''\).) 1417 6018 w
+9 /Courier f
+(A6) 1781 6018 w
+9 /Palatino-Roman f
+(and) 1912 6018 w
+9 /Courier f
+(A7) 2087 6018 w
+9 /Palatino-Roman f
+(are) 2218 6018 w
+(the) 2365 6018 w
+(exceptions) 2513 6018 w
+(as) 2959 6018 w
+(described) 3065 6018 w
+(above.) 3474 6018 w
+9 /Palatino-Bold f
+(When) 720 6241 w
+(in) 988 6241 w
+(doubt) 1096 6241 w
+9 /Palatino-Roman f
+(If) 970 6388 w
+(you) 1062 6388 w
+(get) 1247 6388 w
+(confused,) 1401 6388 w
+(try) 1818 6388 w
+(using) 1966 6388 w
+(the) 2218 6388 w
+9 /Courier f
+(\255S) 2375 6388 w
+9 /Palatino-Roman f
+(option) 2515 6388 w
+(to) 2809 6388 w
+9 /Courier f
+(2c) 2921 6388 w
+9 /Palatino-Roman f
+(and) 3061 6388 w
+(compiling) 3245 6388 w
+(a) 3680 6388 w
+(sample) 3757 6388 w
+(program.) 4074 6388 w
+(The) 4502 6388 w
+(standard) 4684 6388 w
+(output) 720 6498 w
+(is) 1015 6498 w
+(valid) 1102 6498 w
+(input) 1328 6498 w
+(to) 1567 6498 w
+(the) 1670 6498 w
+(assembler.) 1818 6498 w
+9 /Palatino-Bold f
+(Instructions) 720 6721 w
+9 /Palatino-Roman f
+(The) 970 6868 w
+(instruction) 1145 6868 w
+(set) 1604 6868 w
+(of) 1740 6868 w
+(the) 1845 6868 w
+(assembler) 1995 6868 w
+(is) 2418 6868 w
+(not) 2507 6868 w
+(identical) 2664 6868 w
+(to) 3032 6868 w
+(that) 3137 6868 w
+(of) 3319 6868 w
+(the) 3424 6868 w
+(machine.) 3574 6868 w
+(It) 3982 6868 w
+(is) 4069 6868 w
+(chosen) 4159 6868 w
+(to) 4460 6868 w
+(match) 4566 6868 w
+(what) 4838 6868 w
+(the) 720 6978 w
+(compiler) 869 6978 w
+(generates,) 1247 6978 w
+(augmented) 1674 6978 w
+(slightly) 2149 6978 w
+(by) 2471 6978 w
+(specific) 2595 6978 w
+(needs) 2916 6978 w
+(of) 3171 6978 w
+(the) 3275 6978 w
+(operating) 3424 6978 w
+(system.) 3834 6978 w
+(For) 4181 6978 w
+(example,) 4340 6978 w
+9 /Courier f
+(2a) 4723 6978 w
+9 /Palatino-Roman f
+(does) 4854 6978 w
+(not) 720 7088 w
+(distinguish) 878 7088 w
+(between) 1351 7088 w
+(the) 1713 7088 w
+(various) 1864 7088 w
+(forms) 2190 7088 w
+(of) 2449 7088 w
+9 /Courier f
+(MOVE) 2555 7088 w
+9 /Palatino-Roman f
+(instruction:) 2797 7088 w
+(move) 3280 7088 w
+(quick,) 3529 7088 w
+(move) 3798 7088 w
+(address,) 4048 7088 w
+(etc.) 4408 7088 w
+(Instead) 4594 7088 w
+(the) 4915 7088 w
+(context) 720 7198 w
+(does) 1035 7198 w
+(the) 1244 7198 w
+(job.) 1392 7198 w
+(For) 1582 7198 w
+(example,) 1741 7198 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 4 4
+%%Page: 5 5
+/saveobj save def
+mark
+5 pagesetup
+9 /Palatino-Roman f
+(\255 5 \255) 2804 470 w
+8 /Courier f
+(MOVL) 1200 820 w
+($1, R1) 1584 820 w
+(MOVL) 1200 920 w
+(A0, R2) 1584 920 w
+(MOVW) 1200 1020 w
+(SR, R3) 1584 1020 w
+9 /Palatino-Roman f
+(generates) 720 1214 w
+(official) 1128 1214 w
+9 /Courier f
+(MOVEQ) 1429 1214 w
+9 /Palatino-Roman f
+(,) 1699 1214 w
+9 /Courier f
+(MOVEA) 1750 1214 w
+9 /Palatino-Roman f
+(,) 2020 1214 w
+(and) 2071 1214 w
+9 /Courier f
+(MOVESR) 2251 1214 w
+9 /Palatino-Roman f
+(instructions.) 2603 1214 w
+(A) 3149 1214 w
+(number) 3248 1214 w
+(of) 3591 1214 w
+(instructions) 3700 1214 w
+(do) 4201 1214 w
+(not) 4335 1214 w
+(have) 4496 1214 w
+(the) 4716 1214 w
+(syn\255) 4870 1214 w
+(tax) 720 1324 w
+(necessary) 867 1324 w
+(to) 1277 1324 w
+(specify) 1382 1324 w
+(their) 1688 1324 w
+(entire) 1900 1324 w
+(capabilities.) 2155 1324 w
+(Notable) 2675 1324 w
+(examples) 3019 1324 w
+(are) 3419 1324 w
+(the) 3568 1324 w
+(bitfield) 3717 1324 w
+(instructions,) 4027 1324 w
+(the) 4546 1324 w
+(multiply) 4695 1324 w
+(and) 720 1434 w
+(divide) 920 1434 w
+(instructions,) 1224 1434 w
+(etc.) 1767 1434 w
+(For) 1974 1434 w
+(a) 2158 1434 w
+(complete) 2251 1434 w
+(set) 2664 1434 w
+(of) 2823 1434 w
+(generated) 2952 1434 w
+(instruction) 3398 1434 w
+(names) 3881 1434 w
+(\(in) 4187 1434 w
+9 /Courier f
+(2a) 4344 1434 w
+9 /Palatino-Roman f
+(notation,) 4501 1434 w
+(not) 4908 1434 w
+(Motorola's\)) 720 1544 w
+(see) 1215 1544 w
+(the) 1368 1544 w
+(file) 1522 1544 w
+9 /Courier f
+(/sys/src/cmd/2c/2.out.h) 1676 1544 w
+9 /Palatino-Roman f
+(.) 2918 1544 w
+(Despite) 2993 1544 w
+(its) 3325 1544 w
+(name,) 3447 1544 w
+(this) 3717 1544 w
+(file) 3891 1544 w
+(contains) 4044 1544 w
+(an) 4405 1544 w
+(enumeration) 4530 1544 w
+(of) 720 1654 w
+(the) 823 1654 w
+(instructions) 971 1654 w
+(that) 1466 1654 w
+(appear) 1646 1654 w
+(in) 1947 1654 w
+(the) 2049 1654 w
+(intermediate) 2198 1654 w
+(files) 2730 1654 w
+(generated) 2917 1654 w
+(by) 3338 1654 w
+(the) 3462 1654 w
+(compiler,) 3611 1654 w
+(which) 4012 1654 w
+(correspond) 4281 1654 w
+(exactly) 4759 1654 w
+(to) 720 1764 w
+(lines) 823 1764 w
+(of) 1031 1764 w
+(assembly) 1134 1764 w
+(language.) 1526 1764 w
+(The) 970 1924 w
+(MC68000) 1150 1924 w
+(assembler,) 1555 1924 w
+9 /Courier f
+(1a) 2006 1924 w
+9 /Palatino-Roman f
+(,) 2114 1924 w
+(is) 2167 1924 w
+(essentially) 2261 1924 w
+(the) 2709 1924 w
+(same,) 2865 1924 w
+(honoring) 3124 1924 w
+(the) 3523 1924 w
+(appropriate) 3679 1924 w
+(subset) 4183 1924 w
+(of) 4467 1924 w
+(the) 4578 1924 w
+(instruc\255) 4734 1924 w
+(tions) 720 2034 w
+(and) 939 2034 w
+(addressing) 1114 2034 w
+(modes.) 1575 2034 w
+(The) 1909 2034 w
+(definitions) 2082 2034 w
+(of) 2533 2034 w
+(these) 2636 2034 w
+(are,) 2865 2034 w
+(nonetheless,) 3035 2034 w
+(part) 3548 2034 w
+(of) 3736 2034 w
+9 /Courier f
+(2.out.h) 3839 2034 w
+9 /Palatino-Roman f
+(.) 4217 2034 w
+9 /Palatino-Bold f
+(Laying) 720 2298 w
+(down) 1028 2298 w
+(instructions) 1286 2298 w
+9 /Palatino-Roman f
+(The) 970 2458 w
+(loader) 1143 2458 w
+(modifies) 1421 2458 w
+(the) 1791 2458 w
+(code) 1939 2458 w
+(produced) 2150 2458 w
+(by) 2560 2458 w
+(the) 2683 2458 w
+(assembler) 2831 2458 w
+(and) 3252 2458 w
+(compiler.) 3427 2458 w
+(It) 3850 2458 w
+(folds) 3934 2458 w
+(branches,) 4156 2458 w
+(copies) 4559 2458 w
+(short) 4834 2458 w
+(sequences) 720 2568 w
+(of) 1146 2568 w
+(code) 1251 2568 w
+(to) 1464 2568 w
+(eliminate) 1569 2568 w
+(branches,) 1963 2568 w
+(and) 2366 2568 w
+(discards) 2542 2568 w
+(unreachable) 2899 2568 w
+(code.) 3409 2568 w
+(The) 3667 2568 w
+(first) 3841 2568 w
+(instruction) 4025 2568 w
+(of) 4483 2568 w
+(every) 4587 2568 w
+(func\255) 4834 2568 w
+(tion) 720 2678 w
+(is) 901 2678 w
+(assumed) 988 2678 w
+(to) 1363 2678 w
+(be) 1466 2678 w
+(reachable.) 1582 2678 w
+(The) 2031 2678 w
+(pseudo\255instruction) 2204 2678 w
+9 /Courier f
+(NOP) 2985 2678 w
+9 /Palatino-Roman f
+(,) 3147 2678 w
+(which) 3193 2678 w
+(you) 3461 2678 w
+(may) 3638 2678 w
+(see) 3836 2678 w
+(in) 3984 2678 w
+(compiler) 4086 2678 w
+(output,) 4464 2678 w
+(means) 4783 2678 w
+(no) 720 2788 w
+(instruction) 845 2788 w
+(at) 1302 2788 w
+(all,) 1400 2788 w
+(rather) 1543 2788 w
+(than) 1808 2788 w
+(an) 2010 2788 w
+(instruction) 2130 2788 w
+(that) 2587 2788 w
+(does) 2767 2788 w
+(nothing.) 2976 2788 w
+(The) 3357 2788 w
+(loader) 3530 2788 w
+(discards) 3808 2788 w
+(all) 4164 2788 w
+9 /Courier f
+(NOP) 4284 2788 w
+9 /Palatino-Roman f
+('s.) 4446 2788 w
+(To) 970 2948 w
+(generate) 1103 2948 w
+(a) 1473 2948 w
+(true) 1546 2948 w
+9 /Courier f
+(NOP) 1737 2948 w
+9 /Palatino-Roman f
+(instruction,) 1927 2948 w
+(or) 2412 2948 w
+(any) 2526 2948 w
+(other) 2701 2948 w
+(instruction) 2941 2948 w
+(not) 3404 2948 w
+(known) 3565 2948 w
+(to) 3873 2948 w
+(the) 3982 2948 w
+(assembler,) 4136 2948 w
+(use) 4586 2948 w
+(a) 4750 2948 w
+9 /Courier f
+(WORD) 4824 2948 w
+9 /Palatino-Roman f
+(pseudo\255instruction.) 720 3058 w
+(Such) 1552 3058 w
+(instructions) 1774 3058 w
+(on) 2274 3058 w
+(RISCs) 2404 3058 w
+(are) 2673 3058 w
+(not) 2825 3058 w
+(scheduled) 2985 3058 w
+(by) 3419 3058 w
+(the) 3547 3058 w
+(loader) 3700 3058 w
+(and) 3982 3058 w
+(must) 4161 3058 w
+(have) 4389 3058 w
+(their) 4607 3058 w
+(delay) 4821 3058 w
+(slots) 720 3168 w
+(filled) 925 3168 w
+(manually.) 1154 3168 w
+9 /Palatino-Bold f
+(MIPS) 720 3432 w
+9 /Palatino-Roman f
+(The) 970 3592 w
+(registers) 1143 3592 w
+(are) 1506 3592 w
+(only) 1653 3592 w
+(addressed) 1854 3592 w
+(by) 2285 3592 w
+(number:) 2408 3592 w
+9 /Courier f
+(R0) 2769 3592 w
+9 /Palatino-Roman f
+(through) 2901 3592 w
+9 /Courier f
+(R31) 3249 3592 w
+9 /Palatino-Roman f
+(.) 3411 3592 w
+9 /Courier f
+(R29) 3481 3592 w
+9 /Palatino-Roman f
+(is) 3667 3592 w
+(the) 3755 3592 w
+(stack) 3904 3592 w
+(pointer;) 4131 3592 w
+9 /Courier f
+(R30) 4469 3592 w
+9 /Palatino-Roman f
+(is) 4655 3592 w
+(used) 4743 3592 w
+(as) 4957 3592 w
+(the) 720 3702 w
+(static) 885 3702 w
+(base) 1134 3702 w
+(pointer,) 1350 3702 w
+(the) 1704 3702 w
+(analogue) 1869 3702 w
+(of) 2274 3702 w
+9 /Courier f
+(A6) 2394 3702 w
+9 /Palatino-Roman f
+(on) 2542 3702 w
+(the) 2684 3702 w
+(68020.) 2849 3702 w
+(Its) 3160 3702 w
+(value) 3299 3702 w
+(is) 3558 3702 w
+(the) 3662 3702 w
+(address) 3827 3702 w
+(of) 4177 3702 w
+(the) 4297 3702 w
+(global) 4461 3702 w
+(symbol) 4747 3702 w
+9 /Courier f
+(setR30\(SB\)) 720 3812 w
+9 /Palatino-Roman f
+(.) 1260 3812 w
+(The) 1344 3812 w
+(register) 1532 3812 w
+(holding) 1872 3812 w
+(returned) 2222 3812 w
+(values) 2610 3812 w
+(from) 2906 3812 w
+(subroutines) 3140 3812 w
+(is) 3650 3812 w
+9 /Courier f
+(R1) 3753 3812 w
+9 /Palatino-Roman f
+(.) 3861 3812 w
+(When) 3946 3812 w
+(a) 4222 3812 w
+(function) 4306 3812 w
+(is) 4679 3812 w
+(called,) 4782 3812 w
+(space) 720 3922 w
+(for) 963 3922 w
+(the) 1102 3922 w
+(first) 1250 3922 w
+(argument) 1433 3922 w
+(is) 1845 3922 w
+(reserved) 1932 3922 w
+(at) 2300 3922 w
+9 /Courier f
+(0\(FP\)) 2398 3922 w
+9 /Palatino-Roman f
+(but) 2691 3922 w
+(in) 2848 3922 w
+(C) 2949 3922 w
+(\(not) 3036 3922 w
+(Alef\)) 3221 3922 w
+(the) 3443 3922 w
+(value) 3591 3922 w
+(is) 3833 3922 w
+(passed) 3920 3922 w
+(in) 4216 3922 w
+9 /Courier f
+(R1) 4317 3922 w
+9 /Palatino-Roman f
+(instead.) 4448 3922 w
+(The) 970 4082 w
+(loader) 1153 4082 w
+(uses) 1441 4082 w
+9 /Courier f
+(R28) 1647 4082 w
+9 /Palatino-Roman f
+(as) 1842 4082 w
+(a) 1958 4082 w
+(temporary.) 2036 4082 w
+(The) 2538 4082 w
+(system) 2721 4082 w
+(uses) 3032 4082 w
+9 /Courier f
+(R26) 3239 4082 w
+9 /Palatino-Roman f
+(and) 3435 4082 w
+9 /Courier f
+(R27) 3621 4082 w
+9 /Palatino-Roman f
+(as) 3817 4082 w
+(interrupt\255time) 3934 4082 w
+(temporaries.) 4537 4082 w
+(Therefore) 720 4192 w
+(none) 1131 4192 w
+(of) 1351 4192 w
+(these) 1454 4192 w
+(registers) 1683 4192 w
+(should) 2046 4192 w
+(be) 2344 4192 w
+(used) 2460 4192 w
+(in) 2673 4192 w
+(user) 2774 4192 w
+(code.) 2968 4192 w
+(The) 970 4352 w
+(control) 1143 4352 w
+(registers) 1450 4352 w
+(are) 1813 4352 w
+(not) 1960 4352 w
+(known) 2115 4352 w
+(to) 2417 4352 w
+(the) 2520 4352 w
+(assembler.) 2668 4352 w
+(Instead) 3135 4352 w
+(they) 3452 4352 w
+(are) 3650 4352 w
+(numbered) 3797 4352 w
+(registers) 4232 4352 w
+9 /Courier f
+(M0) 4595 4352 w
+9 /Palatino-Roman f
+(,) 4703 4352 w
+9 /Courier f
+(M1) 4749 4352 w
+9 /Palatino-Roman f
+(,) 4857 4352 w
+(etc.) 4904 4352 w
+(Use) 720 4462 w
+(this) 894 4462 w
+(trick) 1063 4462 w
+(to) 1268 4462 w
+(access,) 1371 4462 w
+(say,) 1661 4462 w
+9 /Courier f
+(STATUS) 1840 4462 w
+9 /Palatino-Roman f
+(:) 2164 4462 w
+8 /Courier f
+(#define STATUS) 1008 4646 w
+(12) 1776 4646 w
+(MOVW) 1200 4746 w
+(M\(STATUS\), R1) 1584 4746 w
+9 /Palatino-Roman f
+(Floating) 970 4940 w
+(point) 1336 4940 w
+(registers) 1585 4940 w
+(are) 1962 4940 w
+(called) 2123 4940 w
+9 /Courier f
+(F0) 2395 4940 w
+9 /Palatino-Roman f
+(through) 2540 4940 w
+9 /Courier f
+(F31) 2901 4940 w
+9 /Palatino-Roman f
+(.) 3063 4940 w
+(By) 3146 4940 w
+(convention,) 3288 4940 w
+9 /Courier f
+(F24) 3794 4940 w
+9 /Palatino-Roman f
+(must) 3993 4940 w
+(be) 4231 4940 w
+(initialized) 4361 4940 w
+(to) 4798 4940 w
+(the) 4915 4940 w
+(value) 720 5050 w
+(0.0,) 962 5050 w
+9 /Courier f
+(F26) 1121 5050 w
+9 /Palatino-Roman f
+(to) 1306 5050 w
+(0.5,) 1409 5050 w
+9 /Courier f
+(F28) 1568 5050 w
+9 /Palatino-Roman f
+(to) 1753 5050 w
+(1.0,) 1856 5050 w
+(and) 2015 5050 w
+9 /Courier f
+(F30) 2190 5050 w
+9 /Palatino-Roman f
+(to) 2375 5050 w
+(2.0;) 2478 5050 w
+(this) 2637 5050 w
+(is) 2806 5050 w
+(done) 2893 5050 w
+(by) 3116 5050 w
+(the) 3239 5050 w
+(operating) 3387 5050 w
+(system.) 3796 5050 w
+(The) 970 5210 w
+(instructions) 1143 5210 w
+(and) 1638 5210 w
+(their) 1813 5210 w
+(syntax) 2023 5210 w
+(are) 2309 5210 w
+(different) 2457 5210 w
+(from) 2826 5210 w
+(those) 3045 5210 w
+(of) 3282 5210 w
+(the) 3386 5210 w
+(manufacturer's) 3535 5210 w
+(manual.) 4166 5210 w
+(There) 4537 5210 w
+(are) 4790 5210 w
+(no) 4938 5210 w
+9 /Courier f
+(lui) 720 5320 w
+9 /Palatino-Roman f
+(and) 911 5320 w
+(kin;) 1092 5320 w
+(instead) 1272 5320 w
+(there) 1590 5320 w
+(are) 1823 5320 w
+9 /Courier f
+(MOVW) 1976 5320 w
+9 /Palatino-Roman f
+(\(move) 2221 5320 w
+(word\),) 2503 5320 w
+9 /Courier f
+(MOVH) 2801 5320 w
+9 /Palatino-Roman f
+(\(move) 3046 5320 w
+(halfword\),) 3328 5320 w
+(and) 3779 5320 w
+9 /Courier f
+(MOVB) 3960 5320 w
+9 /Palatino-Roman f
+(\(move) 4204 5320 w
+(byte\)) 4485 5320 w
+(pseudo\255) 4716 5320 w
+(instructions.) 720 5430 w
+(If) 1267 5430 w
+(the) 1357 5430 w
+(operand) 1512 5430 w
+(is) 1877 5430 w
+(unsigned,) 1971 5430 w
+(the) 2394 5430 w
+(instructions) 2549 5430 w
+(are) 3051 5430 w
+9 /Courier f
+(MOVHU) 3205 5430 w
+9 /Palatino-Roman f
+(and) 3505 5430 w
+9 /Courier f
+(MOVBU) 3687 5430 w
+9 /Palatino-Roman f
+(.) 3957 5430 w
+(The) 4033 5430 w
+(order) 4213 5430 w
+(of) 4463 5430 w
+(operands) 4573 5430 w
+(is) 4976 5430 w
+(from) 720 5540 w
+(left) 940 5540 w
+(to) 1094 5540 w
+(right) 1199 5540 w
+(in) 1418 5540 w
+(dataflow) 1520 5540 w
+(order,) 1900 5540 w
+(just) 2167 5540 w
+(as) 2334 5540 w
+(on) 2441 5540 w
+(the) 2567 5540 w
+(68020) 2716 5540 w
+(but) 2965 5540 w
+(not) 3123 5540 w
+(as) 3279 5540 w
+(in) 3386 5540 w
+(MIPS) 3488 5540 w
+(documentation.) 3731 5540 w
+(This) 4407 5540 w
+(means) 4602 5540 w
+(that) 4883 5540 w
+(the) 720 5650 w
+9 /Courier f
+(Bcond) 880 5650 w
+9 /Palatino-Roman f
+(instructions) 1185 5650 w
+(are) 1692 5650 w
+(reversed) 1851 5650 w
+(with) 2231 5650 w
+(respect) 2449 5650 w
+(to) 2768 5650 w
+(the) 2883 5650 w
+(book;) 3043 5650 w
+(for) 3301 5650 w
+(example,) 3452 5650 w
+(a) 3847 5650 w
+9 /Courier f
+(va) 3928 5650 w
+(BGTZ) 4072 5650 w
+9 /Palatino-Roman f
+(generates) 4324 5650 w
+(a) 4740 5650 w
+(MIPS) 4821 5650 w
+9 /Courier f
+(bltz) 720 5760 w
+9 /Palatino-Roman f
+(instruction.) 959 5760 w
+(The) 970 5920 w
+(assembler) 1144 5920 w
+(is) 1566 5920 w
+(for) 1654 5920 w
+(the) 1794 5920 w
+(R2000,) 1943 5920 w
+(R3000,) 2230 5920 w
+(and) 2517 5920 w
+(most) 2693 5920 w
+(of) 2914 5920 w
+(the) 3018 5920 w
+(R4000) 3167 5920 w
+(and) 3431 5920 w
+(R6000) 3607 5920 w
+(architectures.) 3872 5920 w
+(It) 4456 5920 w
+(understands) 4542 5920 w
+(the) 720 6030 w
+(64\255bit) 871 6030 w
+(instructions) 1123 6030 w
+9 /Courier f
+(MOVV) 1621 6030 w
+9 /Palatino-Roman f
+(,) 1837 6030 w
+9 /Courier f
+(MOVVL) 1886 6030 w
+9 /Palatino-Roman f
+(,) 2156 6030 w
+9 /Courier f
+(ADDV) 2205 6030 w
+9 /Palatino-Roman f
+(,) 2421 6030 w
+9 /Courier f
+(ADDVU) 2470 6030 w
+9 /Palatino-Roman f
+(,) 2740 6030 w
+9 /Courier f
+(SUBV) 2789 6030 w
+9 /Palatino-Roman f
+(,) 3005 6030 w
+9 /Courier f
+(SUBVU) 3054 6030 w
+9 /Palatino-Roman f
+(,) 3324 6030 w
+9 /Courier f
+(MULV) 3373 6030 w
+9 /Palatino-Roman f
+(,) 3589 6030 w
+9 /Courier f
+(MULVU) 3637 6030 w
+9 /Palatino-Roman f
+(,) 3907 6030 w
+9 /Courier f
+(DIVV) 3955 6030 w
+9 /Palatino-Roman f
+(,) 4171 6030 w
+9 /Courier f
+(DIVVU) 4219 6030 w
+9 /Palatino-Roman f
+(,) 4489 6030 w
+9 /Courier f
+(SLLV) 4537 6030 w
+9 /Palatino-Roman f
+(,) 4753 6030 w
+9 /Courier f
+(SRLV) 4801 6030 w
+9 /Palatino-Roman f
+(,) 5017 6030 w
+(and) 720 6140 w
+9 /Courier f
+(SRAV) 895 6140 w
+9 /Palatino-Roman f
+(.) 1111 6140 w
+(The) 1180 6140 w
+(assembler) 1353 6140 w
+(does) 1774 6140 w
+(not) 1983 6140 w
+(have) 2138 6140 w
+(any) 2352 6140 w
+(cache,) 2522 6140 w
+(load\255linked,) 2788 6140 w
+(or) 3292 6140 w
+(store\255conditional) 3401 6140 w
+(instructions.) 4103 6140 w
+(Some) 970 6300 w
+(assembler) 1218 6300 w
+(instructions) 1644 6300 w
+(are) 2144 6300 w
+(expanded) 2296 6300 w
+(into) 2718 6300 w
+(multiple) 2904 6300 w
+(instructions) 3270 6300 w
+(by) 3771 6300 w
+(the) 3900 6300 w
+(loader.) 4054 6300 w
+(For) 4384 6300 w
+(example) 4549 6300 w
+(the) 4915 6300 w
+(loader) 720 6410 w
+(may) 998 6410 w
+(convert) 1195 6410 w
+(the) 1520 6410 w
+(load) 1668 6410 w
+(of) 1867 6410 w
+(a) 1970 6410 w
+(32) 2038 6410 w
+(bit) 2151 6410 w
+(constant) 2280 6410 w
+(into) 2640 6410 w
+(an) 2821 6410 w
+9 /Courier f
+(lui) 2941 6410 w
+9 /Palatino-Roman f
+(followed) 3126 6410 w
+(by) 3504 6410 w
+(an) 3627 6410 w
+9 /Courier f
+(ori) 3747 6410 w
+9 /Palatino-Roman f
+(.) 3909 6410 w
+(Assembler) 970 6570 w
+(instructions) 1419 6570 w
+(should) 1917 6570 w
+(be) 2218 6570 w
+(laid) 2337 6570 w
+(out) 2516 6570 w
+(as) 2677 6570 w
+(if) 2787 6570 w
+(there) 2870 6570 w
+(were) 3101 6570 w
+(no) 3325 6570 w
+(load,) 3454 6570 w
+(branch,) 3680 6570 w
+(or) 4005 6570 w
+(floating) 4118 6570 w
+(point) 4454 6570 w
+(compare) 4693 6570 w
+(delay) 720 6680 w
+(slots;) 966 6680 w
+(the) 1198 6680 w
+(loader) 1350 6680 w
+(will) 1631 6680 w
+(rearrange) 1810 6680 w
+9 /LucidaSansUnicode20 f
+(\024) 2196 6680 w
+9 /Palatino-Italic f
+(schedule) 2286 6680 w
+9 /LucidaSansUnicode20 f
+(\024) 2593 6680 w
+9 /Palatino-Roman f
+(the) 2683 6680 w
+(instructions) 2834 6680 w
+(to) 3332 6680 w
+(guarantee) 3438 6680 w
+(correctness) 3862 6680 w
+(and) 4334 6680 w
+(improve) 4512 6680 w
+(per\255) 4877 6680 w
+(formance.) 720 6790 w
+(The) 1169 6790 w
+(only) 1347 6790 w
+(exception) 1553 6790 w
+(is) 1966 6790 w
+(that) 2058 6790 w
+(the) 2243 6790 w
+(correct) 2396 6790 w
+(scheduling) 2699 6790 w
+(of) 3163 6790 w
+(instructions) 3271 6790 w
+(that) 3771 6790 w
+(use) 3956 6790 w
+(control) 4119 6790 w
+(registers) 4432 6790 w
+(varies) 4801 6790 w
+(from) 720 6900 w
+(model) 941 6900 w
+(to) 1220 6900 w
+(model) 1326 6900 w
+(of) 1605 6900 w
+(machine) 1711 6900 w
+(\(and) 2074 6900 w
+(is) 2282 6900 w
+(often) 2372 6900 w
+(undocumented\)) 2603 6900 w
+(so) 3266 6900 w
+(you) 3379 6900 w
+(should) 3558 6900 w
+(schedule) 3858 6900 w
+(such) 4234 6900 w
+(instructions) 4443 6900 w
+(by) 4940 6900 w
+(hand) 720 7010 w
+(to) 947 7010 w
+(guarantee) 1050 7010 w
+(correct) 1471 7010 w
+(behavior.) 1769 7010 w
+(The) 2191 7010 w
+(loader) 2364 7010 w
+(generates) 2642 7010 w
+8 /Courier f
+(NOR R0, R0, R0) 1200 7194 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 5 5
+%%Page: 6 6
+/saveobj save def
+mark
+6 pagesetup
+9 /Palatino-Roman f
+(\255 6 \255) 2804 470 w
+(when) 720 830 w
+(it) 975 830 w
+(needs) 1064 830 w
+(a) 1328 830 w
+(true) 1406 830 w
+(no\255op) 1602 830 w
+(instruction.) 1871 830 w
+(Use) 2385 830 w
+(exactly) 2570 830 w
+(this) 2885 830 w
+(instruction) 3065 830 w
+(when) 3533 830 w
+(scheduling) 3789 830 w
+(code) 4259 830 w
+(manually;) 4481 830 w
+(the) 4915 830 w
+(loader) 720 940 w
+(recognizes) 1000 940 w
+(it) 1448 940 w
+(and) 1529 940 w
+(schedules) 1706 940 w
+(the) 2120 940 w
+(code) 2270 940 w
+(before) 2483 940 w
+(it) 2760 940 w
+(and) 2840 940 w
+(after) 3016 940 w
+(it) 3224 940 w
+(independently.) 3304 940 w
+(Also,) 3955 940 w
+9 /Courier f
+(WORD) 4186 940 w
+9 /Palatino-Roman f
+(pseudo\255ops) 4426 940 w
+(are) 4916 940 w
+(scheduled) 720 1050 w
+(like) 1149 1050 w
+(no\255ops.) 1317 1050 w
+(The) 970 1198 w
+9 /Courier f
+(NOSCHED) 1153 1198 w
+9 /Palatino-Roman f
+(pseudo\255op) 1565 1198 w
+(disables) 2027 1198 w
+(instruction) 2382 1198 w
+(scheduling) 2850 1198 w
+(\(scheduling) 3320 1198 w
+(is) 3820 1198 w
+(enabled) 3918 1198 w
+(by) 4266 1198 w
+(default\);) 4400 1198 w
+9 /Courier f
+(SCHED) 4770 1198 w
+9 /Palatino-Roman f
+(re\255enables) 720 1308 w
+(it.) 1151 1308 w
+(Branch) 1278 1308 w
+(folding,) 1583 1308 w
+(code) 1919 1308 w
+(copying,) 2131 1308 w
+(and) 2500 1308 w
+(dead) 2676 1308 w
+(code) 2898 1308 w
+(elimination) 3110 1308 w
+(are) 3589 1308 w
+(disabled) 3737 1308 w
+(for) 4099 1308 w
+(instructions) 4239 1308 w
+(that) 4735 1308 w
+(are) 4916 1308 w
+(not) 720 1418 w
+(scheduled.) 875 1418 w
+9 /Palatino-Bold f
+(SPARC) 720 1645 w
+9 /Palatino-Roman f
+(Once) 970 1793 w
+(you) 1204 1793 w
+(understand) 1386 1793 w
+(the) 1874 1793 w
+(Plan) 2027 1793 w
+(9) 2232 1793 w
+(model) 2305 1793 w
+(for) 2586 1793 w
+(the) 2730 1793 w
+(MIPS,) 2883 1793 w
+(the) 3153 1793 w
+(SPARC) 3306 1793 w
+(is) 3630 1793 w
+(familiar.) 3722 1793 w
+(Registers) 4109 1793 w
+(have) 4501 1793 w
+(numeri\255) 4720 1793 w
+(cal) 720 1903 w
+(names) 873 1903 w
+(only:) 1172 1903 w
+9 /Courier f
+(R0) 1415 1903 w
+9 /Palatino-Roman f
+(through) 1565 1903 w
+9 /Courier f
+(R31) 1931 1903 w
+9 /Palatino-Roman f
+(.) 2093 1903 w
+(Forget) 2181 1903 w
+(about) 2482 1903 w
+(register) 2753 1903 w
+(windows:) 3096 1903 w
+(Plan) 3531 1903 w
+(9) 3749 1903 w
+(doesn't) 3835 1903 w
+(use) 4169 1903 w
+(them) 4345 1903 w
+(at) 4590 1903 w
+(all.) 4706 1903 w
+(The) 4890 1903 w
+(machine) 720 2013 w
+(has) 1092 2013 w
+(32) 1263 2013 w
+(global) 1389 2013 w
+(registers,) 1672 2013 w
+(period.) 2071 2013 w
+9 /Courier f
+(R1) 2417 2013 w
+9 /Palatino-Roman f
+([sic]) 2561 2013 w
+(is) 2761 2013 w
+(the) 2861 2013 w
+(stack) 3022 2013 w
+(pointer.) 3261 2013 w
+9 /Courier f
+(R2) 3634 2013 w
+9 /Palatino-Roman f
+(is) 3778 2013 w
+(the) 3878 2013 w
+(static) 4039 2013 w
+(base) 4284 2013 w
+(register,) 4496 2013 w
+(with) 4857 2013 w
+(value) 720 2123 w
+(the) 968 2123 w
+(address) 1122 2123 w
+(of) 1461 2123 w
+9 /Courier f
+(setSB\(SB\)) 1570 2123 w
+9 /Palatino-Roman f
+(.) 2056 2123 w
+9 /Courier f
+(R7) 2131 2123 w
+9 /Palatino-Roman f
+(is) 2267 2123 w
+(the) 2359 2123 w
+(return) 2512 2123 w
+(register) 2791 2123 w
+(and) 3121 2123 w
+(also) 3301 2123 w
+(the) 3488 2123 w
+(register) 3641 2123 w
+(holding) 3971 2123 w
+(the) 4310 2123 w
+(first) 4463 2123 w
+(argument) 4651 2123 w
+(to) 720 2233 w
+(a) 823 2233 w
+(C) 891 2233 w
+(\(not) 978 2233 w
+(Alef\)) 1163 2233 w
+(function,) 1385 2233 w
+(again) 1765 2233 w
+(with) 2006 2233 w
+(space) 2212 2233 w
+(reserved) 2455 2233 w
+(at) 2823 2233 w
+9 /Courier f
+(0\(FP\)) 2921 2233 w
+9 /Palatino-Roman f
+(.) 3191 2233 w
+9 /Courier f
+(R14) 3260 2233 w
+9 /Palatino-Roman f
+(is) 3445 2233 w
+(the) 3532 2233 w
+(loader) 3680 2233 w
+(temporary.) 3958 2233 w
+(Floating\255point) 970 2381 w
+(registers) 1564 2381 w
+(are) 1927 2381 w
+(exactly) 2074 2381 w
+(as) 2378 2381 w
+(on) 2484 2381 w
+(the) 2609 2381 w
+(MIPS.) 2757 2381 w
+(The) 970 2529 w
+(control) 1147 2529 w
+(registers) 1458 2529 w
+(are) 1825 2529 w
+(known) 1977 2529 w
+(by) 2284 2529 w
+(names) 2412 2529 w
+(such) 2697 2529 w
+(as) 2909 2529 w
+9 /Courier f
+(FSR) 3020 2529 w
+9 /Palatino-Roman f
+(.) 3182 2529 w
+(The) 3256 2529 w
+(instructions) 3434 2529 w
+(to) 3934 2529 w
+(access) 4042 2529 w
+(these) 4314 2529 w
+(registers) 4548 2529 w
+(are) 4916 2529 w
+9 /Courier f
+(MOVW) 720 2639 w
+9 /Palatino-Roman f
+(instructions,) 959 2639 w
+(for) 1477 2639 w
+(example) 1616 2639 w
+8 /Courier f
+(MOVW) 1200 2803 w
+(Y, R8) 1584 2803 w
+9 /Palatino-Roman f
+(for) 720 2977 w
+(the) 859 2977 w
+(SPARC) 1007 2977 w
+(instruction) 1326 2977 w
+8 /Courier f
+(rdy %r8) 1200 3141 w
+9 /Palatino-Roman f
+(Move) 970 3315 w
+(instructions) 1238 3315 w
+(are) 1748 3315 w
+(similar) 1910 3315 w
+(to) 2224 3315 w
+(those) 2342 3315 w
+(on) 2593 3315 w
+(the) 2733 3315 w
+(MIPS:) 2896 3315 w
+(pseudo\255operations) 3176 3315 w
+(that) 3963 3315 w
+(turn) 4159 3315 w
+(into) 4370 3315 w
+(appropriate) 4567 3315 w
+(sequences) 720 3425 w
+(of) 1148 3425 w
+9 /Courier f
+(sethi) 1255 3425 w
+9 /Palatino-Roman f
+(instructions,) 1552 3425 w
+(adds,) 2074 3425 w
+(etc.) 2317 3425 w
+(Instructions) 2503 3425 w
+(read) 3007 3425 w
+(from) 3213 3425 w
+(left) 3435 3425 w
+(to) 3591 3425 w
+(right.) 3698 3425 w
+(Because) 3965 3425 w
+(the) 4310 3425 w
+(arguments) 4462 3425 w
+(are) 4916 3425 w
+(flipped) 720 3535 w
+(to) 1031 3535 w
+9 /Courier f
+(SUBCC) 1134 3535 w
+9 /Palatino-Roman f
+(,) 1404 3535 w
+(the) 1450 3535 w
+(condition) 1598 3535 w
+(codes) 2002 3535 w
+(are) 2251 3535 w
+(not) 2398 3535 w
+(inverted) 2553 3535 w
+(as) 2912 3535 w
+(on) 3018 3535 w
+(the) 3143 3535 w
+(MIPS.) 3291 3535 w
+(The) 970 3683 w
+(syntax) 1143 3683 w
+(for) 1428 3683 w
+(the) 1567 3683 w
+(ASI) 1715 3683 w
+(stuff) 1887 3683 w
+(is,) 2092 3683 w
+(for) 2202 3683 w
+(example) 2341 3683 w
+(to) 2701 3683 w
+(move) 2804 3683 w
+(a) 3050 3683 w
+(word) 3118 3683 w
+(from) 3357 3683 w
+(ASI) 3575 3683 w
+(2:) 3747 3683 w
+8 /Courier f
+(MOVW) 1200 3847 w
+(\(R7, 2\), R8) 1584 3847 w
+9 /Palatino-Roman f
+(The) 720 4021 w
+(syntax) 893 4021 w
+(for) 1178 4021 w
+(double) 1317 4021 w
+(indexing) 1618 4021 w
+(is) 1992 4021 w
+8 /Courier f
+(MOVW) 1200 4185 w
+(\(R7+R8\), R9) 1584 4185 w
+9 /Palatino-Roman f
+(The) 970 4359 w
+(SPARC's) 1143 4359 w
+(instruction) 1525 4359 w
+(scheduling) 1982 4359 w
+(is) 2441 4359 w
+(similar) 2528 4359 w
+(to) 2827 4359 w
+(the) 2930 4359 w
+(MIPS's.) 3078 4359 w
+(The) 3429 4359 w
+(official) 3602 4359 w
+(no\255op) 3898 4359 w
+(instruction) 4157 4359 w
+(is:) 4614 4359 w
+8 /Courier f
+(ORN R0, R0, R0) 1200 4523 w
+9 /Palatino-Bold f
+(i386) 720 4750 w
+9 /Palatino-Roman f
+(The) 970 4898 w
+(assembler) 1143 4898 w
+(assumes) 1564 4898 w
+(32\255bit) 1922 4898 w
+(protected) 2172 4898 w
+(mode.) 2577 4898 w
+(The) 2874 4898 w
+(register) 3048 4898 w
+(names) 3374 4898 w
+(are) 3655 4898 w
+9 /Courier f
+(SP) 3803 4898 w
+9 /Palatino-Roman f
+(,) 3911 4898 w
+9 /Courier f
+(AX) 3958 4898 w
+9 /Palatino-Roman f
+(,) 4066 4898 w
+9 /Courier f
+(BX) 4113 4898 w
+9 /Palatino-Roman f
+(,) 4221 4898 w
+9 /Courier f
+(CX) 4268 4898 w
+9 /Palatino-Roman f
+(,) 4376 4898 w
+9 /Courier f
+(DX) 4423 4898 w
+9 /Palatino-Roman f
+(,) 4531 4898 w
+9 /Courier f
+(BP) 4578 4898 w
+9 /Palatino-Roman f
+(,) 4686 4898 w
+9 /Courier f
+(DI) 4733 4898 w
+9 /Palatino-Roman f
+(,) 4841 4898 w
+(and) 4888 4898 w
+9 /Courier f
+(SI) 720 5008 w
+9 /Palatino-Roman f
+(.) 828 5008 w
+(The) 900 5008 w
+(stack) 1076 5008 w
+(pointer) 1305 5008 w
+(\(not) 1622 5008 w
+(a) 1810 5008 w
+(pseudo\255register\)) 1880 5008 w
+(is) 2561 5008 w
+9 /Courier f
+(SP) 2650 5008 w
+9 /Palatino-Roman f
+(and) 2783 5008 w
+(the) 2960 5008 w
+(return) 3110 5008 w
+(register) 3386 5008 w
+(is) 3713 5008 w
+9 /Courier f
+(AX) 3802 5008 w
+9 /Palatino-Roman f
+(.) 3910 5008 w
+(There) 3981 5008 w
+(is) 4235 5008 w
+(no) 4324 5008 w
+(physical) 4451 5008 w
+(frame) 4807 5008 w
+(pointer) 720 5118 w
+(but,) 1034 5118 w
+(as) 1214 5118 w
+(for) 1320 5118 w
+(the) 1459 5118 w
+(MIPS,) 1607 5118 w
+9 /Courier f
+(FP) 1872 5118 w
+9 /Palatino-Roman f
+(is) 2003 5118 w
+(a) 2090 5118 w
+(pseudo\255register) 2158 5118 w
+(that) 2807 5118 w
+(acts) 2987 5118 w
+(as) 3163 5118 w
+(a) 3269 5118 w
+(frame) 3337 5118 w
+(pointer.) 3593 5118 w
+(Opcode) 970 5266 w
+(names) 1308 5266 w
+(are) 1590 5266 w
+(mostly) 1740 5266 w
+(the) 2039 5266 w
+(same) 2190 5266 w
+(as) 2421 5266 w
+(those) 2530 5266 w
+(listed) 2769 5266 w
+(in) 3013 5266 w
+(the) 3117 5266 w
+(Intel) 3268 5266 w
+(manual) 3476 5266 w
+(with) 3803 5266 w
+(an) 4012 5266 w
+9 /Courier f
+(L) 4135 5266 w
+9 /Palatino-Roman f
+(,) 4189 5266 w
+9 /Courier f
+(W) 4238 5266 w
+9 /Palatino-Roman f
+(,) 4292 5266 w
+(or) 4341 5266 w
+9 /Courier f
+(B) 4453 5266 w
+9 /Palatino-Roman f
+(appended) 4533 5266 w
+(to) 4960 5266 w
+(identify) 720 5376 w
+(32\255bit,) 1058 5376 w
+(16\255bit,) 1333 5376 w
+(and) 1607 5376 w
+(8\255bit) 1784 5376 w
+(operations.) 1990 5376 w
+(The) 2485 5376 w
+(exceptions) 2660 5376 w
+(are) 3108 5376 w
+(loads,) 3257 5376 w
+(stores,) 3519 5376 w
+(and) 3802 5376 w
+(conditionals.) 3979 5376 w
+(All) 4540 5376 w
+(load) 4687 5376 w
+(and) 4888 5376 w
+(store) 720 5486 w
+(opcodes) 948 5486 w
+(to) 1309 5486 w
+(and) 1420 5486 w
+(from) 1603 5486 w
+(general) 1829 5486 w
+(registers,) 2155 5486 w
+(special) 2549 5486 w
+(registers) 2852 5486 w
+(\(such) 3223 5486 w
+(as) 3469 5486 w
+9 /Courier f
+(CR0,) 3584 5486 w
+(CR3,) 3832 5486 w
+(GDTR,) 4080 5486 w
+(IDTR,) 4382 5486 w
+(SS,) 4684 5486 w
+(CS,) 4878 5486 w
+(DS,) 720 5596 w
+(ES,) 905 5596 w
+(FS,) 1090 5596 w
+9 /Palatino-Roman f
+(and) 1275 5596 w
+9 /Courier f
+(GS) 1450 5596 w
+9 /Palatino-Roman f
+(\)) 1558 5596 w
+(or) 1611 5596 w
+(memory) 1720 5596 w
+(are) 2080 5596 w
+(written) 2227 5596 w
+(as) 2542 5596 w
+8 /Courier f
+(MOV) 1200 5760 w
+8 /Palatino-Italic f
+(x) 1344 5760 w
+8 /Courier f
+(src,dst) 1392 5760 w
+9 /Palatino-Roman f
+(where) 720 5934 w
+9 /Palatino-Italic f
+(x) 994 5934 w
+9 /Palatino-Roman f
+(is) 1072 5934 w
+9 /Courier f
+(L) 1162 5934 w
+9 /Palatino-Roman f
+(,) 1216 5934 w
+9 /Courier f
+(W) 1265 5934 w
+9 /Palatino-Roman f
+(,) 1319 5934 w
+(or) 1368 5934 w
+9 /Courier f
+(B) 1480 5934 w
+9 /Palatino-Roman f
+(.) 1534 5934 w
+(Thus) 1606 5934 w
+(to) 1831 5934 w
+(get) 1937 5934 w
+9 /Courier f
+(AL) 2086 5934 w
+9 /Palatino-Roman f
+(use) 2220 5934 w
+(a) 2381 5934 w
+9 /Courier f
+(MOVB) 2452 5934 w
+9 /Palatino-Roman f
+(instruction.) 2694 5934 w
+(If) 3200 5934 w
+(you) 3287 5934 w
+(need) 3467 5934 w
+(to) 3686 5934 w
+(access) 3792 5934 w
+9 /Courier f
+(AH) 4062 5934 w
+9 /Palatino-Roman f
+(,) 4170 5934 w
+(you) 4219 5934 w
+(must) 4399 5934 w
+(mention) 4626 5934 w
+(it) 4984 5934 w
+(explicitly) 720 6044 w
+(in) 1111 6044 w
+(a) 1212 6044 w
+9 /Courier f
+(MOVB) 1280 6044 w
+9 /Palatino-Roman f
+(:) 1496 6044 w
+8 /Courier f
+(MOVB) 1200 6208 w
+(AH, BX) 1584 6208 w
+9 /Palatino-Roman f
+(There) 720 6382 w
+(are) 972 6382 w
+(many) 1119 6382 w
+(examples) 1368 6382 w
+(of) 1766 6382 w
+(illegal) 1869 6382 w
+(moves,) 2134 6382 w
+(for) 2441 6382 w
+(example,) 2580 6382 w
+8 /Courier f
+(MOVB) 1200 6546 w
+(BP, DI) 1584 6546 w
+9 /Palatino-Roman f
+(that) 720 6720 w
+(the) 900 6720 w
+(loader) 1048 6720 w
+(actually) 1326 6720 w
+(implements) 1665 6720 w
+(as) 2158 6720 w
+(pseudo\255operations.) 2264 6720 w
+(The) 970 6868 w
+(names) 1151 6868 w
+(of) 1439 6868 w
+(conditions) 1550 6868 w
+(in) 2000 6868 w
+(all) 2109 6868 w
+(conditional) 2237 6868 w
+(instructions) 2720 6868 w
+(\() 3223 6868 w
+9 /Courier f
+(J) 3253 6868 w
+9 /Palatino-Roman f
+(,) 3307 6868 w
+9 /Courier f
+(SET) 3361 6868 w
+9 /Palatino-Roman f
+(\)) 3523 6868 w
+(follow) 3584 6868 w
+(the) 3873 6868 w
+(conventions) 4030 6868 w
+(of) 4546 6868 w
+(the) 4658 6868 w
+(68020) 4815 6868 w
+(instead) 720 6978 w
+(of) 1037 6978 w
+(those) 1145 6978 w
+(of) 1386 6978 w
+(the) 1494 6978 w
+(Intel) 1647 6978 w
+(assembler:) 1857 6978 w
+9 /Courier f
+(JOS) 2306 6978 w
+9 /Palatino-Roman f
+(,) 2468 6978 w
+9 /Courier f
+(JOC) 2519 6978 w
+9 /Palatino-Roman f
+(,) 2681 6978 w
+9 /Courier f
+(JCS) 2732 6978 w
+9 /Palatino-Roman f
+(,) 2894 6978 w
+9 /Courier f
+(JCC) 2945 6978 w
+9 /Palatino-Roman f
+(,) 3107 6978 w
+9 /Courier f
+(JEQ) 3158 6978 w
+9 /Palatino-Roman f
+(,) 3320 6978 w
+9 /Courier f
+(JNE) 3371 6978 w
+9 /Palatino-Roman f
+(,) 3533 6978 w
+9 /Courier f
+(JLS) 3583 6978 w
+9 /Palatino-Roman f
+(,) 3745 6978 w
+9 /Courier f
+(JHI) 3795 6978 w
+9 /Palatino-Roman f
+(,) 3957 6978 w
+9 /Courier f
+(JMI) 4007 6978 w
+9 /Palatino-Roman f
+(,) 4169 6978 w
+9 /Courier f
+(JPL) 4219 6978 w
+9 /Palatino-Roman f
+(,) 4381 6978 w
+9 /Courier f
+(JPS) 4431 6978 w
+9 /Palatino-Roman f
+(,) 4593 6978 w
+9 /Courier f
+(JPC) 4643 6978 w
+9 /Palatino-Roman f
+(,) 4805 6978 w
+9 /Courier f
+(JLT) 4855 6978 w
+9 /Palatino-Roman f
+(,) 5017 6978 w
+9 /Courier f
+(JGE) 720 7088 w
+9 /Palatino-Roman f
+(,) 882 7088 w
+9 /Courier f
+(JLE) 934 7088 w
+9 /Palatino-Roman f
+(,) 1096 7088 w
+(and) 1148 7088 w
+9 /Courier f
+(JGT) 1329 7088 w
+9 /Palatino-Roman f
+(instead) 1520 7088 w
+(of) 1838 7088 w
+9 /Courier f
+(JO) 1947 7088 w
+9 /Palatino-Roman f
+(,) 2055 7088 w
+9 /Courier f
+(JNO) 2107 7088 w
+9 /Palatino-Roman f
+(,) 2269 7088 w
+9 /Courier f
+(JB) 2321 7088 w
+9 /Palatino-Roman f
+(,) 2429 7088 w
+9 /Courier f
+(JNB) 2481 7088 w
+9 /Palatino-Roman f
+(,) 2643 7088 w
+9 /Courier f
+(JZ) 2695 7088 w
+9 /Palatino-Roman f
+(,) 2803 7088 w
+9 /Courier f
+(JNZ) 2855 7088 w
+9 /Palatino-Roman f
+(,) 3017 7088 w
+9 /Courier f
+(JBE) 3069 7088 w
+9 /Palatino-Roman f
+(,) 3231 7088 w
+9 /Courier f
+(JNBE) 3283 7088 w
+9 /Palatino-Roman f
+(,) 3499 7088 w
+9 /Courier f
+(JS) 3551 7088 w
+9 /Palatino-Roman f
+(,) 3659 7088 w
+9 /Courier f
+(JNS) 3711 7088 w
+9 /Palatino-Roman f
+(,) 3873 7088 w
+9 /Courier f
+(JP) 3925 7088 w
+9 /Palatino-Roman f
+(,) 4033 7088 w
+9 /Courier f
+(JNP) 4085 7088 w
+9 /Palatino-Roman f
+(,) 4247 7088 w
+9 /Courier f
+(JL) 4299 7088 w
+9 /Palatino-Roman f
+(,) 4407 7088 w
+9 /Courier f
+(JNL) 4459 7088 w
+9 /Palatino-Roman f
+(,) 4621 7088 w
+9 /Courier f
+(JLE) 4673 7088 w
+9 /Palatino-Roman f
+(,) 4835 7088 w
+(and) 4888 7088 w
+9 /Courier f
+(JNLE) 720 7198 w
+9 /Palatino-Roman f
+(.) 936 7198 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 6 6
+%%Page: 7 7
+/saveobj save def
+mark
+7 pagesetup
+9 /Palatino-Roman f
+(\255 7 \255) 2804 470 w
+(The) 970 830 w
+(addressing) 1148 830 w
+(modes) 1614 830 w
+(have) 1907 830 w
+(syntax) 2126 830 w
+(like) 2416 830 w
+9 /Courier f
+(AX) 2590 830 w
+9 /Palatino-Roman f
+(,) 2698 830 w
+9 /Courier f
+(\(AX\)) 2750 830 w
+9 /Palatino-Roman f
+(,) 2966 830 w
+9 /Courier f
+(\(AX\)\(BX*4\)) 3018 830 w
+9 /Palatino-Roman f
+(,) 3558 830 w
+9 /Courier f
+(10\(AX\)) 3610 830 w
+9 /Palatino-Roman f
+(,) 3934 830 w
+(and) 3986 830 w
+9 /Courier f
+(10\(AX\)\(BX*4\)) 4167 830 w
+9 /Palatino-Roman f
+(.) 4815 830 w
+(The) 4890 830 w
+(offsets) 720 940 w
+(from) 1059 940 w
+9 /Courier f
+(AX) 1334 940 w
+9 /Palatino-Roman f
+(can) 1522 940 w
+(be) 1739 940 w
+(replaced) 1912 940 w
+(by) 2334 940 w
+(offsets) 2514 940 w
+(from) 2853 940 w
+9 /Courier f
+(FP) 3128 940 w
+9 /Palatino-Roman f
+(or) 3315 940 w
+9 /Courier f
+(SB) 3480 940 w
+9 /Palatino-Roman f
+(to) 3667 940 w
+(access) 3826 940 w
+(names,) 4149 940 w
+(for) 4508 940 w
+(example) 4703 940 w
+9 /Courier f
+(extern+5\(SB\)\(AX*2\)) 720 1050 w
+9 /Palatino-Roman f
+(.) 1692 1050 w
+(Other) 970 1206 w
+(notes:) 1237 1206 w
+(Non\255relative) 1508 1206 w
+9 /Courier f
+(JMP) 2050 1206 w
+9 /Palatino-Roman f
+(and) 2247 1206 w
+9 /Courier f
+(CALL) 2435 1206 w
+9 /Palatino-Roman f
+(have) 2687 1206 w
+(a) 2914 1206 w
+9 /Courier f
+(*) 2995 1206 w
+9 /Palatino-Roman f
+(added) 3085 1206 w
+(to) 3374 1206 w
+(the) 3490 1206 w
+(syntax.) 3651 1206 w
+(Only) 3995 1206 w
+9 /Courier f
+(LOOP) 4230 1206 w
+9 /Palatino-Roman f
+(,) 4446 1206 w
+9 /Courier f
+(LOOPEQ) 4505 1206 w
+9 /Palatino-Roman f
+(,) 4829 1206 w
+(and) 4888 1206 w
+9 /Courier f
+(LOOPNE) 720 1316 w
+9 /Palatino-Roman f
+(are) 1074 1316 w
+(legal) 1228 1316 w
+(loop) 1448 1316 w
+(instructions.) 1658 1316 w
+(Only) 2206 1316 w
+9 /Courier f
+(REP) 2435 1316 w
+9 /Palatino-Roman f
+(and) 2627 1316 w
+9 /Courier f
+(REPN) 2809 1316 w
+9 /Palatino-Roman f
+(are) 3055 1316 w
+(recognized) 3209 1316 w
+(repeaters.) 3679 1316 w
+(These) 4123 1316 w
+(are) 4384 1316 w
+(not) 4538 1316 w
+(prefixes,) 4700 1316 w
+(but) 720 1426 w
+(rather) 877 1426 w
+(stand\255alone) 1142 1426 w
+(opcodes) 1631 1426 w
+(that) 1984 1426 w
+(precede) 2164 1426 w
+(the) 2501 1426 w
+(strings,) 2649 1426 w
+(for) 2965 1426 w
+(example) 3104 1426 w
+8 /Courier f
+(CLD; REP; MOVSL) 1200 1603 w
+9 /Palatino-Roman f
+(Segment) 720 1790 w
+(override) 1088 1790 w
+(prefixes) 1451 1790 w
+(in) 1791 1790 w
+9 /Courier f
+(MOD/RM) 1892 1790 w
+9 /Palatino-Roman f
+(fields) 2239 1790 w
+(are) 2480 1790 w
+(not) 2627 1790 w
+(supported.) 2782 1790 w
+9 /Palatino-Bold f
+(AMD64) 720 2040 w
+9 /Palatino-Roman f
+(The) 970 2196 w
+(assembler's) 1149 2196 w
+(conventions) 1640 2196 w
+(are) 2154 2196 w
+(similar) 2308 2196 w
+(to) 2614 2196 w
+(those) 2724 2196 w
+(for) 2967 2196 w
+(the) 3113 2196 w
+(386,) 3268 2196 w
+(above.) 3456 2196 w
+(The) 3771 2196 w
+(architecture) 3951 2196 w
+(provides) 4456 2196 w
+(extra) 4839 2196 w
+(fixed\255point) 720 2306 w
+(registers) 1188 2306 w
+9 /Courier f
+(R8) 1553 2306 w
+9 /Palatino-Roman f
+(to) 1685 2306 w
+9 /Courier f
+(R15) 1789 2306 w
+9 /Palatino-Roman f
+(.) 1951 2306 w
+(All) 2021 2306 w
+(registers) 2167 2306 w
+(are) 2531 2306 w
+(64) 2679 2306 w
+(bit,) 2793 2306 w
+(but) 2946 2306 w
+(instructions) 3104 2306 w
+(access) 3600 2306 w
+(low\255order) 3868 2306 w
+(8,) 4293 2306 w
+(16) 4385 2306 w
+(and) 4499 2306 w
+(32) 4675 2306 w
+(bits) 4789 2306 w
+(as) 4957 2306 w
+(described) 720 2416 w
+(in) 1137 2416 w
+(the) 1246 2416 w
+(processor) 1402 2416 w
+(handbook.) 1818 2416 w
+(For) 2299 2416 w
+(example,) 2466 2416 w
+9 /Courier f
+(MOVL) 2857 2416 w
+9 /Palatino-Roman f
+(to) 3104 2416 w
+9 /Courier f
+(AX) 3215 2416 w
+9 /Palatino-Roman f
+(puts) 3354 2416 w
+(a) 3562 2416 w
+(value) 3639 2416 w
+(in) 3890 2416 w
+(the) 4000 2416 w
+(low\255order) 4157 2416 w
+(32) 4590 2416 w
+(bits) 4712 2416 w
+(and) 4888 2416 w
+(clears) 720 2526 w
+(the) 976 2526 w
+(top) 1129 2526 w
+(32) 1291 2526 w
+(bits) 1409 2526 w
+(to) 1581 2526 w
+(zero.) 1689 2526 w
+(Literal) 1937 2526 w
+(operands) 2226 2526 w
+(are) 2627 2526 w
+(limited) 2779 2526 w
+(to) 3092 2526 w
+(signed) 3200 2526 w
+(32) 3492 2526 w
+(bit) 3610 2526 w
+(values,) 3744 2526 w
+(which) 4052 2526 w
+(are) 4325 2526 w
+(sign\255extended) 4476 2526 w
+(to) 720 2636 w
+(64) 828 2636 w
+(bits) 946 2636 w
+(in) 1118 2636 w
+(64) 1224 2636 w
+(bit) 1342 2636 w
+(operations;) 1476 2636 w
+(the) 1951 2636 w
+(exception) 2104 2636 w
+(is) 2517 2636 w
+9 /Courier f
+(MOVQ) 2609 2636 w
+9 /Palatino-Roman f
+(,) 2825 2636 w
+(which) 2877 2636 w
+(allows) 3151 2636 w
+(64\255bit) 3440 2636 w
+(literals.) 3695 2636 w
+(MMX) 4040 2636 w
+(registers) 4301 2636 w
+(are) 4670 2636 w
+9 /Courier f
+(M0) 4823 2636 w
+9 /Palatino-Roman f
+(to) 4960 2636 w
+9 /Courier f
+(M7) 720 2746 w
+9 /Palatino-Roman f
+(,) 828 2746 w
+(and) 874 2746 w
+(XMM) 1049 2746 w
+(registers) 1304 2746 w
+(are) 1667 2746 w
+9 /Courier f
+(X0) 1814 2746 w
+9 /Palatino-Roman f
+(to) 1945 2746 w
+9 /Courier f
+(X15) 2048 2746 w
+9 /Palatino-Roman f
+(.) 2210 2746 w
+(There) 970 2902 w
+(are) 1226 2902 w
+(many) 1377 2902 w
+(new) 1630 2902 w
+(instructions,) 1827 2902 w
+(including) 2349 2902 w
+(the) 2757 2902 w
+(MMX) 2909 2902 w
+(and) 3169 2902 w
+(XMM) 3349 2902 w
+(media) 3609 2902 w
+(instructions,) 3885 2902 w
+(and) 4408 2902 w
+(conditional) 4588 2902 w
+(move) 720 3012 w
+(instructions.) 968 3012 w
+(As) 1510 3012 w
+(with) 1642 3012 w
+(the) 1849 3012 w
+(386) 1998 3012 w
+(instruction) 2157 3012 w
+(names,) 2615 3012 w
+(all) 2919 3012 w
+(new) 3040 3012 w
+(64\255bit) 3234 3012 w
+(integer) 3484 3012 w
+(instructions,) 3788 3012 w
+(and) 4307 3012 w
+(the) 4483 3012 w
+(MMX) 4632 3012 w
+(and) 4888 3012 w
+(XMM) 720 3122 w
+(instructions) 980 3122 w
+(uniformly) 1480 3122 w
+(use) 1911 3122 w
+9 /Courier f
+(L) 2074 3122 w
+9 /Palatino-Roman f
+(for) 2156 3122 w
+(`long) 2300 3122 w
+(word') 2531 3122 w
+(\(32) 2800 3122 w
+(bits\)) 2948 3122 w
+(and) 3150 3122 w
+9 /Courier f
+(Q) 3331 3122 w
+9 /Palatino-Roman f
+(for) 3414 3122 w
+(`quad) 3559 3122 w
+(word') 3817 3122 w
+(\(64) 4087 3122 w
+(bits\).) 4236 3122 w
+(Some) 4485 3122 w
+(instruc\255) 4734 3122 w
+(tions) 720 3232 w
+(use) 940 3232 w
+9 /Courier f
+(O) 1099 3232 w
+9 /Palatino-Roman f
+(\(`octword'\)) 1176 3232 w
+(for) 1645 3232 w
+(128\255bit) 1784 3232 w
+(values,) 2078 3232 w
+(where) 2381 3232 w
+(the) 2653 3232 w
+(processor) 2801 3232 w
+(handbook) 3209 3232 w
+(variously) 3636 3232 w
+(uses) 4035 3232 w
+9 /Courier f
+(O) 4231 3232 w
+9 /Palatino-Roman f
+(or) 4308 3232 w
+9 /Courier f
+(DQ) 4417 3232 w
+9 /Palatino-Roman f
+(.) 4525 3232 w
+(The) 4594 3232 w
+(assem\255) 4767 3232 w
+(bler) 720 3342 w
+(also) 900 3342 w
+(consistently) 1084 3342 w
+(uses) 1584 3342 w
+9 /Courier f
+(PL) 1782 3342 w
+9 /Palatino-Roman f
+(for) 1915 3342 w
+(`packed) 2056 3342 w
+(long') 2393 3342 w
+(in) 2621 3342 w
+(XMM) 2724 3342 w
+(instructions,) 2981 3342 w
+(instead) 3501 3342 w
+(of) 3815 3342 w
+9 /Courier f
+(Q) 3920 3342 w
+9 /Palatino-Roman f
+(,) 3974 3342 w
+9 /Courier f
+(DQ) 4022 3342 w
+9 /Palatino-Roman f
+(or) 4155 3342 w
+9 /Courier f
+(PI) 4266 3342 w
+9 /Palatino-Roman f
+(.) 4374 3342 w
+(Either) 4445 3342 w
+9 /Courier f
+(MOVL) 4712 3342 w
+9 /Palatino-Roman f
+(or) 4954 3342 w
+9 /Courier f
+(MOVQ) 720 3452 w
+9 /Palatino-Roman f
+(can) 967 3452 w
+(be) 1135 3452 w
+(used) 1259 3452 w
+(to) 1480 3452 w
+(move) 1591 3452 w
+(values) 1845 3452 w
+(to) 2133 3452 w
+(and) 2244 3452 w
+(from) 2427 3452 w
+(control) 2653 3452 w
+(registers,) 2968 3452 w
+(even) 3362 3452 w
+(when) 3582 3452 w
+(the) 3835 3452 w
+(registers) 3991 3452 w
+(might) 4362 3452 w
+(be) 4630 3452 w
+(64) 4753 3452 w
+(bits.) 4873 3452 w
+(The) 720 3562 w
+(assembler) 901 3562 w
+(often) 1330 3562 w
+(accepts) 1566 3562 w
+(the) 1887 3562 w
+(handbook's) 2043 3562 w
+(name) 2541 3562 w
+(to) 2791 3562 w
+(ease) 2902 3562 w
+(conversion) 3102 3562 w
+(of) 3571 3562 w
+(existing) 3682 3562 w
+(code) 4026 3562 w
+(\(but) 4246 3562 w
+(remember) 4442 3562 w
+(that) 4883 3562 w
+(the) 720 3672 w
+(operand) 868 3672 w
+(order) 1226 3672 w
+(is) 1469 3672 w
+(uniformly) 1556 3672 w
+(source) 1982 3672 w
+(then) 2266 3672 w
+(destination\).) 2466 3672 w
+(C's) 970 3828 w
+9 /Courier f
+(long) 1123 3828 w
+(long) 1396 3828 w
+9 /Palatino-Roman f
+(type) 1638 3828 w
+(is) 1842 3828 w
+(64) 1933 3828 w
+(bits,) 2050 3828 w
+(but) 2244 3828 w
+(passed) 2405 3828 w
+(and) 2705 3828 w
+(returned) 2884 3828 w
+(by) 3260 3828 w
+(value,) 3387 3828 w
+(not) 3656 3828 w
+(by) 3815 3828 w
+(reference.) 3942 3828 w
+(More) 4381 3828 w
+(notably,) 4623 3828 w
+(C) 4976 3828 w
+(pointer) 720 3938 w
+(values) 1047 3938 w
+(are) 1340 3938 w
+(64) 1500 3938 w
+(bits,) 1626 3938 w
+(and) 1829 3938 w
+(thus) 2017 3938 w
+9 /Courier f
+(long) 2227 3938 w
+(long) 2509 3938 w
+9 /Palatino-Roman f
+(and) 2760 3938 w
+9 /Courier f
+(unsigned) 2947 3938 w
+(long) 3445 3938 w
+(long) 3727 3938 w
+9 /Palatino-Roman f
+(are) 3978 3938 w
+(the) 4137 3938 w
+(only) 4297 3938 w
+(integer) 4510 3938 w
+(types) 4825 3938 w
+(wide) 720 4048 w
+(enough) 945 4048 w
+(to) 1272 4048 w
+(hold) 1378 4048 w
+(a) 1588 4048 w
+(pointer) 1660 4048 w
+(value.) 1978 4048 w
+(The) 2270 4048 w
+(C) 2447 4048 w
+(compiler) 2538 4048 w
+(and) 2919 4048 w
+(library) 3098 4048 w
+(use) 3394 4048 w
+(the) 3556 4048 w
+(XMM) 3708 4048 w
+(floating\255point) 3967 4048 w
+(instructions,) 4545 4048 w
+(not) 720 4158 w
+(the) 880 4158 w
+(old) 1033 4158 w
+(387) 1192 4158 w
+(ones,) 1354 4158 w
+(although) 1587 4158 w
+(the) 1973 4158 w
+(latter) 2125 4158 w
+(are) 2362 4158 w
+(implemented) 2513 4158 w
+(by) 3070 4158 w
+(assembler) 3197 4158 w
+(and) 3622 4158 w
+(loader.) 3801 4158 w
+(The) 4129 4158 w
+(compiler) 4306 4158 w
+(provides) 4687 4158 w
+(external) 720 4268 w
+(registers,) 1065 4268 w
+(allocated) 1451 4268 w
+(from) 1834 4268 w
+9 /Courier f
+(R15) 2052 4268 w
+9 /Palatino-Roman f
+(down.) 2237 4268 w
+(The) 970 4424 w
+(calling) 1163 4424 w
+(conventions) 1471 4424 w
+(are) 1998 4424 w
+(different) 2165 4424 w
+(from) 2553 4424 w
+(the) 2791 4424 w
+(386.) 2959 4424 w
+9 /Courier f
+(CALL) 3183 4424 w
+9 /Palatino-Roman f
+(pushes,) 3442 4424 w
+(and) 3788 4424 w
+9 /Courier f
+(RET) 3984 4424 w
+9 /Palatino-Roman f
+(pops) 4190 4424 w
+(a) 4430 4424 w
+(64\255bit) 4519 4424 w
+(return) 4789 4424 w
+(address) 720 4534 w
+(on) 1055 4534 w
+(the) 1182 4534 w
+(stack.) 1332 4534 w
+(The) 1605 4534 w
+(first) 1779 4534 w
+(integer) 1963 4534 w
+(or) 2267 4534 w
+(pointer) 2377 4534 w
+(argument) 2692 4534 w
+(is) 3105 4534 w
+(passed) 3193 4534 w
+(in) 3490 4534 w
+(a) 3592 4534 w
+(register,) 3661 4534 w
+(which) 4010 4534 w
+(is) 4279 4534 w
+9 /Courier f
+(BP) 4367 4534 w
+9 /Palatino-Roman f
+(for) 4499 4534 w
+(an) 4639 4534 w
+(integer) 4760 4534 w
+(or) 720 4644 w
+(pointer) 831 4644 w
+(\(it) 1147 4644 w
+(can) 1258 4644 w
+(be) 1420 4644 w
+(referred) 1538 4644 w
+(to) 1885 4644 w
+(in) 1990 4644 w
+(assembly) 2093 4644 w
+(code) 2487 4644 w
+(by) 2700 4644 w
+(the) 2825 4644 w
+(pseudonym) 2975 4644 w
+9 /Courier f
+(RARG) 3475 4644 w
+9 /Palatino-Roman f
+(\).) 3691 4644 w
+9 /Courier f
+(AX) 3792 4644 w
+9 /Palatino-Roman f
+(holds) 3925 4644 w
+(the) 4172 4644 w
+(return) 4323 4644 w
+(value) 4600 4644 w
+(from) 4845 4644 w
+(subroutines) 720 4754 w
+(as) 1225 4754 w
+(before.) 1342 4754 w
+(Floating\255point) 1673 4754 w
+(results) 2277 4754 w
+(are) 2575 4754 w
+(returned) 2732 4754 w
+(in) 3114 4754 w
+9 /Courier f
+(X0) 3225 4754 w
+9 /Palatino-Roman f
+(,) 3333 4754 w
+(although) 3389 4754 w
+(currently) 3781 4754 w
+(the) 4181 4754 w
+(first) 4339 4754 w
+(parameter) 4532 4754 w
+(is) 4976 4754 w
+(not) 720 4864 w
+(passed) 894 4864 w
+(in) 1209 4864 w
+(a) 1329 4864 w
+(register) 1416 4864 w
+(if) 1760 4864 w
+(floating\255point.) 1858 4864 w
+(All) 2497 4864 w
+(parameters) 2661 4864 w
+(less) 3152 4864 w
+(than) 3339 4864 w
+(8) 3561 4864 w
+(bytes) 3649 4864 w
+(in) 3903 4864 w
+(length) 4024 4864 w
+(have) 4320 4864 w
+(8) 4554 4864 w
+(byte) 4642 4864 w
+(slots) 4858 4864 w
+(reserved) 720 4974 w
+(on) 1090 4974 w
+(the) 1217 4974 w
+(stack) 1367 4974 w
+(to) 1595 4974 w
+(preserve) 1700 4974 w
+(alignment) 2069 4974 w
+(and) 2497 4974 w
+(simplify) 2674 4974 w
+(variable\255length) 3028 4974 w
+(argument) 3658 4974 w
+(list) 4072 4974 w
+(access,) 4217 4974 w
+(including) 4509 4974 w
+(the) 4915 4974 w
+(first) 720 5084 w
+(parameter) 903 5084 w
+(when) 1337 5084 w
+(passed) 1582 5084 w
+(in) 1878 5084 w
+(a) 1979 5084 w
+(register,) 2047 5084 w
+(although) 2395 5084 w
+(bytes) 2777 5084 w
+(4) 3011 5084 w
+(to) 3079 5084 w
+(7) 3182 5084 w
+(are) 3250 5084 w
+(not) 3397 5084 w
+(initialized.) 3552 5084 w
+(The) 970 5240 w
+(assembler) 1143 5240 w
+(assumes) 1564 5240 w
+(64\255bit) 1922 5240 w
+(mode) 2171 5240 w
+(unless) 2421 5240 w
+(a) 2695 5240 w
+9 /Courier f
+(MODE) 2763 5240 w
+9 /Palatino-Roman f
+(pseudo\255operation) 3002 5240 w
+(is) 3735 5240 w
+(given:) 3822 5240 w
+8 /Courier f
+(MODE $32) 1200 5417 w
+9 /Palatino-Roman f
+(to) 720 5604 w
+(change) 831 5604 w
+(to) 1144 5604 w
+(32\255bit) 1255 5604 w
+(mode.) 1512 5604 w
+(The) 1816 5604 w
+(effect) 1997 5604 w
+(is) 2244 5604 w
+(mainly) 2339 5604 w
+(to) 2648 5604 w
+(diagnose) 2759 5604 w
+(instructions) 3149 5604 w
+(that) 3652 5604 w
+(are) 3840 5604 w
+(illegal) 3995 5604 w
+(in) 4269 5604 w
+(the) 4379 5604 w
+(given) 4536 5604 w
+(mode,) 4790 5604 w
+(but) 720 5714 w
+(the) 877 5714 w
+(loader) 1025 5714 w
+(will) 1303 5714 w
+(also) 1479 5714 w
+(assume) 1661 5714 w
+(32\255bit) 1981 5714 w
+(operands) 2230 5714 w
+(and) 2626 5714 w
+(addresses,) 2801 5714 w
+(and) 3238 5714 w
+(32\255bit) 3413 5714 w
+(PC) 3662 5714 w
+(values) 3803 5714 w
+(for) 4083 5714 w
+(call) 4222 5714 w
+(and) 4382 5714 w
+(return.) 4557 5714 w
+9 /Palatino-Bold f
+(Alpha) 720 5964 w
+9 /Palatino-Roman f
+(On) 970 6120 w
+(the) 1116 6120 w
+(Alpha,) 1264 6120 w
+(all) 1557 6120 w
+(registers) 1677 6120 w
+(are) 2040 6120 w
+(64) 2187 6120 w
+(bits.) 2300 6120 w
+(The) 2513 6120 w
+(architecture) 2686 6120 w
+(handles) 3184 6120 w
+(32\255bit) 3518 6120 w
+(values) 3767 6120 w
+(by) 4047 6120 w
+(giving) 4170 6120 w
+(them) 4448 6120 w
+(a) 4676 6120 w
+(canoni\255) 4745 6120 w
+(cal) 720 6230 w
+(format) 867 6230 w
+(\(sign) 1173 6230 w
+(extension) 1405 6230 w
+(in) 1822 6230 w
+(the) 1936 6230 w
+(case) 2097 6230 w
+(of) 2299 6230 w
+(integer) 2415 6230 w
+(registers\).) 2731 6230 w
+(Registers) 3182 6230 w
+(are) 3581 6230 w
+(numbered) 3740 6230 w
+9 /Courier f
+(R0) 4187 6230 w
+9 /Palatino-Roman f
+(through) 4330 6230 w
+9 /Courier f
+(R31) 4689 6230 w
+9 /Palatino-Roman f
+(.) 4851 6230 w
+9 /Courier f
+(R0) 4932 6230 w
+9 /Palatino-Roman f
+(holds) 720 6340 w
+(the) 971 6340 w
+(return) 1126 6340 w
+(value) 1407 6340 w
+(from) 1656 6340 w
+(subroutines,) 1881 6340 w
+(and) 2405 6340 w
+(also) 2587 6340 w
+(the) 2776 6340 w
+(first) 2931 6340 w
+(parameter.) 3121 6340 w
+9 /Courier f
+(R30) 3608 6340 w
+9 /Palatino-Roman f
+(is) 3800 6340 w
+(the) 3894 6340 w
+(stack) 4049 6340 w
+(pointer,) 4282 6340 w
+9 /Courier f
+(R29) 4627 6340 w
+9 /Palatino-Roman f
+(is) 4820 6340 w
+(the) 4915 6340 w
+(static) 720 6450 w
+(base,) 952 6450 w
+9 /Courier f
+(R26) 1174 6450 w
+9 /Palatino-Roman f
+(is) 1359 6450 w
+(the) 1446 6450 w
+(link) 1594 6450 w
+(register,) 1771 6450 w
+(and) 2119 6450 w
+9 /Courier f
+(R27) 2294 6450 w
+9 /Palatino-Roman f
+(and) 2479 6450 w
+9 /Courier f
+(R28) 2654 6450 w
+9 /Palatino-Roman f
+(are) 2839 6450 w
+(linker) 2986 6450 w
+(temporaries.) 3242 6450 w
+(Floating) 970 6606 w
+(point) 1324 6606 w
+(registers) 1561 6606 w
+(are) 1926 6606 w
+(numbered) 2075 6606 w
+9 /Courier f
+(F0) 2512 6606 w
+9 /Palatino-Roman f
+(to) 2646 6606 w
+9 /Courier f
+(F31) 2752 6606 w
+9 /Palatino-Roman f
+(.) 2914 6606 w
+9 /Courier f
+(F28) 2986 6606 w
+9 /Palatino-Roman f
+(contains) 3174 6606 w
+9 /Courier f
+(0.5) 3533 6606 w
+9 /Palatino-Roman f
+(,) 3695 6606 w
+9 /Courier f
+(F29) 3744 6606 w
+9 /Palatino-Roman f
+(contains) 3932 6606 w
+9 /Courier f
+(1.0) 4291 6606 w
+9 /Palatino-Roman f
+(,) 4453 6606 w
+(and) 4502 6606 w
+9 /Courier f
+(F30) 4680 6606 w
+9 /Palatino-Roman f
+(con\255) 4868 6606 w
+(tains) 720 6716 w
+9 /Courier f
+(2.0) 934 6716 w
+9 /Palatino-Roman f
+(.) 1096 6716 w
+9 /Courier f
+(F31) 1165 6716 w
+9 /Palatino-Roman f
+(is) 1350 6716 w
+(always) 1437 6716 w
+9 /Courier f
+(0.0) 1739 6716 w
+9 /Palatino-Roman f
+(on) 1924 6716 w
+(the) 2049 6716 w
+(Alpha.) 2197 6716 w
+(The) 970 6872 w
+(extension) 1146 6872 w
+(character) 1553 6872 w
+(for) 1946 6872 w
+9 /Courier f
+(MOV) 2088 6872 w
+9 /Palatino-Roman f
+(follows) 2276 6872 w
+(DEC's) 2597 6872 w
+(notation:) 2874 6872 w
+9 /Courier f
+(B) 3258 6872 w
+9 /Palatino-Roman f
+(for) 3338 6872 w
+(byte) 3480 6872 w
+(\(8) 3679 6872 w
+(bits\),) 3781 6872 w
+9 /Courier f
+(W) 4005 6872 w
+9 /Palatino-Roman f
+(for) 4086 6872 w
+(word) 4229 6872 w
+(\(16) 4472 6872 w
+(bits\),) 4619 6872 w
+9 /Courier f
+(L) 4843 6872 w
+9 /Palatino-Roman f
+(for) 4924 6872 w
+(long) 720 6982 w
+(\(32) 927 6982 w
+(bits\),) 1076 6982 w
+(and) 1302 6982 w
+9 /Courier f
+(Q) 1483 6982 w
+9 /Palatino-Roman f
+(for) 1566 6982 w
+(quadword) 1710 6982 w
+(\(64) 2158 6982 w
+(bits\).) 2306 6982 w
+(Byte) 2554 6982 w
+(and) 2760 6982 w
+(``word'') 2940 6982 w
+(loads) 3284 6982 w
+(and) 3526 6982 w
+(stores) 3706 6982 w
+(may) 3969 6982 w
+(be) 4171 6982 w
+(made) 4292 6982 w
+(unsigned) 4542 6982 w
+(by) 4940 6982 w
+(appending) 720 7092 w
+(a) 1176 7092 w
+9 /Courier f
+(U) 1247 7092 w
+9 /Palatino-Roman f
+(.) 1301 7092 w
+9 /Courier f
+(S) 1373 7092 w
+9 /Palatino-Roman f
+(and) 1453 7092 w
+9 /Courier f
+(T) 1631 7092 w
+9 /Palatino-Roman f
+(refer) 1711 7092 w
+(to) 1925 7092 w
+(IEEE) 2031 7092 w
+(floating) 2253 7092 w
+(point) 2588 7092 w
+(single) 2826 7092 w
+(precision) 3087 7092 w
+(\(32) 3478 7092 w
+(bits\)) 3624 7092 w
+(and) 3824 7092 w
+(double) 4002 7092 w
+(precision) 4306 7092 w
+(\(64) 4697 7092 w
+(bits\),) 4843 7092 w
+(respectively.) 720 7202 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 7 7
+%%Page: 8 8
+/saveobj save def
+mark
+8 pagesetup
+9 /Palatino-Roman f
+(\255 8 \255) 2804 470 w
+9 /Palatino-Bold f
+(PowerPC) 720 830 w
+9 /Palatino-Roman f
+(The) 970 985 w
+(PowerPC) 1147 985 w
+(follows) 1550 985 w
+(the) 1872 985 w
+(Plan) 2024 985 w
+(9) 2228 985 w
+(model) 2300 985 w
+(set) 2580 985 w
+(by) 2718 985 w
+(the) 2845 985 w
+(MIPS) 2997 985 w
+(and) 3243 985 w
+(SPARC,) 3422 985 w
+(not) 3768 985 w
+(the) 3927 985 w
+(elaborate) 4079 985 w
+(ABIs.) 4474 985 w
+(The) 4742 985 w
+(32\255) 4920 985 w
+(bit) 720 1095 w
+(instructions) 857 1095 w
+(of) 1360 1095 w
+(the) 1471 1095 w
+(60x) 1627 1095 w
+(and) 1795 1095 w
+(8xx) 1978 1095 w
+(PowerPC) 2148 1095 w
+(architectures) 2555 1095 w
+(are) 3099 1095 w
+(supported;) 3254 1095 w
+(there) 3722 1095 w
+(is) 3957 1095 w
+(no) 4051 1095 w
+(support) 4183 1095 w
+(for) 4529 1095 w
+(the) 4675 1095 w
+(older) 4830 1095 w
+(POWER) 720 1205 w
+(instructions.) 1073 1205 w
+(Registers) 1614 1205 w
+(are) 2001 1205 w
+9 /Courier f
+(R0) 2148 1205 w
+9 /Palatino-Roman f
+(through) 2279 1205 w
+9 /Courier f
+(R31) 2626 1205 w
+9 /Palatino-Roman f
+(.) 2788 1205 w
+9 /Courier f
+(R0) 2857 1205 w
+9 /Palatino-Roman f
+(is) 2988 1205 w
+(initialized) 3075 1205 w
+(to) 3498 1205 w
+(zero;) 3602 1205 w
+(this) 3823 1205 w
+(is) 3993 1205 w
+(done) 4081 1205 w
+(by) 4305 1205 w
+(C) 4429 1205 w
+(start) 4517 1205 w
+(up) 4720 1205 w
+(code) 4852 1205 w
+(and) 720 1315 w
+(assumed) 901 1315 w
+(by) 1282 1315 w
+(the) 1411 1315 w
+(compiler) 1565 1315 w
+(and) 1948 1315 w
+(loader.) 2129 1315 w
+9 /Courier f
+(R1) 2458 1315 w
+9 /Palatino-Roman f
+(is) 2594 1315 w
+(the) 2686 1315 w
+(stack) 2839 1315 w
+(pointer.) 3070 1315 w
+9 /Courier f
+(R2) 3435 1315 w
+9 /Palatino-Roman f
+(is) 3571 1315 w
+(the) 3663 1315 w
+(static) 3816 1315 w
+(base) 4053 1315 w
+(register,) 4257 1315 w
+(with) 4610 1315 w
+(value) 4821 1315 w
+(the) 720 1425 w
+(address) 871 1425 w
+(of) 1207 1425 w
+9 /Courier f
+(setSB\(SB\)) 1314 1425 w
+9 /Palatino-Roman f
+(.) 1800 1425 w
+9 /Courier f
+(R3) 1873 1425 w
+9 /Palatino-Roman f
+(is) 2008 1425 w
+(the) 2099 1425 w
+(return) 2251 1425 w
+(register) 2529 1425 w
+(and) 2858 1425 w
+(also) 3037 1425 w
+(the) 3223 1425 w
+(register) 3375 1425 w
+(holding) 3704 1425 w
+(the) 4042 1425 w
+(first) 4194 1425 w
+(argument) 4381 1425 w
+(to) 4797 1425 w
+(a) 4904 1425 w
+(C) 4976 1425 w
+(function,) 720 1535 w
+(with) 1101 1535 w
+(space) 1308 1535 w
+(reserved) 1552 1535 w
+(at) 1921 1535 w
+9 /Courier f
+(0\(FP\)) 2020 1535 w
+9 /Palatino-Roman f
+(as) 2314 1535 w
+(on) 2421 1535 w
+(the) 2547 1535 w
+(MIPS.) 2696 1535 w
+9 /Courier f
+(R31) 2985 1535 w
+9 /Palatino-Roman f
+(is) 3171 1535 w
+(the) 3259 1535 w
+(loader) 3408 1535 w
+(temporary.) 3687 1535 w
+(The) 4180 1535 w
+(external) 4354 1535 w
+(registers) 4700 1535 w
+(in) 720 1645 w
+(Plan) 821 1645 w
+(9's) 1021 1645 w
+(C) 1152 1645 w
+(are) 1239 1645 w
+(allocated) 1386 1645 w
+(from) 1769 1645 w
+9 /Courier f
+(R30) 1987 1645 w
+9 /Palatino-Roman f
+(down.) 2172 1645 w
+(Floating) 970 1800 w
+(point) 1326 1800 w
+(registers) 1565 1800 w
+(are) 1933 1800 w
+(called) 2085 1800 w
+9 /Courier f
+(F0) 2348 1800 w
+9 /Palatino-Roman f
+(through) 2484 1800 w
+9 /Courier f
+(F31) 2836 1800 w
+9 /Palatino-Roman f
+(.) 2998 1800 w
+(By) 3072 1800 w
+(convention,) 3205 1800 w
+(several) 3702 1800 w
+(registers) 4012 1800 w
+(are) 4380 1800 w
+(initialized) 4532 1800 w
+(to) 4960 1800 w
+(specific) 720 1910 w
+(values;) 1092 1910 w
+(this) 1447 1910 w
+(is) 1668 1910 w
+(done) 1807 1910 w
+(by) 2082 1910 w
+(the) 2257 1910 w
+(operating) 2457 1910 w
+(system.) 2918 1910 w
+9 /Courier f
+(F27) 3316 1910 w
+9 /Palatino-Roman f
+(must) 3552 1910 w
+(be) 3827 1910 w
+(initialized) 3994 1910 w
+(to) 4468 1910 w
+(the) 4622 1910 w
+(value) 4821 1910 w
+9 /Courier f
+(0x4330000080000000) 720 2020 w
+9 /Palatino-Roman f
+(\(used) 1721 2020 w
+(by) 1970 2020 w
+(float\255to\255int) 2100 2020 w
+(conversion\),) 2559 2020 w
+9 /Courier f
+(F28) 3080 2020 w
+9 /Palatino-Roman f
+(to) 3272 2020 w
+(the) 3382 2020 w
+(value) 3537 2020 w
+(0.0,) 3786 2020 w
+9 /Courier f
+(F29) 3952 2020 w
+9 /Palatino-Roman f
+(to) 4144 2020 w
+(0.5,) 4254 2020 w
+9 /Courier f
+(F30) 4420 2020 w
+9 /Palatino-Roman f
+(to) 4612 2020 w
+(1.0,) 4722 2020 w
+(and) 4888 2020 w
+9 /Courier f
+(F31) 720 2130 w
+9 /Palatino-Roman f
+(to) 905 2130 w
+(2.0.) 1008 2130 w
+(As) 970 2285 w
+(on) 1104 2285 w
+(the) 1232 2285 w
+(MIPS) 1383 2285 w
+(and) 1628 2285 w
+(SPARC,) 1806 2285 w
+(the) 2151 2285 w
+(assembler) 2302 2285 w
+(accepts) 2726 2285 w
+(arbitrary) 3042 2285 w
+(literals) 3422 2285 w
+(as) 3718 2285 w
+(operands) 3827 2285 w
+(to) 4226 2285 w
+9 /Courier f
+(MOVW) 4332 2285 w
+9 /Palatino-Roman f
+(,) 4548 2285 w
+(and) 4597 2285 w
+(also) 4775 2285 w
+(to) 4960 2285 w
+9 /Courier f
+(ADD) 720 2395 w
+9 /Palatino-Roman f
+(and) 924 2395 w
+(others) 1118 2395 w
+(where) 1409 2395 w
+(`immediate') 1699 2395 w
+(variants) 2216 2395 w
+(exist,) 2580 2395 w
+(and) 2828 2395 w
+(the) 3021 2395 w
+(loader) 3187 2395 w
+(generates) 3483 2395 w
+(sequences) 3904 2395 w
+(of) 4346 2395 w
+9 /Courier f
+(addi) 4467 2395 w
+9 /Palatino-Roman f
+(,) 4683 2395 w
+9 /Courier f
+(addis) 4747 2395 w
+9 /Palatino-Roman f
+(,) 5017 2395 w
+9 /Courier f
+(oris) 720 2505 w
+9 /Palatino-Roman f
+(,) 936 2505 w
+(etc.) 982 2505 w
+(as) 1141 2505 w
+(required.) 1247 2505 w
+(The) 1659 2505 w
+(register) 1832 2505 w
+(indirect) 2157 2505 w
+(addressing) 2488 2505 w
+(modes) 2949 2505 w
+(use) 3237 2505 w
+(the) 3396 2505 w
+(same) 3545 2505 w
+(syntax) 3774 2505 w
+(as) 4060 2505 w
+(the) 4167 2505 w
+(SPARC,) 4316 2505 w
+(including) 4659 2505 w
+(double) 720 2615 w
+(indexing) 1021 2615 w
+(when) 1395 2615 w
+(allowed.) 1640 2615 w
+(The) 970 2770 w
+(instruction) 1145 2770 w
+(names) 1604 2770 w
+(are) 1886 2770 w
+(generally) 2035 2770 w
+(derived) 2431 2770 w
+(from) 2765 2770 w
+(the) 2985 2770 w
+(Motorola) 3135 2770 w
+(ones,) 3533 2770 w
+(subject) 3764 2770 w
+(to) 4065 2770 w
+(slight) 4170 2770 w
+(transformation:) 4418 2770 w
+(the) 720 2880 w
+(`) 871 2880 w
+9 /Courier f
+(.) 896 2880 w
+9 /Palatino-Roman f
+(') 950 2880 w
+(marking) 1001 2880 w
+(the) 1365 2880 w
+(setting) 1516 2880 w
+(of) 1810 2880 w
+(condition) 1915 2880 w
+(codes) 2321 2880 w
+(is) 2572 2880 w
+(replaced) 2661 2880 w
+(by) 3028 2880 w
+9 /Courier f
+(CC) 3153 2880 w
+9 /Palatino-Roman f
+(,) 3261 2880 w
+(and) 3309 2880 w
+(when) 3486 2880 w
+(the) 3733 2880 w
+(letter) 3883 2880 w
+(`) 4116 2880 w
+9 /Courier f
+(o) 4141 2880 w
+9 /Palatino-Roman f
+(') 4195 2880 w
+(represents) 4245 2880 w
+(`OE=1') 4683 2880 w
+(it) 4984 2880 w
+(is) 720 2990 w
+(replaced) 812 2990 w
+(by) 1183 2990 w
+9 /Courier f
+(V) 1312 2990 w
+9 /Palatino-Roman f
+(.) 1366 2990 w
+(Thus) 1441 2990 w
+9 /Courier f
+(add) 1669 2990 w
+9 /Palatino-Roman f
+(,) 1831 2990 w
+9 /Courier f
+(addo.) 1883 2990 w
+9 /Palatino-Roman f
+(and) 2182 2990 w
+9 /Courier f
+(subfzeo.) 2363 2990 w
+9 /Palatino-Roman f
+(become) 2824 2990 w
+9 /Courier f
+(ADD) 3158 2990 w
+9 /Palatino-Roman f
+(,) 3320 2990 w
+9 /Courier f
+(ADDVCC) 3372 2990 w
+9 /Palatino-Roman f
+(and) 3725 2990 w
+9 /Courier f
+(SUBFZEVCC) 3906 2990 w
+9 /Palatino-Roman f
+(.) 4392 2990 w
+(As) 4467 2990 w
+(well) 4604 2990 w
+(as) 4803 2990 w
+(the) 4915 2990 w
+(three\255operand) 720 3100 w
+(conditional) 1321 3100 w
+(branch) 1805 3100 w
+(instruction) 2112 3100 w
+9 /Courier f
+(BC) 2578 3100 w
+9 /Palatino-Roman f
+(,) 2686 3100 w
+(the) 2741 3100 w
+(assembler) 2898 3100 w
+(provides) 3327 3100 w
+(pseudo\255instructions) 3711 3100 w
+(for) 4538 3100 w
+(the) 4685 3100 w
+(com\255) 4841 3100 w
+(mon) 720 3210 w
+(cases:) 926 3210 w
+9 /Courier f
+(BEQ) 1178 3210 w
+9 /Palatino-Roman f
+(,) 1340 3210 w
+9 /Courier f
+(BNE) 1388 3210 w
+9 /Palatino-Roman f
+(,) 1550 3210 w
+9 /Courier f
+(BGT) 1598 3210 w
+9 /Palatino-Roman f
+(,) 1760 3210 w
+9 /Courier f
+(BGE) 1808 3210 w
+9 /Palatino-Roman f
+(,) 1970 3210 w
+9 /Courier f
+(BLT) 2018 3210 w
+9 /Palatino-Roman f
+(,) 2180 3210 w
+9 /Courier f
+(BLE) 2228 3210 w
+9 /Palatino-Roman f
+(,) 2390 3210 w
+9 /Courier f
+(BVC) 2438 3210 w
+9 /Palatino-Roman f
+(,) 2600 3210 w
+(and) 2648 3210 w
+9 /Courier f
+(BVS) 2825 3210 w
+9 /Palatino-Roman f
+(.) 2987 3210 w
+(The) 3058 3210 w
+(unconditional) 3233 3210 w
+(branch) 3816 3210 w
+(instruction) 4116 3210 w
+(is) 4576 3210 w
+9 /Courier f
+(BR) 4666 3210 w
+9 /Palatino-Roman f
+(.) 4774 3210 w
+(Indi\255) 4846 3210 w
+(rect) 720 3320 w
+(branches) 892 3320 w
+(use) 1271 3320 w
+9 /Courier f
+(\(CTR\)) 1429 3320 w
+9 /Palatino-Roman f
+(or) 1722 3320 w
+9 /Courier f
+(\(LR\)) 1831 3320 w
+9 /Palatino-Roman f
+(as) 2070 3320 w
+(target.) 2176 3320 w
+(Load) 970 3475 w
+(or) 1208 3475 w
+(store) 1327 3475 w
+(operations) 1557 3475 w
+(are) 2014 3475 w
+(replaced) 2172 3475 w
+(by) 2548 3475 w
+9 /Courier f
+(MOV) 2682 3475 w
+9 /Palatino-Roman f
+(variants) 2878 3475 w
+(in) 3235 3475 w
+(the) 3347 3475 w
+(usual) 3506 3475 w
+(way:) 3757 3475 w
+9 /Courier f
+(MOVW) 3984 3475 w
+9 /Palatino-Roman f
+(\(move) 4234 3475 w
+(word\),) 4521 3475 w
+9 /Courier f
+(MOVH) 4824 3475 w
+9 /Palatino-Roman f
+(\(move) 720 3585 w
+(halfword) 997 3585 w
+(with) 1390 3585 w
+(sign) 1597 3585 w
+(extension\),) 1787 3585 w
+(and) 2245 3585 w
+9 /Courier f
+(MOVB) 2421 3585 w
+9 /Palatino-Roman f
+(\(move) 2661 3585 w
+(byte) 2937 3585 w
+(with) 3133 3585 w
+(sign) 3339 3585 w
+(extension,) 3528 3585 w
+(a) 3955 3585 w
+(pseudo\255instruction\),) 4023 3585 w
+(with) 4857 3585 w
+(unsigned) 720 3695 w
+(variants) 1113 3695 w
+9 /Courier f
+(MOVHZ) 1459 3695 w
+9 /Palatino-Roman f
+(and) 1753 3695 w
+9 /Courier f
+(MOVBZ) 1929 3695 w
+9 /Palatino-Roman f
+(,) 2199 3695 w
+(and) 2246 3695 w
+(byte\255reversing) 2422 3695 w
+9 /Courier f
+(MOVWBR) 3024 3695 w
+9 /Palatino-Roman f
+(and) 3372 3695 w
+9 /Courier f
+(MOVHBR) 3548 3695 w
+9 /Palatino-Roman f
+(.) 3872 3695 w
+(`Load) 3942 3695 w
+(or) 4196 3695 w
+(store) 4306 3695 w
+(with) 4527 3695 w
+(update') 4734 3695 w
+(versions) 720 3805 w
+(are) 1085 3805 w
+9 /Courier f
+(MOVWU) 1240 3805 w
+9 /Palatino-Roman f
+(,) 1510 3805 w
+9 /Courier f
+(MOVHU) 1564 3805 w
+9 /Palatino-Roman f
+(,) 1834 3805 w
+(and) 1888 3805 w
+9 /Courier f
+(MOVBZU) 2071 3805 w
+9 /Palatino-Roman f
+(.) 2395 3805 w
+(Load) 2472 3805 w
+(or) 2708 3805 w
+(store) 2825 3805 w
+(multiple) 3053 3805 w
+(is) 3422 3805 w
+9 /Courier f
+(MOVMW) 3517 3805 w
+9 /Palatino-Roman f
+(.) 3787 3805 w
+(The) 3864 3805 w
+(exceptions) 4045 3805 w
+(are) 4499 3805 w
+(the) 4653 3805 w
+(string) 4808 3805 w
+(instructions,) 720 3915 w
+(which) 1238 3915 w
+(are) 1506 3915 w
+9 /Courier f
+(LSW) 1653 3915 w
+9 /Palatino-Roman f
+(and) 1838 3915 w
+9 /Courier f
+(STSW) 2013 3915 w
+9 /Palatino-Roman f
+(,) 2229 3915 w
+(and) 2275 3915 w
+(the) 2450 3915 w
+(reservation) 2598 3915 w
+(instructions) 3071 3915 w
+9 /Courier f
+(lwarx) 3566 3915 w
+9 /Palatino-Roman f
+(and) 3860 3915 w
+9 /Courier f
+(stwcx.) 4036 3915 w
+9 /Palatino-Roman f
+(,) 4360 3915 w
+(which) 4407 3915 w
+(are) 4676 3915 w
+9 /Courier f
+(LWAR) 4824 3915 w
+9 /Palatino-Roman f
+(and) 720 4025 w
+9 /Courier f
+(STWCCC) 904 4025 w
+9 /Palatino-Roman f
+(,) 1228 4025 w
+(all) 1283 4025 w
+(with) 1412 4025 w
+(operands) 1627 4025 w
+(in) 2032 4025 w
+(the) 2141 4025 w
+(usual) 2297 4025 w
+(data\255flow) 2545 4025 w
+(order.) 2962 4025 w
+(Floating\255point) 3259 4025 w
+(load) 3861 4025 w
+(or) 4068 4025 w
+(store) 4185 4025 w
+(instructions) 4413 4025 w
+(are) 4916 4025 w
+9 /Courier f
+(FMOVD) 720 4135 w
+9 /Palatino-Roman f
+(,) 990 4135 w
+9 /Courier f
+(FMOVDU) 1039 4135 w
+9 /Palatino-Roman f
+(,) 1363 4135 w
+9 /Courier f
+(FMOVS) 1412 4135 w
+9 /Palatino-Roman f
+(,) 1682 4135 w
+(and) 1731 4135 w
+9 /Courier f
+(FMOVSU) 1909 4135 w
+9 /Palatino-Roman f
+(.) 2233 4135 w
+(The) 2305 4135 w
+(register) 2481 4135 w
+(to) 2809 4135 w
+(register) 2915 4135 w
+(move) 3243 4135 w
+(instructions) 3492 4135 w
+9 /Courier f
+(fmr) 3990 4135 w
+9 /Palatino-Roman f
+(and) 4178 4135 w
+9 /Courier f
+(fmr.) 4356 4135 w
+9 /Palatino-Roman f
+(are) 4598 4135 w
+(written) 4748 4135 w
+9 /Courier f
+(FMOVD) 720 4245 w
+9 /Palatino-Roman f
+(and) 1013 4245 w
+9 /Courier f
+(FMOVDCC) 1188 4245 w
+9 /Palatino-Roman f
+(.) 1566 4245 w
+(The) 970 4400 w
+(assembler) 1146 4400 w
+(knows) 1570 4400 w
+(the) 1861 4400 w
+(commonly) 2012 4400 w
+(used) 2464 4400 w
+(special) 2680 4400 w
+(purpose) 2978 4400 w
+(registers:) 3334 4400 w
+9 /Courier f
+(CR) 3724 4400 w
+9 /Palatino-Roman f
+(,) 3832 4400 w
+9 /Courier f
+(CTR) 3882 4400 w
+9 /Palatino-Roman f
+(,) 4044 4400 w
+9 /Courier f
+(DEC) 4094 4400 w
+9 /Palatino-Roman f
+(,) 4256 4400 w
+9 /Courier f
+(LR) 4306 4400 w
+9 /Palatino-Roman f
+(,) 4414 4400 w
+9 /Courier f
+(MSR) 4464 4400 w
+9 /Palatino-Roman f
+(,) 4626 4400 w
+(and) 4676 4400 w
+9 /Courier f
+(XER) 4855 4400 w
+9 /Palatino-Roman f
+(.) 5017 4400 w
+(The) 720 4510 w
+(rest,) 902 4510 w
+(which) 1104 4510 w
+(are) 1381 4510 w
+(often) 1537 4510 w
+(architecture\255dependent,) 1774 4510 w
+(are) 2761 4510 w
+(referenced) 2917 4510 w
+(as) 3370 4510 w
+9 /Courier f
+(SPR\(n\)) 3485 4510 w
+9 /Palatino-Roman f
+(.) 3809 4510 w
+(The) 3886 4510 w
+(segment) 4067 4510 w
+(registers) 4433 4510 w
+(of) 4804 4510 w
+(the) 4915 4510 w
+(60x) 720 4620 w
+(series) 885 4620 w
+(are) 1137 4620 w
+(similarly) 1289 4620 w
+9 /Courier f
+(SEG\(n\)) 1669 4620 w
+9 /Palatino-Roman f
+(,) 1993 4620 w
+(but) 2044 4620 w
+9 /Palatino-Italic f
+(n) 2206 4620 w
+9 /Palatino-Roman f
+(can) 2291 4620 w
+(also) 2456 4620 w
+(be) 2643 4620 w
+(a) 2764 4620 w
+(register) 2837 4620 w
+(name,) 3167 4620 w
+(as) 3437 4620 w
+(in) 3548 4620 w
+9 /Courier f
+(SEG\(R3\)) 3654 4620 w
+9 /Palatino-Roman f
+(.) 4032 4620 w
+(Moves) 4106 4620 w
+(between) 4403 4620 w
+(special) 4768 4620 w
+(purpose) 720 4730 w
+(registers) 1076 4730 w
+(and) 1443 4730 w
+(general) 1621 4730 w
+(purpose) 1942 4730 w
+(ones,) 2297 4730 w
+(when) 2529 4730 w
+(allowed) 2777 4730 w
+(by) 3123 4730 w
+(the) 3249 4730 w
+(architecture,) 3400 4730 w
+(are) 3924 4730 w
+(written) 4074 4730 w
+(as) 4392 4730 w
+9 /Courier f
+(MOVW) 4501 4730 w
+9 /Palatino-Roman f
+(,) 4717 4730 w
+(replac\255) 4766 4730 w
+(ing) 720 4840 w
+9 /Courier f
+(mfcr) 871 4840 w
+9 /Palatino-Roman f
+(,) 1087 4840 w
+9 /Courier f
+(mtcr) 1133 4840 w
+9 /Palatino-Roman f
+(,) 1349 4840 w
+9 /Courier f
+(mfmsr) 1395 4840 w
+9 /Palatino-Roman f
+(,) 1665 4840 w
+9 /Courier f
+(mtmsr) 1711 4840 w
+9 /Palatino-Roman f
+(,) 1981 4840 w
+9 /Courier f
+(mtspr) 2027 4840 w
+9 /Palatino-Roman f
+(,) 2297 4840 w
+9 /Courier f
+(mfspr) 2343 4840 w
+9 /Palatino-Roman f
+(,) 2613 4840 w
+9 /Courier f
+(mftb) 2659 4840 w
+9 /Palatino-Roman f
+(,) 2875 4840 w
+(and) 2921 4840 w
+(many) 3096 4840 w
+(others.) 3345 4840 w
+(The) 970 4995 w
+(fields) 1145 4995 w
+(of) 1388 4995 w
+(the) 1493 4995 w
+(condition) 1643 4995 w
+(register) 2049 4995 w
+9 /Courier f
+(CR) 2376 4995 w
+9 /Palatino-Roman f
+(are) 2509 4995 w
+(referenced) 2658 4995 w
+(as) 3104 4995 w
+9 /Courier f
+(CR\(0\)) 3212 4995 w
+9 /Palatino-Roman f
+(through) 3507 4995 w
+9 /Courier f
+(CR\(7\)) 3856 4995 w
+9 /Palatino-Roman f
+(.) 4126 4995 w
+(They) 4197 4995 w
+(are) 4423 4995 w
+(used) 4573 4995 w
+(by) 4789 4995 w
+(the) 4915 4995 w
+9 /Courier f
+(MOVFL) 720 5105 w
+9 /Palatino-Roman f
+(\(move) 1013 5105 w
+(field\)) 1289 5105 w
+(pseudo\255instruction,) 1522 5105 w
+(which) 2326 5105 w
+(produces) 2594 5105 w
+9 /Courier f
+(mcrf) 2987 5105 w
+9 /Palatino-Roman f
+(or) 3226 5105 w
+9 /Courier f
+(mtcrf) 3335 5105 w
+9 /Palatino-Roman f
+(.) 3605 5105 w
+(For) 3674 5105 w
+(example:) 3833 5105 w
+8 /Courier f
+(MOVFL) 1200 5280 w
+(CR\(3\), CR\(0\)) 1584 5280 w
+(MOVFL) 1200 5380 w
+(R3, CR\(1\)) 1584 5380 w
+(MOVFL) 1200 5480 w
+(R3, $7, CR) 1584 5480 w
+9 /Palatino-Roman f
+(They) 720 5665 w
+(are) 943 5665 w
+(also) 1090 5665 w
+(accepted) 1272 5665 w
+(in) 1645 5665 w
+(the) 1746 5665 w
+(conditional) 1894 5665 w
+(branch) 2369 5665 w
+(instruction,) 2667 5665 w
+(for) 3147 5665 w
+(example) 3286 5665 w
+8 /Courier f
+(BEQ CR\(7\), label) 1200 5840 w
+9 /Palatino-Roman f
+(Fields) 720 6025 w
+(of) 981 6025 w
+(the) 1084 6025 w
+9 /Courier f
+(FPSCR) 1232 6025 w
+9 /Palatino-Roman f
+(are) 1525 6025 w
+(accessed) 1672 6025 w
+(using) 2037 6025 w
+9 /Courier f
+(MOVFL) 2280 6025 w
+9 /Palatino-Roman f
+(in) 2573 6025 w
+(a) 2674 6025 w
+(similar) 2742 6025 w
+(way:) 3041 6025 w
+8 /Courier f
+(MOVFL) 1200 6200 w
+(FPSCR, F0) 1584 6200 w
+(MOVFL) 1200 6300 w
+(F0, FPSCR) 1584 6300 w
+(MOVFL) 1200 6400 w
+(F0, $7, FPSCR) 1584 6400 w
+(MOVFL) 1200 6500 w
+($0, FPSCR\(3\)) 1584 6500 w
+9 /Palatino-Roman f
+(producing) 720 6685 w
+9 /Courier f
+(mffs) 1160 6685 w
+9 /Palatino-Roman f
+(,) 1376 6685 w
+9 /Courier f
+(mtfsf) 1422 6685 w
+9 /Palatino-Roman f
+(,) 1692 6685 w
+(or) 1738 6685 w
+9 /Courier f
+(mtfsfi) 1847 6685 w
+9 /Palatino-Roman f
+(as) 2194 6685 w
+(appropriate.) 2300 6685 w
+9 /Palatino-Bold f
+(ARM) 720 6933 w
+9 /Palatino-Roman f
+(The) 970 7088 w
+(assembler) 1143 7088 w
+(provides) 1564 7088 w
+(access) 1940 7088 w
+(to) 2207 7088 w
+9 /Courier f
+(R0) 2310 7088 w
+9 /Palatino-Roman f
+(through) 2441 7088 w
+9 /Courier f
+(R14) 2788 7088 w
+9 /Palatino-Roman f
+(and) 2974 7088 w
+(the) 3150 7088 w
+9 /Courier f
+(PC) 3299 7088 w
+9 /Palatino-Roman f
+(.) 3407 7088 w
+(The) 3477 7088 w
+(stack) 3651 7088 w
+(pointer) 3878 7088 w
+(is) 4193 7088 w
+9 /Courier f
+(R13) 4281 7088 w
+9 /Palatino-Roman f
+(,) 4443 7088 w
+(the) 4490 7088 w
+(link) 4639 7088 w
+(regis\255) 4817 7088 w
+(ter) 720 7198 w
+(is) 855 7198 w
+9 /Courier f
+(R14) 945 7198 w
+9 /Palatino-Roman f
+(,) 1107 7198 w
+(and) 1156 7198 w
+(the) 1334 7198 w
+(static) 1485 7198 w
+(base) 1720 7198 w
+(register) 1922 7198 w
+(is) 2250 7198 w
+9 /Courier f
+(R12) 2340 7198 w
+9 /Palatino-Roman f
+(.) 2502 7198 w
+9 /Courier f
+(R0) 2574 7198 w
+9 /Palatino-Roman f
+(is) 2708 7198 w
+(the) 2798 7198 w
+(return) 2949 7198 w
+(register) 3226 7198 w
+(and) 3554 7198 w
+(also) 3732 7198 w
+(the) 3917 7198 w
+(register) 4067 7198 w
+(holding) 4394 7198 w
+(the) 4730 7198 w
+(first) 4880 7198 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 8 8
+%%Page: 9 9
+/saveobj save def
+mark
+9 pagesetup
+9 /Palatino-Roman f
+(\255 9 \255) 2804 470 w
+(argument) 720 830 w
+(to) 1150 830 w
+(a) 1271 830 w
+(subroutine.) 1357 830 w
+(The) 1877 830 w
+(assembler) 2068 830 w
+(supports) 2507 830 w
+(the) 2902 830 w
+9 /Courier f
+(CPSR) 3068 830 w
+9 /Palatino-Roman f
+(and) 3325 830 w
+9 /Courier f
+(SPSR) 3518 830 w
+9 /Palatino-Roman f
+(registers.) 3775 830 w
+(It) 4202 830 w
+(also) 4304 830 w
+(knows) 4504 830 w
+(about) 4811 830 w
+(coprocessor) 720 940 w
+(registers) 1218 940 w
+9 /Courier f
+(C0) 1581 940 w
+9 /Palatino-Roman f
+(through) 1712 940 w
+9 /Courier f
+(C15) 2059 940 w
+9 /Palatino-Roman f
+(.) 2221 940 w
+(Floating) 2290 940 w
+(registers) 2642 940 w
+(are) 3005 940 w
+9 /Courier f
+(F0) 3152 940 w
+9 /Palatino-Roman f
+(through) 3283 940 w
+9 /Courier f
+(F7) 3630 940 w
+9 /Palatino-Roman f
+(,) 3738 940 w
+9 /Courier f
+(FPSR) 3784 940 w
+9 /Palatino-Roman f
+(and) 4023 940 w
+9 /Courier f
+(FPCR) 4198 940 w
+9 /Palatino-Roman f
+(.) 4414 940 w
+(As) 970 1086 w
+(with) 1112 1086 w
+(the) 1329 1086 w
+(other) 1489 1086 w
+(architectures,) 1735 1086 w
+(loads) 2306 1086 w
+(and) 2555 1086 w
+(stores) 2742 1086 w
+(are) 3012 1086 w
+(called) 3171 1086 w
+9 /Courier f
+(MOV) 3441 1086 w
+9 /Palatino-Roman f
+(,) 3603 1086 w
+(e.g.) 3661 1086 w
+9 /Courier f
+(MOVW) 3858 1086 w
+9 /Palatino-Roman f
+(for) 4109 1086 w
+(load) 4260 1086 w
+(word) 4471 1086 w
+(or) 4722 1086 w
+(store) 4843 1086 w
+(word,) 720 1196 w
+(and) 982 1196 w
+9 /Courier f
+(MOVM) 1157 1196 w
+9 /Palatino-Roman f
+(for) 1396 1196 w
+(load) 1535 1196 w
+(or) 1734 1196 w
+(store) 1843 1196 w
+(multiple,) 2063 1196 w
+(depending) 2447 1196 w
+(on) 2900 1196 w
+(the) 3025 1196 w
+(operands.) 3173 1196 w
+(Addressing) 970 1342 w
+(modes) 1467 1342 w
+(are) 1766 1342 w
+(supported) 1924 1342 w
+(by) 2372 1342 w
+(suffixes) 2506 1342 w
+(to) 2846 1342 w
+(the) 2961 1342 w
+(instructions:) 3121 1342 w
+9 /Courier f
+(.IA) 3651 1342 w
+9 /Palatino-Roman f
+(\(increment) 3848 1342 w
+(after\),) 4314 1342 w
+9 /Courier f
+(.IB) 4586 1342 w
+9 /Palatino-Roman f
+(\(incre\255) 4783 1342 w
+(ment) 720 1452 w
+(before\),) 960 1452 w
+9 /Courier f
+(.DA) 1301 1452 w
+9 /Palatino-Roman f
+(\(decrement) 1499 1452 w
+(after\),) 1986 1452 w
+(and) 2259 1452 w
+9 /Courier f
+(.DB) 2447 1452 w
+9 /Palatino-Roman f
+(\(decrement) 2645 1452 w
+(before\).) 3132 1452 w
+(These) 3496 1452 w
+(can) 3762 1452 w
+(only) 3934 1452 w
+(be) 4147 1452 w
+(used) 4275 1452 w
+(with) 4500 1452 w
+(the) 4718 1452 w
+9 /Courier f
+(MOV) 4878 1452 w
+9 /Palatino-Roman f
+(instructions.) 720 1562 w
+(The) 1292 1562 w
+(move) 1496 1562 w
+(multiple) 1773 1562 w
+(instruction,) 2165 1562 w
+9 /Courier f
+(MOVM) 2676 1562 w
+9 /Palatino-Roman f
+(,) 2892 1562 w
+(defines) 2969 1562 w
+(a) 3310 1562 w
+(range) 3409 1562 w
+(of) 3689 1562 w
+(registers) 3823 1562 w
+(using) 4217 1562 w
+(brackets,) 4491 1562 w
+(e.g.) 4901 1562 w
+9 /Courier f
+([R0\255R12]) 720 1672 w
+9 /Palatino-Roman f
+(.) 1152 1672 w
+(The) 1227 1672 w
+(special) 1406 1672 w
+9 /Courier f
+(MOVM) 1707 1672 w
+9 /Palatino-Roman f
+(addressing) 1952 1672 w
+(mode) 2419 1672 w
+(bits) 2675 1672 w
+9 /Courier f
+(W) 2848 1672 w
+9 /Palatino-Roman f
+(,) 2902 1672 w
+9 /Courier f
+(U) 2954 1672 w
+9 /Palatino-Roman f
+(,) 3008 1672 w
+(and) 3060 1672 w
+9 /Courier f
+(P) 3241 1672 w
+9 /Palatino-Roman f
+(are) 3324 1672 w
+(written) 3477 1672 w
+(in) 3798 1672 w
+(the) 3905 1672 w
+(same) 4059 1672 w
+(manner,) 4293 1672 w
+(for) 4652 1672 w
+(exam\255) 4796 1672 w
+(ple,) 720 1782 w
+9 /Courier f
+(MOVM.DB.W) 889 1782 w
+9 /Palatino-Roman f
+(.) 1375 1782 w
+(A) 1444 1782 w
+9 /Courier f
+(.S) 1537 1782 w
+9 /Palatino-Roman f
+(suffix) 1668 1782 w
+(allows) 1916 1782 w
+(a) 2199 1782 w
+9 /Courier f
+(MOVM) 2267 1782 w
+9 /Palatino-Roman f
+(instruction) 2506 1782 w
+(to) 2963 1782 w
+(access) 3066 1782 w
+(user) 3333 1782 w
+9 /Courier f
+(R13) 3527 1782 w
+9 /Palatino-Roman f
+(and) 3712 1782 w
+9 /Courier f
+(R14) 3887 1782 w
+9 /Palatino-Roman f
+(when) 4072 1782 w
+(in) 4317 1782 w
+(another) 4418 1782 w
+(proces\255) 4749 1782 w
+(sor) 720 1892 w
+(mode.) 873 1892 w
+(Shifts) 1175 1892 w
+(and) 1428 1892 w
+(rotates) 1609 1892 w
+(in) 1910 1892 w
+(addressing) 2017 1892 w
+(modes) 2484 1892 w
+(are) 2778 1892 w
+(supported) 2930 1892 w
+(by) 3372 1892 w
+(binary) 3500 1892 w
+(operators) 3787 1892 w
+9 /Courier f
+(<<) 4197 1892 w
+9 /Palatino-Roman f
+(\(logical) 4333 1892 w
+(left) 4654 1892 w
+(shift\),) 4811 1892 w
+9 /Courier f
+(>>) 720 2002 w
+9 /Palatino-Roman f
+(\(logical) 854 2002 w
+(right) 1173 2002 w
+(shift\),) 1393 2002 w
+9 /Courier f
+(\255>) 1648 2002 w
+9 /Palatino-Roman f
+(\(arithmetic) 1783 2002 w
+(right) 2247 2002 w
+(shift\),) 2468 2002 w
+(and) 2724 2002 w
+9 /Courier f
+(@>) 2903 2002 w
+9 /Palatino-Roman f
+(\(rotate) 3038 2002 w
+(right\);) 3329 2002 w
+(for) 3603 2002 w
+(example) 3746 2002 w
+9 /Courier f
+(R7>>R2) 4110 2002 w
+9 /Palatino-Roman f
+(or) 4434 2002 w
+9 /Courier f
+(R2@>2) 4547 2002 w
+9 /Palatino-Roman f
+(.) 4817 2002 w
+(The) 4890 2002 w
+(assembler) 720 2112 w
+(does) 1141 2112 w
+(not) 1350 2112 w
+(support) 1505 2112 w
+(indexing) 1844 2112 w
+(by) 2218 2112 w
+(a) 2341 2112 w
+(shifted) 2409 2112 w
+(expression;) 2706 2112 w
+(only) 3179 2112 w
+(names) 3380 2112 w
+(can) 3660 2112 w
+(be) 3820 2112 w
+(doubly) 3936 2112 w
+(indexed.) 4244 2112 w
+(Any) 970 2258 w
+(instruction) 1170 2258 w
+(can) 1632 2258 w
+(be) 1797 2258 w
+(followed) 1918 2258 w
+(by) 2301 2258 w
+(a) 2429 2258 w
+(suffix) 2502 2258 w
+(that) 2755 2258 w
+(makes) 2940 2258 w
+(the) 3223 2258 w
+(instruction) 3376 2258 w
+(conditional:) 3839 2258 w
+9 /Courier f
+(.EQ) 4343 2258 w
+9 /Palatino-Roman f
+(,) 4505 2258 w
+9 /Courier f
+(.NE) 4557 2258 w
+9 /Palatino-Roman f
+(,) 4719 2258 w
+(and) 4771 2258 w
+(so) 4952 2258 w
+(on,) 720 2368 w
+(as) 875 2368 w
+(in) 988 2368 w
+(the) 1096 2368 w
+(ARM) 1251 2368 w
+(manual,) 1497 2368 w
+(with) 1851 2368 w
+(synonyms) 2064 2368 w
+9 /Courier f
+(.HS) 2503 2368 w
+9 /Palatino-Roman f
+(\(for) 2695 2368 w
+9 /Courier f
+(.CS) 2871 2368 w
+9 /Palatino-Roman f
+(\)) 3033 2368 w
+(and) 3093 2368 w
+9 /Courier f
+(.LO) 3275 2368 w
+9 /Palatino-Roman f
+(\(for) 3467 2368 w
+9 /Courier f
+(.CC) 3642 2368 w
+9 /Palatino-Roman f
+(\),) 3804 2368 w
+(for) 3886 2368 w
+(example) 4031 2368 w
+9 /Courier f
+(ADD.NE) 4397 2368 w
+9 /Palatino-Roman f
+(.) 4721 2368 w
+(Arith\255) 4796 2368 w
+(metic) 720 2478 w
+(and) 961 2478 w
+(logical) 1136 2478 w
+(instructions) 1422 2478 w
+(can) 1917 2478 w
+(have) 2077 2478 w
+(a) 2291 2478 w
+9 /Courier f
+(.S) 2359 2478 w
+9 /Palatino-Roman f
+(suffix,) 2490 2478 w
+(as) 2761 2478 w
+(ARM) 2867 2478 w
+(allows,) 3106 2478 w
+(to) 3412 2478 w
+(set) 3515 2478 w
+(condition) 3649 2478 w
+(codes.) 4053 2478 w
+(The) 970 2624 w
+(syntax) 1152 2624 w
+(of) 1446 2624 w
+(the) 1558 2624 w
+9 /Courier f
+(MCR) 1715 2624 w
+9 /Palatino-Roman f
+(and) 1909 2624 w
+9 /Courier f
+(MRC) 2093 2624 w
+9 /Palatino-Roman f
+(coprocessor) 2288 2624 w
+(instructions) 2796 2624 w
+(is) 3301 2624 w
+(largely) 3398 2624 w
+(as) 3707 2624 w
+(in) 3823 2624 w
+(the) 3934 2624 w
+(manual,) 4092 2624 w
+(with) 4449 2624 w
+(the) 4665 2624 w
+(usual) 4823 2624 w
+(adjustments.) 720 2734 w
+(The) 1278 2734 w
+(assembler) 1455 2734 w
+(directly) 1880 2734 w
+(supports) 2213 2734 w
+(only) 2594 2734 w
+(the) 2799 2734 w
+(ARM) 2951 2734 w
+(floating\255point) 3194 2734 w
+(coprocessor) 3772 2734 w
+(operations) 4274 2734 w
+(used) 4724 2734 w
+(by) 4940 2734 w
+(the) 720 2844 w
+(compiler:) 884 2844 w
+9 /Courier f
+(CMP) 1300 2844 w
+9 /Palatino-Roman f
+(,) 1462 2844 w
+9 /Courier f
+(ADD) 1524 2844 w
+9 /Palatino-Roman f
+(,) 1686 2844 w
+9 /Courier f
+(SUB) 1748 2844 w
+9 /Palatino-Roman f
+(,) 1910 2844 w
+9 /Courier f
+(MUL) 1972 2844 w
+9 /Palatino-Roman f
+(,) 2134 2844 w
+(and) 2196 2844 w
+9 /Courier f
+(DIV) 2387 2844 w
+9 /Palatino-Roman f
+(,) 2549 2844 w
+(all) 2611 2844 w
+(with) 2747 2844 w
+9 /Courier f
+(F) 2969 2844 w
+9 /Palatino-Roman f
+(or) 3062 2844 w
+9 /Courier f
+(D) 3187 2844 w
+9 /Palatino-Roman f
+(suffix) 3280 2844 w
+(selecting) 3545 2844 w
+(single) 3933 2844 w
+(or) 4208 2844 w
+(double) 4334 2844 w
+(precision.) 4652 2844 w
+(Floating\255point) 720 2954 w
+(load) 1320 2954 w
+(or) 1525 2954 w
+(store) 1640 2954 w
+(become) 1866 2954 w
+9 /Courier f
+(MOVF) 2200 2954 w
+9 /Palatino-Roman f
+(and) 2445 2954 w
+9 /Courier f
+(MOVD) 2626 2954 w
+9 /Palatino-Roman f
+(.) 2842 2954 w
+(Conversion) 2916 2954 w
+(instructions) 3406 2954 w
+(are) 3906 2954 w
+(also) 4058 2954 w
+(specified) 4245 2954 w
+(by) 4628 2954 w
+(moves:) 4756 2954 w
+9 /Courier f
+(MOVWD) 720 3064 w
+9 /Palatino-Roman f
+(,) 990 3064 w
+9 /Courier f
+(MOVWF) 1036 3064 w
+9 /Palatino-Roman f
+(,) 1306 3064 w
+9 /Courier f
+(MOVDW) 1352 3064 w
+9 /Palatino-Roman f
+(,) 1622 3064 w
+9 /Courier f
+(MOVWD) 1668 3064 w
+9 /Palatino-Roman f
+(,) 1938 3064 w
+9 /Courier f
+(MOVFD) 1984 3064 w
+9 /Palatino-Roman f
+(,) 2254 3064 w
+(and) 2300 3064 w
+9 /Courier f
+(MOVDF) 2475 3064 w
+9 /Palatino-Roman f
+(.) 2745 3064 w
+cleartomark
+showpage
+saveobj restore
+%%EndPage: 9 9
+%%Trailer
+done
+%%DocumentFonts: LucidaSansUnicode20 Courier Palatino-Roman Palatino-Bold Palatino-Italic
+%%Pages: 9

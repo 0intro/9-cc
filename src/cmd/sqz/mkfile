@@ -1,0 +1,19 @@
+#                                              -*-makefile-*-
+<../../../mkconfig
+CFLAGS=$CFLAGS -I${ROOT}/include
+
+TARG=sqz
+
+OFILES=	sqz.$O\
+
+HFILES=	\
+	squeeze.h\
+	${ROOT}/include/a.out.h\
+	${ROOT}/include/mach.h\
+
+LIBS=	mach bio 9
+
+BIN=$ROOT/$OBJDIR/bin
+
+<$ROOT/mkfiles/mkone-$SHELLTYPE
+

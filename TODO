@@ -1,0 +1,29 @@
+                                               -*-outline-*-
+
+* Need to recompile yacc for platforms not listed in REBUILD
+** Run 'mk', fails at src/cmd/cc/cc.y 
+** cd src/cmd/yacc && mk install
+** cd ../../../ && mk clean && mk install
+
+* src/cmd/6{a,c,l}
+** amd64
+
+* src/cmd/7{a,c,l}
+** alpha
+
+* Test all
+
+* src/cmd/cc/mkfile
+** -DCPP="/bin/cpp"
+
+* #pragma src ?
+** eg, $ROOT/include/bio.h
+** =>? #pragma src $ROOT/include/bio.h
+
+* src/cmd/mk/Nt.c
+** defines for
+*** char* rootdir
+*** char* shell
+
+* Examine all Nt.c Posix.c and Plan9.c for common shared code
+

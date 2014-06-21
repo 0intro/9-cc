@@ -1,0 +1,12 @@
+# See *c/gc.h
+# and doc/compiler.{ps,pdf}
+0:mips4000
+1:mot68000
+2:mot68020
+5:arm
+6:amd64
+7:alpha
+8:386
+k:sparc
+q:power
+v:mips3000

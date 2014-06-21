@@ -1,0 +1,37 @@
+
+Installation 
+
+     These notes employ the name 'ken-cc' for "the directory containing
+     this file".
+
+     (!) See TODO.REBUILD for need to rebuild yacc to complete the install.
+
+
+  On unixen including linuxen and macosen the configure script will
+  generate 'mkconfig' and 'env'
+
+      In this directory...
+
+        ./configure    # (write 'ken-cc/mkconfig' && link 'ken-cc/bin')
+        . ./env        # (prepend 'ken-cc/bin' to path per session)
+        mk             # (build tools for host platform)
+        mk install     # (install tools into 'ken-cc/bin')
+
+
+  On Windows
+
+      * Add the directory 'ken-cc/Nt/386/bin' to your PATH
+
+      * Create the text file 'ken-cc/mkconfig' using the template from
+
+        ken-cc/etc/mkconfig.txt
+
+      * Then 'mk' && 'mk install'
+
+        (installs into 'ken-cc/Nt/386/bin').
+
+
+See also...
+
+  docs/mk.pdf
+
