@@ -21,9 +21,6 @@ then
   SunOS)
    HOST_SYSTEM="Solaris"
    ;;
-  IRIX64)
-   HOST_SYSTEM="Irix"
-   ;;
  esac
 
  if [ "unknown" = "${HOST_ARCH}" ]
@@ -80,7 +77,7 @@ then
 
  Configuration options (in order)
 
-   --host <Host system type>     (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Irix, Plan9)
+   --host <Host system type>     (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Plan9)
 
    --target <Target system type> (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Irix, Plan9)
 
