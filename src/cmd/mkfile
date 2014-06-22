@@ -62,7 +62,6 @@ NOTPLAN9=\
 	kstrip\
 	md5sum\
 	mkext\
-	ndate\
 
 #
 #	Utils we build on Nt, for build environment compatibility.
