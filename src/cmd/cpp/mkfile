@@ -1,0 +1,19 @@
+<../../../mkconfig
+
+TARG=cpp
+OFILES=\
+	cpp.$O\
+	lex.$O\
+	nlist.$O\
+	tokens.$O\
+	macro.$O\
+	eval.$O\
+	include.$O\
+	hideset.$O\
+
+HFILES=cpp.h
+
+LIBS=9
+
+BIN=$ROOT/$OBJDIR/bin
+<$ROOT/mkfiles/mkone-$SHELLTYPE
