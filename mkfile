@@ -2,7 +2,6 @@
 DIRS=\
 	src/lib9\
 	src/libbio\
-	src/liblex\
 	src/libmach\
 	src/libregexp\
 	src/libmath\
