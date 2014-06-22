@@ -6,18 +6,16 @@
 #
 #	On Nt systems, the ROOT path MUST be of the form `drive:/path'
 #
-ROOT=C:/edit/path/to/this/directory
+ROOT=/usr/local/ken-cc
 
 #
 # Build system OS type (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Plan9)
 #
-# (Windows)
 SYSHOST=Linux
 
 #
 # Target system object type (eg, 386, arm, mips, power, sparc)
 #
-# (Intel)
 OBJTYPE=386
 
 
