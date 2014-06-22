@@ -9,7 +9,7 @@
 ROOT=C:/edit/path/to/this/directory
 
 #
-# Build system OS type (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Irix, Plan9)
+# Build system OS type (eg, MacOSX, Linux, Nt, Solaris, FreeBSD, NetBSD, Plan9)
 #
 # (Windows)
 SYSHOST=Nt
