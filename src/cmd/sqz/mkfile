@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 <../../../mkconfig
 CFLAGS=$CFLAGS -I${ROOT}/include
 

@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 libs=${LIBS:%=$ROOT/$OBJDIR/lib/lib%.a}
 
 all:V:	$O.out

@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 
 DIRS=\
 	src/lib9\

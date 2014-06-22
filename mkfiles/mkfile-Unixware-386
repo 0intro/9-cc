@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 SYSTARG=	Unixware
 TARGMODEL=	Posix
 TARGSHTYPE=	sh

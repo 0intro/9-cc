@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 <../../mkconfig
 
 LIB=lib9.a

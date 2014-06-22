@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 TARGMODEL=	Nt
 TARGSHTYPE=	rc
 CPUS=		386

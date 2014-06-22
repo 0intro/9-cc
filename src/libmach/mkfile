@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 <../../mkconfig
 
 LIB=libmach.a
@@ -52,4 +51,4 @@ HFILES=\
 	ureg5.h
 
 <$ROOT/mkfiles/mksyslib-$SHELLTYPE
-CFLAGS= $CFLAGS -I../cmd/
+CFLAGS= $CFLAGS -I../cmd/ -I../cmd/retired

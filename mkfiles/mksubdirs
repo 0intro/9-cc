@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 all:V:	all-$SHELLTYPE
 install:V: install-$SHELLTYPE
 uninstall:V: uninstall-$SHELLTYPE

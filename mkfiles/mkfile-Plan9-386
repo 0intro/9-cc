@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 TARGMODEL=	Plan9
 TARGSHTYPE=	rc
 CPUS=		386 sparc mips power amd64

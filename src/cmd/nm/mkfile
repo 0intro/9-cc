@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 <../../../mkconfig
 
 TARG=inm	# inferno nm

@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 TARGMODEL=	Inferno
 TARGSHTYPE=	rc
 CPUS=		sparc arm mips 386 amd64

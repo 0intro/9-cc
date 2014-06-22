@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 <../../mkconfig
 
 TARGTYPE=${SYSTARG:os%=Inferno%}		# maps 'os' into 'Inferno'

@@ -1,4 +1,3 @@
-#                                              -*-makefile-*-
 TARGMODEL=	Inferno
 TARGSHTYPE=	rc
 CPUS=		68000
