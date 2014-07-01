@@ -1,0 +1,2 @@
+#!/bin/rc
+cp mkcname *.[ch] /n/local/usr/forsyth/7/7acl/ld/.
