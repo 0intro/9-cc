@@ -9,7 +9,12 @@ new(int t, Node *l, Node *r)
 	n->op = t;
 	n->left = l;
 	n->right = r;
-	n->lineno = lineno;
+	if(l && t != OGOTO)
+		n->lineno = l->lineno;
+	else if(r)
+		n->lineno = r->lineno;
+	else
+		n->lineno = lineno;
 	newflag = 1;
 	return n;
 }
@@ -80,7 +85,10 @@ prtree1(Node *n, int d, int f)
 		break;
 
 	case OLSTRING:
-		print(" \"%S\"", n->rstring);
+		if(sizeof(TRune) == sizeof(Rune))
+			print(" \"%S\"", (Rune*)n->rstring);
+		else
+			print(" \"...\"");
 		i = 0;
 		break;
 
@@ -103,7 +111,7 @@ prtree1(Node *n, int d, int f)
 		print(" %T", n->type);
 	if(n->complex != 0)
 		print(" (%d)", n->complex);
-	print("\n");
+	print(" %L\n", n->lineno);
 	if(i & 2)
 		prtree1(n->left, d, 1);
 	if(i & 1)
@@ -909,6 +917,10 @@ loop:
 	case ONOT:
 	case OADDR:
 	case OIND:
+	case OCOM:
+	case ONEG:
+	case OPOS:
+	case OTST:
 		n = n->left;
 		goto loop;
 
@@ -1182,12 +1194,15 @@ warn(Node *n, char *fmt, ...)
 	char buf[STRINGSZ];
 	va_list arg;
 
-	if(debug['w']) {
-		Bprint(&diagbuf, "warning: ");
+	if(debug['w'] || debug['W']) {
 		va_start(arg, fmt);
 		vseprint(buf, buf+sizeof(buf), fmt, arg);
 		va_end(arg);
-		Bprint(&diagbuf, "%L %s\n", (n==Z)? nearln: n->lineno, buf);
+		if(debug['W']) {
+			diag(n, "%s", buf);
+			return;
+		}
+		Bprint(&diagbuf, "warning: %L %s\n", (n==Z)? nearln: n->lineno, buf);
 
 		if(n != Z)
 		if(debug['v'])
@@ -1480,6 +1495,7 @@ Init	onamesinit[] =
 	OINDEX,		0,	"INDEX",
 	OFAS,		0,	"FAS",
 	OREGPAIR,	0,	"REGPAIR",
+	OEXREG,		0,	"EXREG",
 	OEND,		0,	"END",
 	-1,		0,	0,
 };
@@ -1819,7 +1835,7 @@ urk(char *name, int max, int i)
 void
 tinit(void)
 {
-	int i;
+	int *ip;
 	Init *p;
 
 	for(p=thashinit; p->code >= 0; p++) {
@@ -1850,66 +1866,66 @@ tinit(void)
 		urk("onames", nelem(onames), p->code);
 		onames[p->code] = p->s;
 	}
-	for(i=0; typeiinit[i] >= 0; i++) {
-		urk("typei", nelem(typei), typeiinit[i]);
-		typei[typeiinit[i]] = 1;
+	for(ip=typeiinit; *ip>=0; ip++) {
+		urk("typei", nelem(typei), *ip);
+		typei[*ip] = 1;
 	}
-	for(i=0; typeuinit[i] >= 0; i++) {
-		urk("typeu", nelem(typeu), typeuinit[i]);
-		typeu[typeuinit[i]] = 1;
+	for(ip=typeuinit; *ip>=0; ip++) {
+		urk("typeu", nelem(typeu), *ip);
+		typeu[*ip] = 1;
 	}
-	for(i=0; typesuvinit[i] >= 0; i++) {
-		urk("typesuv", nelem(typesuv), typesuvinit[i]);
-		typesuv[typesuvinit[i]] = 1;
+	for(ip=typesuvinit; *ip>=0; ip++) {
+		urk("typesuv", nelem(typesuv), *ip);
+		typesuv[*ip] = 1;
 	}
-	for(i=0; typeilpinit[i] >= 0; i++) {
-		urk("typeilp", nelem(typeilp), typeilpinit[i]);
-		typeilp[typeilpinit[i]] = 1;
+	for(ip=typeilpinit; *ip>=0; ip++) {
+		urk("typeilp", nelem(typeilp), *ip);
+		typeilp[*ip] = 1;
 	}
-	for(i=0; typechlinit[i] >= 0; i++) {
-		urk("typechl", nelem(typechl), typechlinit[i]);
-		typechl[typechlinit[i]] = 1;
-		typechlv[typechlinit[i]] = 1;
-		typechlvp[typechlinit[i]] = 1;
+	for(ip=typechlinit; *ip>=0; ip++) {
+		urk("typechl", nelem(typechl), *ip);
+		typechl[*ip] = 1;
+		typechlv[*ip] = 1;
+		typechlvp[*ip] = 1;
 	}
-	for(i=0; typechlpinit[i] >= 0; i++) {
-		urk("typechlp", nelem(typechlp), typechlpinit[i]);
-		typechlp[typechlpinit[i]] = 1;
-		typechlvp[typechlinit[i]] = 1;
+	for(ip=typechlpinit; *ip>=0; ip++) {
+		urk("typechlp", nelem(typechlp), *ip);
+		typechlp[*ip] = 1;
+		typechlvp[*ip] = 1;
 	}
-	for(i=0; typechlpfdinit[i] >= 0; i++) {
-		urk("typechlpfd", nelem(typechlpfd), typechlpfdinit[i]);
-		typechlpfd[typechlpfdinit[i]] = 1;
+	for(ip=typechlpfdinit; *ip>=0; ip++) {
+		urk("typechlpfd", nelem(typechlpfd), *ip);
+		typechlpfd[*ip] = 1;
 	}
-	for(i=0; typecinit[i] >= 0; i++) {
-		urk("typec", nelem(typec), typecinit[i]);
-		typec[typecinit[i]] = 1;
+	for(ip=typecinit; *ip>=0; ip++) {
+		urk("typec", nelem(typec), *ip);
+		typec[*ip] = 1;
 	}
-	for(i=0; typehinit[i] >= 0; i++) {
-		urk("typeh", nelem(typeh), typehinit[i]);
-		typeh[typehinit[i]] = 1;
+	for(ip=typehinit; *ip>=0; ip++) {
+		urk("typeh", nelem(typeh), *ip);
+		typeh[*ip] = 1;
 	}
-	for(i=0; typeilinit[i] >= 0; i++) {
-		urk("typeil", nelem(typeil), typeilinit[i]);
-		typeil[typeilinit[i]] = 1;
+	for(ip=typeilinit; *ip>=0; ip++) {
+		urk("typeil", nelem(typeil), *ip);
+		typeil[*ip] = 1;
 	}
-	for(i=0; typevinit[i] >= 0; i++) {
-		urk("typev", nelem(typev), typevinit[i]);
-		typev[typevinit[i]] = 1;
-		typechlv[typevinit[i]] = 1;
-		typechlvp[typechlinit[i]] = 1;
+	for(ip=typevinit; *ip>=0; ip++) {
+		urk("typev", nelem(typev), *ip);
+		typev[*ip] = 1;
+		typechlv[*ip] = 1;
+		typechlvp[*ip] = 1;
 	}
-	for(i=0; typefdinit[i] >= 0; i++) {
-		urk("typefd", nelem(typefd), typefdinit[i]);
-		typefd[typefdinit[i]] = 1;
+	for(ip=typefdinit; *ip>=0; ip++) {
+		urk("typefd", nelem(typefd), *ip);
+		typefd[*ip] = 1;
 	}
-	for(i=0; typeafinit[i] >= 0; i++) {
-		urk("typeaf", nelem(typeaf), typeafinit[i]);
-		typeaf[typeafinit[i]] = 1;
+	for(ip=typeafinit; *ip>=0; ip++) {
+		urk("typeaf", nelem(typeaf), *ip);
+		typeaf[*ip] = 1;
 	}
-	for(i=0; typesuinit[i] >= 0; i++) {
-		urk("typesu", nelem(typesu), typesuinit[i]);
-		typesu[typesuinit[i]] = 1;
+	for(ip=typesuinit; *ip >= 0; ip++) {
+		urk("typesu", nelem(typesu), *ip);
+		typesu[*ip] = 1;
 	}
 	for(p=tasigninit; p->code >= 0; p++) {
 		urk("tasign", nelem(tasign), p->code);
@@ -1943,8 +1959,16 @@ tinit(void)
 		urk("trel", nelem(trel), p->code);
 		trel[p->code] = p->value;
 	}
+	
+	/* 32-bit defaults */
+	typeword = typechlp;
+	typeswitch = typechl;
+	typecmplx = typesuv;
 }
 
+/*
+ * return 1 if it is impossible to jump into the middle of n.
+ */
 static int
 deadhead(Node *n, int caseok)
 {
@@ -2009,4 +2033,22 @@ int
 mixedasop(Type *l, Type *r)
 {
 	return !typefd[l->etype] && typefd[r->etype];
+}
+
+
+/*
+ * (uvlong)~ul creates a ul mask with top bits zero, which is usually wrong
+ * an explicit cast to ulong after ~ suppresses the diagnostic
+ */
+int
+castucom(Node *r)
+{
+	Node *rl;
+
+	if(r->op == OCAST &&
+	   (rl = r->left)->op == OCOM &&
+	   (r->type->etype == TVLONG || r->type->etype == TUVLONG) &&
+	   typeu[rl->type->etype] && typechl[rl->type->etype])
+		return 1;
+	return 0;
 }

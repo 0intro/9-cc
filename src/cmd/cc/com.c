@@ -1,5 +1,16 @@
 #include "cc.h"
 
+typedef struct Com Com;
+struct Com
+{
+	int	n;
+	Node	*t[500];
+};
+
+int compar(Node*, int);
+static void comma(Node*);
+static Node*	commas(Com*, Node*);
+
 void
 complex(Node *n)
 {
@@ -13,6 +24,8 @@ complex(Node *n)
 			prtree(n, "pre complex");
 	if(tcom(n))
 		return;
+	if(debug['y'] || 1)
+		comma(n);
 	if(debug['t'])
 		if(n->op != OCONST)
 			prtree(n, "t complex");
@@ -54,6 +67,7 @@ tcomo(Node *n, int f)
 	Node *l, *r;
 	Type *t;
 	int o;
+	static TRune zer;
 
 	if(n == Z) {
 		diag(Z, "Z in tcom");
@@ -219,6 +233,8 @@ tcomo(Node *n, int f)
 		if(tcompat(n, l->type, r->type, tand))
 			goto bad;
 		n->type = l->type;
+		n->right = new1(OCAST, r, Z);
+		n->right->type = types[TINT];
 		if(typeu[n->type->etype]) {
 			if(n->op == OASASHR)
 				n->op = OASLSHR;
@@ -269,8 +285,11 @@ tcomo(Node *n, int f)
 			goto bad;
 		n->type = l->type;
 		if(n->type->etype == TIND)
-		if(n->type->link->width < 1)
-			diag(n, "inc/dec of a void pointer");
+		if(n->type->link->width < 1) {
+			snap(n->type->link);
+			if(n->type->link->width < 1)
+				diag(n, "inc/dec of a void pointer");
+		}
 		break;
 
 	case OEQ:
@@ -582,10 +601,8 @@ tcomo(Node *n, int f)
 			goto bad;
 		n->type = l->type->link;
 		if(!debug['B'])
-			if(l->type->down == T || l->type->down->etype == TOLD) {
-				nerrors--;
+			if(l->type->down == T || l->type->down->etype == TOLD)
 				diag(n, "function args not checked: %F", l);
-			}
 		dpcheck(n);
 		break;
 
@@ -606,6 +623,8 @@ tcomo(Node *n, int f)
 		n->addable = 1;
 		if(n->class == CEXREG) {
 			n->op = OREGISTER;
+			if(thechar == '8')
+				n->op = OEXREG;
 			n->reg = n->sym->offset;
 			n->xoffset = 0;
 			break;
@@ -613,10 +632,10 @@ tcomo(Node *n, int f)
 		break;
 
 	case OLSTRING:
-		if(n->type->link != types[TUSHORT]) {
+		if(n->type->link != types[TRUNE]) {
 			o = outstring(0, 0);
 			while(o & 3) {
-				outlstring(L"", sizeof(ushort));
+				outlstring(&zer, sizeof(TRune));
 				o = outlstring(0, 0);
 			}
 		}
@@ -878,6 +897,101 @@ tlvalue(Node *n)
 }
 
 /*
+ * hoist comma operators out of expressions
+ *	(a,b) OP c => (a, b OP c)
+ *	OP(a,b) =>	(a, OP b)
+ *	a OP (b,c) => (b, a OP c)
+ */
+
+static Node*
+comargs(Com *com, Node *n)
+{
+	if(n != Z && n->op == OLIST){
+		n->left = comargs(com, n->left);
+		n->right = comargs(com, n->right);
+	}
+	return commas(com, n);
+}
+
+static Node*
+commas(Com *com, Node *n)
+{
+	Node *t;
+
+	if(n == Z)
+		return n;
+	switch(n->op){
+	case OREGISTER:
+	case OINDREG:
+	case OCONST:
+	case ONAME:
+	case OSTRING:
+		/* leaf */
+		return n;
+
+	case OCOMMA:
+		t = commas(com, n->left);
+		if(com->n >= nelem(com->t))
+			fatal(n, "comma list overflow");
+		com->t[com->n++] = t;
+		return commas(com, n->right);
+
+	case OFUNC:
+		n->left = commas(com, n->left);
+		n->right = comargs(com, n->right);
+		return n;
+
+	case OCOND:
+		n->left = commas(com, n->left);
+		comma(n->right->left);
+		comma(n->right->right);
+		return n;
+
+	case OANDAND:
+	case OOROR:
+		n->left = commas(com, n->left);
+		comma(n->right);
+		return n;
+
+	case ORETURN:
+		comma(n->left);
+		return n;
+	}
+	n->left = commas(com, n->left);
+	if(n->right != Z)
+		n->right = commas(com, n->right);
+	return n;
+}
+
+static void
+comma(Node *n)
+{
+	Com com;
+	Node *nn;
+
+	com.n = 0;
+	nn = commas(&com, n);
+	if(com.n > 0){
+if(debug['y'])print("n=%d\n", com.n);
+if(debug['y']) prtree(nn, "res");
+		if(nn != n)
+			*n = *nn;
+		while(com.n > 0){
+if(debug['y']) prtree(com.t[com.n-1], "tree");
+			nn = new1(OXXX, Z, Z);
+			*nn = *n;
+			n->op = OCOMMA;
+			n->type = nn->type;
+			n->left = com.t[--com.n];
+			n->right = nn;
+			n->lineno = n->left->lineno;
+		}
+if(debug['y']) prtree(n, "final");
+	}else if(n != nn)
+		fatal(n, "odd tree");
+}
+
+/*
  *	general rewrite
  *	(IND(ADDR x)) ==> x
  *	(ADDR(IND x)) ==> x
@@ -915,6 +1029,23 @@ loop:
 	case OASADD:
 		ccom(l);
 		ccom(r);
+		if(n->op == OASMOD || n->op == OASLMOD || n->op == OASDIV || n->op == OASLDIV)
+		if(r->op == OCONST){
+			if(!typefd[r->type->etype] && r->vconst == 0) {
+				if(n->op == OASMOD || n->op == OASLMOD)
+					diag(n, "modulo by zero");
+				else
+					diag(n, "divide by zero");
+				r->vconst = ~0;
+			}
+			if(typefd[r->type->etype] && r->fconst == 0.) {
+				if(n->op == OASMOD || n->op == OASLMOD)
+					diag(n, "modulo by zero");
+				else
+					diag(n, "divide by zero");
+				r->fconst = 1e10;
+			}
+		}
 		if(n->op == OASLSHR || n->op == OASASHR || n->op == OASASHL)
 		if(r->op == OCONST) {
 			t = n->type->width * 8;	/* bits per byte */
@@ -924,13 +1055,16 @@ loop:
 		break;
 
 	case OCAST:
+		if(castucom(n))
+			warn(n, "32-bit unsigned complement zero-extended to 64 bits");
 		ccom(l);
 		if(l->op == OCONST) {
 			evconst(n);
 			if(n->op == OCONST)
 				break;
 		}
-		if(nocast(l->type, n->type)) {
+		if(nocast(l->type, n->type) &&
+		   (!typefd[l->type->etype] || typeu[l->type->etype] && typeu[n->type->etype])) {
 			l->type = n->type;
 			*n = *l;
 		}
@@ -985,6 +1119,8 @@ loop:
 	case OHI:
 		ccom(l);
 		ccom(r);
+		if(compar(n, 0) || compar(n, 1))
+			break;
 		relcon(l, r);
 		relcon(r, l);
 		goto common;
@@ -1082,7 +1218,7 @@ loop:
 			*n = *l;
 			break;
 		}
-		goto commun;
+		goto commute;
 
 	case OAND:
 		ccom(l);
@@ -1096,7 +1232,7 @@ loop:
 			break;
 		}
 
-	commun:
+	commute:
 		/* look for commutative constant */
 		if(r->op == OCONST) {
 			if(l->op == n->op) {
@@ -1162,3 +1298,182 @@ loop:
 		evconst(n);
 	}
 }
+
+/*	OEQ, ONE, OLE, OLS, OLT, OLO, OGE, OHS, OGT, OHI */
+static char *cmps[12] = 
+{
+	"==", "!=", "<=", "<=", "<", "<", ">=", ">=", ">", ">",
+};
+
+/* 128-bit numbers */
+typedef struct Big Big;
+struct Big
+{
+	vlong a;
+	uvlong b;
+};
+static int
+cmp(Big x, Big y)
+{
+	if(x.a != y.a){
+		if(x.a < y.a)
+			return -1;
+		return 1;
+	}
+	if(x.b != y.b){
+		if(x.b < y.b)
+			return -1;
+		return 1;
+	}
+	return 0;
+}
+static Big
+add(Big x, int y)
+{
+	uvlong ob;
+	
+	ob = x.b;
+	x.b += y;
+	if(y > 0 && x.b < ob)
+		x.a++;
+	if(y < 0 && x.b > ob)
+		x.a--;
+	return x;
+} 
+
+Big
+big(vlong a, uvlong b)
+{
+	Big x;
+
+	x.a = a;
+	x.b = b;
+	return x;
+}
+
+int
+compar(Node *n, int reverse)
+{
+	Big lo, hi, x;
+	int op;
+	char xbuf[40], cmpbuf[50];
+	Node *l, *r;
+	Type *lt, *rt;
+
+	/*
+	 * The point of this function is to diagnose comparisons 
+	 * that can never be true or that look misleading because
+	 * of the `usual arithmetic conversions'.  As an example 
+	 * of the latter, if x is a ulong, then if(x <= -1) really means
+	 * if(x <= 0xFFFFFFFF), while if(x <= -1LL) really means
+	 * what it says (but 8c compiles it wrong anyway).
+	 */
+
+	if(reverse){
+		r = n->left;
+		l = n->right;
+		op = comrel[relindex(n->op)];
+	}else{
+		l = n->left;
+		r = n->right;
+		op = n->op;
+	}
+
+	/*
+	 * Skip over left casts to find out the original expression range.
+	 */
+	while(l->op == OCAST)
+		l = l->left;
+	if(l->op == OCONST)
+		return 0;
+	lt = l->type;
+	if(l->op == ONAME && l->sym->type){
+		lt = l->sym->type;
+		if(lt->etype == TARRAY)
+			lt = lt->link;
+	}
+	if(lt == T)
+		return 0;
+	if(lt->etype == TXXX || lt->etype > TUVLONG)
+		return 0;
+	
+	/*
+	 * Skip over the right casts to find the on-screen value.
+	 */
+	if(r->op != OCONST)
+		return 0;
+	while(r->oldop == OCAST && !r->xcast)
+		r = r->left;
+	rt = r->type;
+	if(rt == T)
+		return 0;
+
+	x.b = r->vconst;
+	x.a = 0;
+	if((rt->etype&1) && r->vconst < 0)	/* signed negative */
+		x.a = ~0ULL;
+
+	if((lt->etype&1)==0){
+		/* unsigned */
+		lo = big(0, 0);
+		if(lt->width == 8)
+			hi = big(0, ~0ULL);
+		else
+			hi = big(0, (1LL<<(l->type->width*8))-1);
+	}else{
+		lo = big(~0ULL, -(1LL<<(l->type->width*8-1)));
+		hi = big(0, (1LL<<(l->type->width*8-1))-1);
+	}
+
+	switch(op){
+	case OLT:
+	case OLO:
+	case OGE:
+	case OHS:
+		if(cmp(x, lo) <= 0)
+			goto useless;
+		if(cmp(x, add(hi, 1)) >= 0)
+			goto useless;
+		break;
+	case OLE:
+	case OLS:
+	case OGT:
+	case OHI:
+		if(cmp(x, add(lo, -1)) <= 0)
+			goto useless;
+		if(cmp(x, hi) >= 0)
+			goto useless;
+		break;
+	case OEQ:
+	case ONE:
+		/*
+		 * Don't warn about comparisons if the expression
+		 * is as wide as the value: the compiler-supplied casts
+		 * will make both outcomes possible.
+		 */
+		if(lt->width >= rt->width && debug['w'] < 2)
+			return 0;
+		if(cmp(x, lo) < 0 || cmp(x, hi) > 0)
+			goto useless;
+		break;
+	}
+	return 0;
+
+useless:
+	if((x.a==0 && x.b<=9) || (x.a==~0LL && x.b >= -9ULL))
+		snprint(xbuf, sizeof xbuf, "%lld", x.b);
+	else if(x.a == 0)
+		snprint(xbuf, sizeof xbuf, "%#llux", x.b);
+	else
+		snprint(xbuf, sizeof xbuf, "%#llx", x.b);
+	if(reverse)
+		snprint(cmpbuf, sizeof cmpbuf, "%s %s %T",
+			xbuf, cmps[relindex(n->op)], lt);
+	else
+		snprint(cmpbuf, sizeof cmpbuf, "%T %s %s",
+			lt, cmps[relindex(n->op)], xbuf);
+if(debug['y']) prtree(n, "strange");
+	warn(n, "useless or misleading comparison: %s", cmpbuf);
+	return 0;
+}
+

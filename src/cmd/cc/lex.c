@@ -7,34 +7,37 @@
 
 /*
  * known debug flags
- *	-o file		output file
- *	-D name		define
- *	-I path		include
  *	-a		acid declaration output
- *	-M		constant multiplication
- *	-B		non ANSI
  *	-A		!B
+ *	-B		non ANSI
  *	-d		print declarations
- *	-t		print type trees
- *	-L		print every NAME symbol
- *	-i		print initialization
+ *	-D name		define
  *	-F		format specification check
- *	-r		print registerization
- *	-v		verbose printing
- *	-X		abort on error
- *	-w		print warnings
+ *	-i		print initialization
+ *	-I path		include
+ *	-l		generate little-endian code
+ *	-L		print every NAME symbol
+ *	-M		constant multiplication
  *	-m		print add/sub/mul trees
- *	-s		print structure offsets (with -a or -aa)
  *	-n		print acid to file (%.c=%.acid) (with -a or -aa)
+ *	-o file		output file
  *	-p		use standard cpp ANSI preprocessor (not on windows)
+ *	-r		print registerization
+ *	-s		print structure offsets (with -a or -aa)
+ *	-S		print assembly
+ *	-t		print type trees
  *	-V		enable void* conversion warnings
+ *	-v		verbose printing
+ *	-w		print warnings
+ *	-X		abort on error
+ *	-.		Inhibit search for includes in source directory
  */
 
 void
 main(int argc, char *argv[])
 {
-	char *defs[50], *p;
-	int nproc, nout, status, i, c, ndef;
+	char **defs, **np, *p;
+	int nproc, nout, status, i, c, ndef, maxdef;
 
 	memset(debug, 0, sizeof(debug));
 	tinit();
@@ -44,14 +47,25 @@ main(int argc, char *argv[])
 
 	profileflg = 1;	/* #pragma can turn it off */
 	tufield = simplet((1L<<tfield->etype) | BUNSIGNED);
+	maxdef = 0;
 	ndef = 0;
 	outfile = 0;
-	include[ninclude++] = ".";
+	defs = nil;
+	setinclude(".");
 	ARGBEGIN {
 	default:
 		c = ARGC();
 		if(c >= 0 && c < sizeof(debug))
 			debug[c]++;
+		break;
+
+	case 'l':			/* for little-endian mips */
+		if(thechar != 'v'){
+			print("can only use -l with vc");
+			errorexit();
+		}
+		thechar = '0';
+		thestring = "spim";
 		break;
 
 	case 'o':
@@ -61,6 +75,13 @@ main(int argc, char *argv[])
 	case 'D':
 		p = ARGF();
 		if(p) {
+			if(ndef >= maxdef){
+				maxdef += 50;
+				np = alloc(maxdef * sizeof *np);
+				if(defs != nil)
+					memmove(np, defs, (maxdef - 50) * sizeof *np);
+				defs = np;
+			}
 			defs[ndef++] = p;
 			dodefine(p);
 		}
@@ -68,7 +89,8 @@ main(int argc, char *argv[])
 
 	case 'I':
 		p = ARGF();
-		setinclude(p);
+		if(p)
+			setinclude(p);
 		break;
 	} ARGEND
 	if(argc < 1 && outfile == 0) {
@@ -81,7 +103,12 @@ main(int argc, char *argv[])
 	}
 	if(argc > 1 && !systemtype(Windows)) {
 		nproc = 1;
-		if(p = getenv("NPROC"))
+		/*
+		 * if we're writing acid to standard output, don't compile
+		 * concurrently, to avoid interleaving output.
+		 */
+		if(((!debug['a'] && !debug['Z']) || debug['n']) &&
+		    (p = getenv("NPROC")) != nil)
 			nproc = atol(p);	/* */
 		c = 0;
 		nout = 0;
@@ -134,9 +161,10 @@ main(int argc, char *argv[])
 int
 compile(char *file, char **defs, int ndef)
 {
-	char ofile[400], incfile[20];
-	char *p, *av[100], opt[256];
+	char ofile[400], incfile[200];
+	char *p, **av, opt[256];
 	int i, c, fd[2];
+	static int first = 1;
 
 	strcpy(ofile, file);
 	p = utfrrune(ofile, pathchar());
@@ -146,6 +174,7 @@ compile(char *file, char **defs, int ndef)
 			include[0] = strdup(ofile);
 	} else
 		p = ofile;
+
 	if(outfile == 0) {
 		outfile = p;
 		if(outfile) {
@@ -170,26 +199,43 @@ compile(char *file, char **defs, int ndef)
 		setinclude(p);
 	} else {
 		if(systemtype(Plan9)) {
-			sprint(incfile, "/%s/include", thestring);
+			p = getenv("ccroot");
+			if(p == nil)
+				p = "";
+			snprint(incfile, sizeof(incfile), "%s/%s/include", p, thestring);
 			setinclude(strdup(incfile));
-			setinclude("/sys/include");
+			snprint(incfile, sizeof(incfile), "%s/sys/include", p);
+			setinclude(strdup(incfile));
+			if(*p != '\0') {
+				snprint(incfile, sizeof(incfile), "%s/include", p);
+				if(myaccess(incfile) >= 0)
+					setinclude(strdup(incfile));
+			}
 		}
 	}
+	if (first)
+		Binit(&diagbuf, 1, OWRITE);
+	/*
+	 * if we're writing acid to standard output, don't keep scratching
+	 * outbuf.
+	 */
 	if((debug['a'] || debug['Z']) && !debug['n']) {
-		outfile = 0;
-		Binit(&outbuf, 1, OWRITE);
-		Binit(&diagbuf, 2, OWRITE);
+		if (first) {
+			outfile = 0;
+			Binit(&outbuf, dup(1, -1), OWRITE);
+			dup(2, 1);
+		}
 	} else {
 		c = mycreat(outfile, 0664);
 		if(c < 0) {
-			diag(Z, "cannot open %s", outfile);
+			diag(Z, "cannot open %s - %r", outfile);
 			outfile = 0;
 			errorexit();
 		}
 		Binit(&outbuf, c, OWRITE);
-		Binit(&diagbuf, 1, OWRITE);
 	}
 	newio();
+	first = 0;
 
 	/* Use an ANSI preprocessor */
 	if(debug['p']) {
@@ -213,12 +259,13 @@ compile(char *file, char **defs, int ndef)
 			close(fd[0]);
 			mydup(fd[1], 1);
 			close(fd[1]);
+			av = alloc((3 + ndef + ninclude + 2) * sizeof *av);
 			av[0] = CPP;
 			i = 1;
-			if(debug['+']) {
-				sprint(opt, "-+");
-				av[i++] = strdup(opt);
-			}
+			if(debug['.'])
+				av[i++] = strdup("-.");
+			/* 1999 ANSI C requires recognising // comments */
+			av[i++] = strdup("-+");
 			for(c = 0; c < ndef; c++) {
 				sprint(opt, "-D%s", defs[c]);
 				av[i++] = strdup(opt);
@@ -379,7 +426,7 @@ syminit(Sym *s)
 
 #define	EOF	(-1)
 #define	IGN	(-2)
-#define	ESC	(1<<20)
+#define	ESC	(Runemask+1)		/* Rune flag: a literal byte */
 #define	GETC()	((--fi.c < 0)? filbuf(): (*fi.p++ & 0xff))
 
 enum
@@ -438,7 +485,7 @@ l1:
 				yyerror("missing '");
 				peekc = c1;
 			}
-			yylval.vval = convvtox(c, TUSHORT);
+			yylval.vval = convvtox(c, TRUNE);
 			return LUCONST;
 		}
 		if(c == '"') {
@@ -512,15 +559,15 @@ l1:
 			c = escchar('"', 1, 0);
 			if(c == EOF)
 				break;
-			cp = allocn(cp, c1, sizeof(ushort));
-			*(ushort*)(cp + c1) = c;
-			c1 += sizeof(ushort);
+			cp = allocn(cp, c1, sizeof(TRune));
+			*(TRune*)(cp + c1) = c;
+			c1 += sizeof(TRune);
 		}
 		yylval.sval.l = c1;
 		do {
-			cp = allocn(cp, c1, sizeof(ushort));
-			*(ushort*)(cp + c1) = 0;
-			c1 += sizeof(ushort);
+			cp = allocn(cp, c1, sizeof(TRune));
+			*(TRune*)(cp + c1) = 0;
+			c1 += sizeof(TRune);
 		} while(c1 & MAXALIGN);
 		yylval.sval.s = cp;
 		return LLSTRING;
@@ -997,7 +1044,7 @@ getnsc(void)
 	} else
 		c = GETC();
 	for(;;) {
-		if(!isspace(c))
+		if(c >= Runeself || !isspace(c))
 			return c;
 		if(c == '\n') {
 			lineno++;
@@ -1005,7 +1052,6 @@ getnsc(void)
 		}
 		c = GETC();
 	}
-	return 0;
 }
 
 void
@@ -1042,7 +1088,7 @@ loop:
 		 */
 		i = 2;
 		if(longflg)
-			i = 4;
+			i = 6;
 		l = 0;
 		for(; i>0; i--) {
 			c = getc();
@@ -1072,7 +1118,7 @@ loop:
 		 */
 		i = 2;
 		if(longflg)
-			i = 5;
+			i = 8;
 		l = c - '0';
 		for(; i>0; i--) {
 			c = getc();
@@ -1107,6 +1153,7 @@ struct
 	ushort	type;
 } itab[] =
 {
+	"_Noreturn",	LNORETURN,	0,
 	"auto",		LAUTO,		0,
 	"break",	LBREAK,		0,
 	"case",		LCASE,		0,
@@ -1123,9 +1170,11 @@ struct
 	"for",		LFOR,		0,
 	"goto",		LGOTO,		0,
 	"if",		LIF,		0,
+	"inline",	LINLINE,	0,
 	"int",		LINT,		TINT,
 	"long",		LLONG,		TLONG,
 	"register",	LREGISTER,	0,
+	"restrict",	LRESTRICT,	0,
 	"return",	LRETURN,	0,
 	"SET",		LSET,		0,
 	"short",	LSHORT,		TSHORT,
@@ -1492,23 +1541,26 @@ void
 setinclude(char *p)
 {
 	int i;
-	char *e;
+	char *e, **np;
 
 	while(*p != 0) {
 		e = strchr(p, ' ');
 		if(e != 0)
 			*e = '\0';
 
-		for(i=1; i < ninclude; i++)
+		for(i=0; i < ninclude; i++)
 			if(strcmp(p, include[i]) == 0)
 				break;
 
-		if(i >= ninclude)
+		if(i >= ninclude){
+			if(i >= maxinclude){
+				maxinclude += 20;
+				np = alloc(maxinclude * sizeof *np);
+				if(include != nil)
+					memmove(np, include, (maxinclude - 20) * sizeof *np);
+				include = np;
+			}
 			include[ninclude++] = p;
-
-		if(ninclude > nelem(include)) {
-			diag(Z, "ninclude too small %d", nelem(include));
-			exits("ninclude");
 		}
 
 		if(e == 0)

@@ -8,12 +8,14 @@
 	struct
 	{
 		Type*	t;
-		char	c;
+		uchar	c;
 	} tycl;
 	struct
 	{
 		Type*	t1;
 		Type*	t2;
+		Type*	t3;
+		uchar	c;
 	} tyty;
 	struct
 	{
@@ -35,7 +37,7 @@
 %type	<node>	xdecor xdecor2 labels label ulstmnt
 %type	<node>	adlist edecor tag qual qlist
 %type	<node>	abdecor abdecor1 abdecor2 abdecor3
-%type	<node>	zexpr lexpr init ilist
+%type	<node>	zexpr lexpr init ilist forexpr
 
 %left	';'
 %left	','
@@ -62,6 +64,7 @@
 %token	LIF LINT LLONG LREGISTER LRETURN LSHORT LSIZEOF LUSED
 %token	LSTATIC LSTRUCT LSWITCH LTYPEDEF LTYPESTR LUNION LUNSIGNED
 %token	LWHILE LVOID LENUM LSIGNED LCONSTNT LVOLATILE LSET LSIGNOF
+%token	LRESTRICT LINLINE LNORETURN
 %%
 prog:
 |	prog xdecl
@@ -146,26 +149,13 @@ xdecor2:
  * automatic declarator
  */
 adecl:
-	{
-		$$ = Z;
-	}
-|	adecl ctlist ';'
+	ctlist ';'
 	{
 		$$ = dodecl(adecl, lastclass, lasttype, Z);
-		if($1 != Z)
-			if($$ != Z)
-				$$ = new(OLIST, $1, $$);
-			else
-				$$ = $1;
 	}
-|	adecl ctlist adlist ';'
+|	ctlist adlist ';'
 	{
-		$$ = $1;
-		if($3 != Z) {
-			$$ = $3;
-			if($1 != Z)
-				$$ = new(OLIST, $1, $3);
-		}
+		$$ = $2;
 	}
 
 adlist:
@@ -371,11 +361,11 @@ arglist:
 	}
 
 block:
-	'{' adecl slist '}'
+	'{' slist '}'
 	{
-		$$ = invert($3);
-		if($2 != Z)
-			$$ = new(OLIST, $2, $$);
+		$$ = invert($2);
+	//	if($2 != Z)
+	//		$$ = new(OLIST, $2, $$);
 		if($$ == Z)
 			$$ = new(OLIST, Z, Z);
 	}
@@ -383,6 +373,10 @@ block:
 slist:
 	{
 		$$ = Z;
+	}
+|	slist adecl
+	{
+		$$ = new(OLIST, $1, $2);
 	}
 |	slist stmnt
 	{
@@ -421,6 +415,13 @@ stmnt:
 		$$ = new(OLIST, $1, $2);
 	}
 
+forexpr:
+	zcexpr
+|	ctlist adlist
+	{
+		$$ = $2;
+	}
+
 ulstmnt:
 	zcexpr ';'
 |	{
@@ -448,9 +449,16 @@ ulstmnt:
 		if($7 == Z)
 			warn($3, "empty else body");
 	}
-|	LFOR '(' zcexpr ';' zcexpr ';' zcexpr ')' stmnt
+|	{ markdcl(); } LFOR '(' forexpr ';' zcexpr ';' zcexpr ')' stmnt
 	{
-		$$ = new(OFOR, new(OLIST, $5, new(OLIST, $3, $7)), $9);
+		$$ = revertdcl();
+		if($$){
+			if($4)
+				$4 = new(OLIST, $$, $4);
+			else
+				$4 = $$;
+		}
+		$$ = new(OFOR, new(OLIST, $6, new(OLIST, $4, $8)), $10);
 	}
 |	LWHILE '(' cexpr ')' stmnt
 	{
@@ -847,9 +855,9 @@ lstring:
 	LLSTRING
 	{
 		$$ = new(OLSTRING, Z, Z);
-		$$->type = typ(TARRAY, types[TUSHORT]);
-		$$->type->width = $1.l + sizeof(ushort);
-		$$->rstring = (ushort*)$1.s;
+		$$->type = typ(TARRAY, types[TRUNE]);
+		$$->type->width = $1.l + sizeof(TRune);
+		$$->rstring = (TRune*)$1.s;
 		$$->sym = symstring;
 		$$->etype = TARRAY;
 		$$->class = CSTATIC;
@@ -859,16 +867,16 @@ lstring:
 		char *s;
 		int n;
 
-		n = $1->type->width - sizeof(ushort);
+		n = $1->type->width - sizeof(TRune);
 		s = alloc(n+$2.l+MAXALIGN);
 
 		memcpy(s, $1->rstring, n);
 		memcpy(s+n, $2.s, $2.l);
-		*(ushort*)(s+n+$2.l) = 0;
+		*(TRune*)(s+n+$2.l) = 0;
 
 		$$ = $1;
 		$$->type->width += $2.l;
-		$$->rstring = (ushort*)s;
+		$$->rstring = (TRune*)s;
 	}
 
 zelist:
@@ -889,16 +897,22 @@ sbody:
 	{
 		$<tyty>$.t1 = strf;
 		$<tyty>$.t2 = strl;
+		$<tyty>$.t3 = lasttype;
+		$<tyty>$.c = lastclass;
 		strf = T;
 		strl = T;
 		lastbit = 0;
 		firstbit = 1;
+		lastclass = CXXX;
+		lasttype = T;
 	}
 	edecl '}'
 	{
 		$$ = strf;
 		strf = $<tyty>2.t1;
 		strl = $<tyty>2.t2;
+		lasttype = $<tyty>2.t3;
+		lastclass = $<tyty>2.c;
 	}
 
 zctlist:
@@ -989,7 +1003,7 @@ complex:
 		if($$->link != T)
 			diag(Z, "redeclare tag: %s", $2->name);
 		$$->link = $4;
-		suallign($$);
+		sualign($$);
 	}
 |	LSTRUCT sbody
 	{
@@ -997,7 +1011,7 @@ complex:
 		sprint(symb, "_%d_", taggen);
 		$$ = dotag(lookup(), TSTRUCT, autobn);
 		$$->link = $2;
-		suallign($$);
+		sualign($$);
 	}
 |	LUNION ltag
 	{
@@ -1014,7 +1028,7 @@ complex:
 		if($$->link != T)
 			diag(Z, "redeclare tag: %s", $2->name);
 		$$->link = $4;
-		suallign($$);
+		sualign($$);
 	}
 |	LUNION sbody
 	{
@@ -1022,7 +1036,7 @@ complex:
 		sprint(symb, "_%d_", taggen);
 		$$ = dotag(lookup(), TUNION, autobn);
 		$$->link = $2;
-		suallign($$);
+		sualign($$);
 	}
 |	LENUM ltag
 	{
@@ -1129,10 +1143,13 @@ cname:	/* class words */
 |	LTYPEDEF { $$ = BTYPEDEF; }
 |	LTYPESTR { $$ = BTYPESTR; }
 |	LREGISTER { $$ = BREGISTER; }
+|	LINLINE { $$ = 0; }
 
 gname:	/* garbage words */
 	LCONSTNT { $$ = BCONSTNT; }
 |	LVOLATILE { $$ = BVOLATILE; }
+|	LRESTRICT { $$ = 0; }
+|	LNORETURN { $$ = 0; }
 
 name:
 	LNAME

@@ -232,7 +232,7 @@ nextinit(void)
 			a->cstring++;
 		}
 		if(a->op == OLSTRING) {
-			b->vconst = convvtox(*a->rstring, TUSHORT);
+			b->vconst = convvtox(*a->rstring, TRUNE);
 			a->rstring++;
 		}
 		a->type->width -= b->type->width;
@@ -347,6 +347,10 @@ init1(Sym *s, Type *t, long o, int exflag)
 			return Z;
 
 		if(a->op == OCONST) {
+			if(vconst(a) && t->etype == TIND && a->type && a->type->etype != TIND){
+				diag(a, "initialize pointer to an integer: %s", s->name);
+				return Z;
+			}
 			if(!sametype(a->type, t)) {
 				/* hoop jumping to save malloc */
 				if(nodcast == Z)
@@ -515,7 +519,7 @@ newlist(Node *l, Node *r)
 }
 
 void
-suallign(Type *t)
+sualign(Type *t)
 {
 	Type *l;
 	long o, w;
@@ -536,7 +540,8 @@ suallign(Type *t)
 				}
 				l->offset = o;
 			} else {
-				if(l->width <= 0)
+				if(l->width < 0 ||
+				   l->width == 0 && l->down != T)
 					if(l->sym)
 						diag(Z, "incomplete structure element: %s",
 							l->sym->name);
@@ -576,7 +581,7 @@ suallign(Type *t)
 		return;
 
 	default:
-		diag(Z, "unknown type in suallign: %T", t);
+		diag(Z, "unknown type in sualign: %T", t);
 		break;
 	}
 }
@@ -970,6 +975,12 @@ rsametype(Type *t1, Type *t2, int n, int f)
 				snap(t1);
 			if(t2->link == T)
 				snap(t2);
+			if(t1 != t2 && t1->link == T && t2->link == T){
+				/* structs with missing or different tag names aren't considered equal */
+				if(t1->tag == nil || t2->tag == nil ||
+				   strcmp(t1->tag->name, t2->tag->name) != 0)
+					return 0;
+			}
 			t1 = t1->link;
 			t2 = t2->link;
 			for(;;) {
@@ -990,7 +1001,6 @@ rsametype(Type *t1, Type *t2, int n, int f)
 				return 1;
 		}
 	}
-	return 0;
 }
 
 typedef struct Typetab Typetab;
@@ -1170,12 +1180,6 @@ paramconv(Type *t, int f)
 {
 
 	switch(t->etype) {
-	case TUNION:
-	case TSTRUCT:
-		if(t->width <= 0)
-			diag(Z, "incomplete structure: %s", t->tag->name);
-		break;
-
 	case TARRAY:
 		t = typ(TIND, t->link);
 		t->width = types[TIND]->width;
@@ -1273,6 +1277,8 @@ pdecl(int c, Type *t, Sym *s)
 		diag(Z, "parameter cannot have class: %s", s->name);
 		c = CPARAM;
 	}
+	if(typesu[t->etype] && t->width <= 0)
+		diag(Z, "incomplete structure: %s", t->tag->name);
 	adecl(c, t, s);
 }
 
