@@ -618,6 +618,8 @@ void	pdecl(int, Type*, Sym*);
 Decl*	push(void);
 Decl*	push1(Sym*);
 Node*	revertdcl(void);
+#undef round
+#define	round	ccround
 long	round(long, int);
 int	rsametype(Type*, Type*, int, int);
 int	sametype(Type*, Type*);
@@ -695,6 +697,8 @@ void	typeext(Type*, Node*);
 void	typeext1(Type*, Node*);
 int	side(Node*);
 int	vconst(Node*);
+#undef log2
+#define	log2	cclog2
 int	log2(uvlong);
 int	vlog(Node*);
 int	topbit(ulong);
