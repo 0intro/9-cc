@@ -34,8 +34,8 @@ BIN=$ROOT/$OBJDIR/bin
 CFLAGS=$CFLAGS  -I.
 <$ROOT/mkfiles/mkone-$SHELLTYPE
 
-../7c/enam.c: ../7c/7.out.h
-	@ { cd ../7c; mk enam.c }
+#../7c/enam.c: ../7c/7.out.h
+#	@ { cd ../7c; mk enam.c }
 
 cnam.c:	l.h
 	rc ../ld/mkcname
