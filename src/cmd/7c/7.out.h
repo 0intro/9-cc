@@ -508,8 +508,8 @@ enum
 /*
  * this is the simulated IEEE floating point
  */
-typedef	struct	ieee	Ieee;
-struct	ieee
+typedef	struct	Ieee	Ieee;
+struct	Ieee
 {
 	long	l;	/* contains ls-man	0xffffffff */
 	long	h;	/* contains sign	0x80000000
