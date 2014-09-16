@@ -1573,7 +1573,7 @@ opldrpp(int a)
  * load/store register (extended register)
  */
 static long
-olsxrr(int, int, int, int)
+olsxrr(int a, int b, int c, int d)
 {
 	diag("need load/store extended register\n%P", curp);
 	return -1;
