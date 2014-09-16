@@ -1,6 +1,7 @@
 #include	<lib9.h>
 #include	<bio.h>
 #include	"../8c/8.out.h"
+#include	"../ld/elf.h"
 
 #ifndef	EXTERN
 #define	EXTERN	extern
@@ -9,10 +10,13 @@
 #define	P		((Prog*)0)
 #define	S		((Sym*)0)
 #define	TNAME		(curtext?curtext->from.sym->name:noname)
+
 #define	cput(c)\
 	{ *cbp++ = c;\
 	if(--cbc <= 0)\
 		cflush(); }
+
+#define	LIBNAMELEN	300
 
 typedef	struct	Adr	Adr;
 typedef	struct	Prog	Prog;
@@ -35,7 +39,7 @@ struct	Adr
 		Sym*	u1sym;
 	} u1;
 	short	type;
-	char	index;
+	uchar	index;
 	char	scale;
 };
 
@@ -56,11 +60,12 @@ struct	Prog
 	Prog*	pcond;	/* work on this */
 	long	pc;
 	long	line;
-	uchar	mark;	/* work on these */
-	uchar	back;
-
 	short	as;
 	char	width;		/* fake for DATA */
+	char	ft;		/* oclass cache */
+	char	tt;
+	uchar	mark;	/* work on these */
+	uchar	back;
 };
 struct	Auto
 {
@@ -187,7 +192,7 @@ EXTERN union
 {
 	struct
 	{
-		char	obuf[MAXIO];			/* output buffer */
+		uchar	obuf[MAXIO];			/* output buffer */
 		uchar	ibuf[MAXIO];			/* input buffer */
 	} u;
 	char	dbuf[1];
@@ -196,23 +201,28 @@ EXTERN union
 #define	cbuf	u.obuf
 #define	xbuf	u.ibuf
 
+#pragma	varargck	type	"A"	int
 #pragma	varargck	type	"A"	uint
 #pragma	varargck	type	"D"	Adr*
 #pragma	varargck	type	"P"	Prog*
 #pragma	varargck	type	"R"	int
+#pragma	varargck	type	"R"	uint
 #pragma	varargck	type	"S"	char*
+
+#pragma	varargck	argpos	diag 1
 
 EXTERN	long	HEADR;
 EXTERN	long	HEADTYPE;
 EXTERN	long	INITDAT;
 EXTERN	long	INITRND;
 EXTERN	long	INITTEXT;
+EXTERN	long	INITTEXTP;
 EXTERN	char*	INITENTRY;		/* entry point */
 EXTERN	Biobuf	bso;
 EXTERN	long	bsssize;
 EXTERN	long	casepc;
 EXTERN	int	cbc;
-EXTERN	char*	cbp;
+EXTERN	uchar*	cbp;
 EXTERN	char*	pcstr;
 EXTERN	int	cout;
 EXTERN	Auto*	curauto;
@@ -246,7 +256,6 @@ EXTERN	uchar	and[30];
 EXTERN	char	reg[D_NONE];
 EXTERN	Prog*	lastp;
 EXTERN	long	lcsize;
-EXTERN	int	maxop;
 EXTERN	int	nerrors;
 EXTERN	long	nhunk;
 EXTERN	long	nsymbol;
@@ -266,7 +275,7 @@ EXTERN	int	dtype;
 EXTERN	Adr*	reloca;
 EXTERN	int	doexp, dlm;
 EXTERN	int	imports, nimports;
-EXTERN	int	exports, nexports;
+EXTERN	int	exports, nexports, allexport;
 EXTERN	char*	EXPTAB;
 EXTERN	Prog	undefp;
 
@@ -281,6 +290,7 @@ int	Pconv(Fmt*);
 int	Rconv(Fmt*);
 int	Sconv(Fmt*);
 void	addhist(long, int);
+void	addlibpath(char*);
 Prog*	appendp(Prog*);
 void	asmb(void);
 void	asmdyn(void);
@@ -306,8 +316,10 @@ void	dynreloc(Sym*, ulong, int);
 long	entryvalue(void);
 void	errorexit(void);
 void	export(void);
+int	fileexists(char*);
 int	find1(long, int);
 int	find2(long, int);
+char*	findlib(char*);
 void	follow(void);
 void	gethunk(void);
 void	histtoauto(void);
@@ -320,9 +332,11 @@ void	listinit(void);
 Sym*	lookup(char*, int);
 void	lput(long);
 void	lputl(long);
+void	llput(vlong v);
+void	llputl(vlong v);
 void	main(int, char*[]);
 void	mkfwd(void);
-void*	mysbrk(ulong);
+void*	mysbrk(usize);
 void	nuxiinit(void);
 void	objfile(char*);
 int	opsize(Prog*);
@@ -332,12 +346,13 @@ void	readundefs(char*, int);
 int	relinv(int);
 long	reuse(Prog*, Sym*);
 long	rnd(long, long);
-void	s8put(char*);
 void	span(void);
+void	strnput(char*, int);
 void	undef(void);
 void	undefsym(Sym*);
 long	vaddr(Adr*);
-void	wputb(ushort);
+void	wput(long);
+void	wputl(long);
 void	xdefine(char*, int, long);
 void	xfol(Prog*);
 int	zaddr(uchar*, Adr*, Sym*[]);

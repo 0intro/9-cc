@@ -7,6 +7,8 @@ OFILES=\
 	enam.$O\
 	list.$O\
 	peep.$O\
+	pgen.$O\
+	pswt.$O\
 	reg.$O\
 	sgen.$O\
 	swt.$O\
@@ -23,9 +25,13 @@ LIBS=cc bio 9		# order is important
 BIN=$ROOT/$OBJDIR/bin
 
 <$ROOT/mkfiles/mkone-$SHELLTYPE
+CFLAGS= $CFLAGS -I.
 
 
 $ROOT/$OBJDIR/lib/libcc.a:
 	cd ../cc
 	mk $MKFLAGS install
 	mk $MKFLAGS clean
+
+%.$O: ../cc/%.c
+	$CC -I. $CFLAGS ../cc/$stem.c

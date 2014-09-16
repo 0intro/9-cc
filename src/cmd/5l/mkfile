@@ -12,7 +12,7 @@ OFILES=\
 	span.$O\
 	enam.$O\
 	$TARGMODEL.$O\
-	thumb.$O\
+	elf.$O\
 
 HFILES=\
 	l.h\
@@ -25,7 +25,13 @@ LIBS=bio 9			# order is important
 BIN=$ROOT/$OBJDIR/bin
 
 <$ROOT/mkfiles/mkone-$SHELLTYPE
+CFLAGS= $CFLAGS -I.
 
 enam.$O:	../5c/enam.c
 	$CC $CFLAGS ../5c/enam.c
 
+elf.$O:	../ld/elf.c
+	$CC $CFLAGS ../ld/elf.c
+
+$TARGMODEL.$O:	../ld/$TARGMODEL.c
+	$CC $CFLAGS ../ld/$TARGMODEL.c

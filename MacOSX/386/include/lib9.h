@@ -37,6 +37,7 @@ typedef	unsigned long long	uvlong;
 typedef ushort		Rune;
 typedef unsigned int	u32int;
 typedef uvlong u64int;
+typedef size_t usize;
 
 typedef unsigned int	mpdigit;	/* for /sys/include/mp.h */
 typedef unsigned short u16int;
@@ -83,6 +84,8 @@ extern	int	cistrcmp(char*, char*);
 extern	char*	cistrstr(char*, char*);
 extern	int	tokenize(char*, char**, int);
 extern	vlong	strtoll(const char*, char**, int);
+#define	qsort	infqsort
+extern	void	qsort(void*, long, long, int (*)(void*, void*));
 
 enum
 {

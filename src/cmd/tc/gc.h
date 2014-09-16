@@ -264,10 +264,10 @@ void	gpseudo(int, Sym*, Node*);
 /*
  * swt.c
  */
-int	swcmp(const void*, const void*);
+int	swcmp(void*, void*);
 void	doswit(Node*);
 void	swit1(C1*, int, long, Node*);
-void	cas(void);
+void	casf(void);
 void	bitload(Node*, Node*, Node*, Node*, Node*);
 void	bitstore(Node*, Node*, Node*, Node*, Node*);
 long	outstring(char*, long);
@@ -295,7 +295,7 @@ int	Rconv(Fmt*);
  * reg.c
  */
 Reg*	rega(void);
-int	rcmp(const void*, const void*);
+int	rcmp(void*, void*);
 void	regopt(Prog*);
 void	addmove(Reg*, int, int, int);
 Bits	mkvar(Adr*, int);

@@ -6,19 +6,36 @@
 #define	DEFAULT	'9'
 #endif
 
+#define	OANAME	229	/* old ANAME */
+
+
 char	*noname		= "<none>";
 char	symname[]	= SYMDEF;
 char	thechar		= 'q';
 char	*thestring 	= "power";
 
+char**	libdir;
+int	nlibdir	= 0;
+static	int	maxlibdir = 0;
+
 /*
  *	-H0 -T0x200000 -R0		is boot
  *	-H1 -T0x100000 -R4		is Be boot
- *	-H2 -T4128 -R4096		is plan9 format
+ *	-H2 -T0x100020 -R0x100000	is plan9 format (was -T4128 -R4096)
  *	-H3 -T0x02010000 -D0x00001000	is raw
  *	-H4 -T0x1000200 -D0x20000e00 -R4	is aix xcoff executable
  *	-H5 -T0x80010000 -t0x10000	ELF, phys = 10000, vaddr = 0x8001...
+ *					appropriate for blue gene (bg/l anyway)
+ *	-H6 -T0xfffe2100 -R4		ELF, phys = vaddr = 0xfffe2100
+ *					appropriate for virtex 4 boot
  */
+
+void
+usage(void)
+{
+	diag("usage: %s [-options] objects", argv0);
+	errorexit();
+}
 
 static int
 isobjfile(char *f)
@@ -47,6 +64,7 @@ main(int argc, char *argv[])
 {
 	int c;
 	char *a;
+	char name[LIBNAMELEN];
 
 	Binit(&bso, 1, OWRITE);
 	cout = -1;
@@ -56,6 +74,7 @@ main(int argc, char *argv[])
 	curtext = P;
 	HEADTYPE = -1;
 	INITTEXT = -1;
+	INITTEXTP = -1;
 	INITDAT = -1;
 	INITRND = -1;
 	INITENTRY = 0;
@@ -79,6 +98,11 @@ main(int argc, char *argv[])
 		if(a)
 			INITTEXT = atolwhex(a);
 		break;
+	case 'P':
+		a = ARGF();
+		if(a)
+			INITTEXTP = atolwhex(a);
+		break;
 	case 'D':
 		a = ARGF();
 		if(a)
@@ -94,6 +118,9 @@ main(int argc, char *argv[])
 		if(a)
 			HEADTYPE = atolwhex(a);
 		break;
+	case 'L':
+		addlibpath(EARGF(usage()));
+		break;
 	case 'x':	/* produce export table */
 		doexp = 1;
 		if(argv[1] != nil && argv[1][0] != '-' && !isobjfile(argv[1]))
@@ -106,12 +133,20 @@ main(int argc, char *argv[])
 		break;
 	} ARGEND
 	USED(argc);
-	if(*argv == 0) {
-		diag("usage: ql [-options] objects");
-		errorexit();
-	}
+	if(*argv == 0)
+		usage();
 	if(!debug['9'] && !debug['U'] && !debug['B'])
 		debug[DEFAULT] = 1;
+	a = getenv("ccroot");
+	if(a != nil && *a != '\0') {
+		if(!fileexists(a)) {
+			diag("nonexistent $ccroot: %s", a);
+			errorexit();
+		}
+	}else
+		a = "";
+	snprint(name, sizeof(name), "%s/%s/lib", a, thestring);
+	addlibpath(name);
 	r0iszero = debug['0'] == 0;
 	if(HEADTYPE == -1) {
 		if(debug['U'])
@@ -147,11 +182,11 @@ main(int argc, char *argv[])
 	case 2:	/* plan 9 */
 		HEADR = 32L;
 		if(INITTEXT == -1)
-			INITTEXT = 4128;
+			INITTEXT = 0x100020;
 		if(INITDAT == -1)
 			INITDAT = 0;
 		if(INITRND == -1)
-			INITRND = 4096;
+			INITRND = 0x100000;
 		break;
 	case 3:	/* raw */
 		HEADR = 0;
@@ -174,7 +209,16 @@ main(int argc, char *argv[])
 			INITRND = 0;
 		break;
 	case 5:	/* elf executable */
-		HEADR = rnd(52L+3*32L, 16);
+		HEADR = rnd(Ehdr32sz+3*Phdr32sz, 16);
+		if(INITTEXT == -1)
+			INITTEXT = 0x00400000L+HEADR;
+		if(INITDAT == -1)
+			INITDAT = 0x10000000;
+		if(INITRND == -1)
+			INITRND = 0;
+		break;
+	case 6:	/* elf for virtex 4 */
+		HEADR = rnd(Ehdr32sz+4*Phdr32sz, 16); /* extra phdr for JMP */
 		if(INITTEXT == -1)
 			INITTEXT = 0x00400000L+HEADR;
 		if(INITDAT == -1)
@@ -183,6 +227,8 @@ main(int argc, char *argv[])
 			INITRND = 0;
 		break;
 	}
+	if (INITTEXTP == -1)
+		INITTEXTP = INITTEXT;
 	if(INITDAT != 0 && INITRND != 0)
 		print("warning: -D0x%lux is ignored because of -R0x%lux\n",
 			INITDAT, INITRND);
@@ -207,7 +253,7 @@ main(int argc, char *argv[])
 		outfile = "q.out";
 	cout = create(outfile, 1, 0775);
 	if(cout < 0) {
-		diag("%s: cannot create", outfile);
+		diag("cannot create %s: %r", outfile);
 		errorexit();
 	}
 	nuxiinit();
@@ -223,7 +269,7 @@ main(int argc, char *argv[])
 			INITENTRY = "_mainp";
 		if(!debug['l'])
 			lookup(INITENTRY, 0)->type = SXREF;
-	} else
+	} else if(!(*INITENTRY >= '0' && *INITENTRY <= '9'))
 		lookup(INITENTRY, 0)->type = SXREF;
 
 	while(*argv)
@@ -274,6 +320,42 @@ out:
 }
 
 void
+addlibpath(char *arg)
+{
+	char **p;
+
+	if(nlibdir >= maxlibdir) {
+		if(maxlibdir == 0)
+			maxlibdir = 8;
+		else
+			maxlibdir *= 2;
+		p = malloc(maxlibdir*sizeof(*p));
+		if(p == nil) {
+			diag("out of memory");
+			errorexit();
+		}
+		memmove(p, libdir, nlibdir*sizeof(*p));
+		free(libdir);
+		libdir = p;
+	}
+	libdir[nlibdir++] = strdup(arg);
+}
+
+char*
+findlib(char *file)
+{
+	int i;
+	char name[LIBNAMELEN];
+
+	for(i = 0; i < nlibdir; i++) {
+		snprint(name, sizeof(name), "%s/%s", libdir[i], file);
+		if(fileexists(name))
+			return libdir[i];
+	}
+	return nil;
+}
+
+void
 loadlib(void)
 {
 	int i;
@@ -314,25 +396,26 @@ objfile(char *file)
 	int f, work;
 	Sym *s;
 	char magbuf[SARMAG];
-	char name[100], pname[150];
+	char name[LIBNAMELEN], pname[LIBNAMELEN];
 	struct ar_hdr arhdr;
 	char *e, *start, *stop;
 
-	if(file[0] == '-' && file[1] == 'l') {
-		if(debug['9'])
-			sprint(name, "/%s/lib/lib", thestring);
-		else
-			sprint(name, "/usr/%clib/lib", thechar);
-		strcat(name, file+2);
-		strcat(name, ".a");
-		file = name;
-	}
 	if(debug['v'])
 		Bprint(&bso, "%5.2f ldobj: %s\n", cputime(), file);
 	Bflush(&bso);
+	if(file[0] == '-' && file[1] == 'l') {
+		snprint(pname, sizeof(pname), "lib%s.a", file+2);
+		e = findlib(pname);
+		if(e == nil) {
+			diag("cannot find library: %s", file);
+			errorexit();
+		}
+		snprint(name, sizeof(name), "%s/%s", e, pname);
+		file = name;
+	}
 	f = open(file, 0);
 	if(f < 0) {
-		diag("cannot open file: %s", file);
+		diag("cannot open %s: %r", file);
 		errorexit();
 	}
 	l = read(f, magbuf, SARMAG);
@@ -418,7 +501,7 @@ int
 zaddr(uchar *p, Adr *a, Sym *h[])
 {
 	int i, c;
-	long l;
+	int l;
 	Sym *s;
 	Auto *u;
 
@@ -509,25 +592,24 @@ out:
 void
 addlib(char *obj)
 {
-	char name[1024], comp[256], *p;
-	int i;
+	char fn1[LIBNAMELEN], fn2[LIBNAMELEN], comp[LIBNAMELEN], *p, *name;
+	int i, search;
 
 	if(histfrogp <= 0)
 		return;
 
+	name = fn1;
+	search = 0;
 	if(histfrog[0]->name[1] == '/') {
 		sprint(name, "");
 		i = 1;
-	} else
-	if(histfrog[0]->name[1] == '.') {
+	} else if(histfrog[0]->name[1] == '.') {
 		sprint(name, ".");
 		i = 0;
 	} else {
-		if(debug['9'])
-			sprint(name, "/%s/lib", thestring);
-		else
-			sprint(name, "/usr/%clib", thechar);
+		sprint(name, "");
 		i = 0;
+		search = 1;
 	}
 
 	for(; i<histfrogp; i++) {
@@ -550,13 +632,25 @@ addlib(char *obj)
 			memmove(p+strlen(thestring), p+2, strlen(p+2)+1);
 			memmove(p, thestring, strlen(thestring));
 		}
-		if(strlen(name) + strlen(comp) + 3 >= sizeof(name)) {
+		if(strlen(fn1) + strlen(comp) + 3 >= sizeof(fn1)) {
 			diag("library component too long");
 			return;
 		}
-		strcat(name, "/");
-		strcat(name, comp);
+		if(i > 0 || !search)
+			strcat(fn1, "/");
+		strcat(fn1, comp);
 	}
+
+	cleanname(name);
+
+	if(search){
+		p = findlib(name);
+		if(p != nil){
+			snprint(fn2, sizeof(fn2), "%s/%s", p, name);
+			name = fn2;
+		}
+	}
+
 	for(i=0; i<libraryp; i++)
 		if(strcmp(name, library[i]) == 0)
 			return;
@@ -718,35 +812,39 @@ loop:
 		bloc = buf.xbuf;
 		goto loop;
 	}
-	o = bloc[0];		/* as */
+	o = bloc[0] | (bloc[1] << 8);		/* as */
+	if(bloc[0] == OANAME && o != OANAME) {
+		diag("%s: probably old .q file\n", pn);
+		errorexit();
+	}
 	if(o <= 0 || o >= ALAST) {
 		diag("%s: opcode out of range %d", pn, o);
-		print("	probably not a .q file\n");
+		print("	probably not a .%c file\n", thechar);
 		errorexit();
 	}
 	if(o == ANAME || o == ASIGNAME) {
 		sig = 0;
 		if(o == ASIGNAME) {
-			sig = bloc[1] | (bloc[2]<<8) | (bloc[3]<<16) | (bloc[4]<<24);
+			sig = bloc[2] | (bloc[3]<<8) | (bloc[4]<<16) | (bloc[5]<<24);
 			bloc += 4;
 			c -= 4;
 		}
-		stop = memchr(&bloc[3], 0, bsize-&bloc[3]);
+		stop = memchr(&bloc[4], 0, bsize-&bloc[4]);
 		if(stop == 0){
 			bsize = readsome(f, buf.xbuf, bloc, bsize, c);
 			if(bsize == 0)
 				goto eof;
 			bloc = buf.xbuf;
-			stop = memchr(&bloc[3], 0, bsize-&bloc[3]);
+			stop = memchr(&bloc[4], 0, bsize-&bloc[4]);
 			if(stop == 0){
 				fprint(2, "%s: name too long\n", pn);
 				errorexit();
 			}
 		}
-		v = bloc[1];	/* type */
-		o = bloc[2];	/* sym */
-		bloc += 3;
-		c -= 3;
+		v = bloc[2];	/* type */
+		o = bloc[3];	/* sym */
+		bloc += 4;
+		c -= 4;
 
 		r = 0;
 		if(v == D_STATIC)
@@ -789,12 +887,12 @@ loop:
 	hunk += sizeof(Prog);
 
 	p->as = o;
-	p->reg = bloc[1] & 0x3f;
-	if(bloc[1] & 0x80)
+	p->reg = bloc[2] & 0x3f;
+	if(bloc[2] & 0x80)
 		p->mark = NOSCHED;
-	p->line = bloc[2] | (bloc[3]<<8) | (bloc[4]<<16) | (bloc[5]<<24);
-	r = zaddr(bloc+6, &p->from, h) + 6;
-	if(bloc[1] & 0x40)
+	p->line = bloc[3] | (bloc[4]<<8) | (bloc[5]<<16) | (bloc[6]<<24);
+	r = zaddr(bloc+7, &p->from, h) + 7;
+	if(bloc[2] & 0x40)
 		r += zaddr(bloc+r, &p->from3, h);
 	else
 		p->from3 = zprg.from3;
@@ -1054,8 +1152,7 @@ lookup(char *symb, int v)
 	for(p=symb; c = *p; p++)
 		h = h+h+h + c;
 	l = (p - symb) + 1;
-	if(h < 0)
-		h = ~h;
+	h &= 0xffffff;
 	h %= NHASH;
 	for(s = hash[h]; s != S; s = s->link)
 		if(s->version == v)
@@ -1213,16 +1310,24 @@ void
 doprof2(void)
 {
 	Sym *s2, *s4;
-	Prog *p, *q, *ps2, *ps4;
+	Prog *p, *q, *q2, *ps2, *ps4;
 
 	if(debug['v'])
 		Bprint(&bso, "%5.2f profile 2\n", cputime());
 	Bflush(&bso);
 
-	s2 = lookup("_profin", 0);
-	s4 = lookup("_profout", 0);
+	if(debug['e']){
+		s2 = lookup("_tracein", 0);
+		s4 = lookup("_traceout", 0);
+	}else{
+		s2 = lookup("_profin", 0);
+		s4 = lookup("_profout", 0);
+	}
 	if(s2->type != STEXT || s4->type != STEXT) {
-		diag("_profin/_profout not defined");
+		if(debug['e'])
+			diag("_tracein/_traceout not defined %d %d", s2->type, s4->type);
+		else
+			diag("_profin/_profout not defined");
 		return;
 	}
 
@@ -1263,7 +1368,20 @@ doprof2(void)
 			q->line = p->line;
 			q->pc = p->pc;
 			q->link = p->link;
-			p->link = q;
+			if(debug['e']){		/* embedded tracing */
+				q2 = prg();
+				p->link = q2;
+				q2->link = q;
+
+				q2->line = p->line;
+				q2->pc = p->pc;
+
+				q2->as = ABR;
+				q2->to.type = D_BRANCH;
+				q2->to.sym = p->to.sym;
+				q2->cond = q->link;
+			}else
+				p->link = q;
 			p = q;
 			p->as = ABL;
 			p->to.type = D_BRANCH;
@@ -1273,7 +1391,17 @@ doprof2(void)
 			continue;
 		}
 		if(p->as == ARETURN) {
-
+			/*
+			 * RETURN (default)
+			 */
+			if(debug['e']){		/* embedded tracing */
+				q = prg();
+				q->line = p->line;
+				q->pc = p->pc;
+				q->link = p->link;
+				p->link = q;
+				p = q;
+			}
 			/*
 			 * RETURN
 			 */

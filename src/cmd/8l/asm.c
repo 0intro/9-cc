@@ -26,18 +26,64 @@ entryvalue(void)
 	return s->value;
 }
 
+/* these need to take long arguments to be compatible with elf.c */
 void
-wput(ushort w)
+wputl(long w)
 {
 	cput(w);
 	cput(w>>8);
 }
 
 void
-wputb(ushort w)
+wput(long w)
 {
 	cput(w>>8);
 	cput(w);
+}
+
+void
+lput(long l)
+{
+	cput(l>>24);
+	cput(l>>16);
+	cput(l>>8);
+	cput(l);
+}
+
+void
+lputl(long l)
+{
+	cput(l);
+	cput(l>>8);
+	cput(l>>16);
+	cput(l>>24);
+}
+
+void
+llput(vlong v)
+{
+	lput(v>>32);
+	lput(v);
+}
+
+void
+llputl(vlong v)
+{
+	lputl(v);
+	lputl(v>>32);
+}
+
+void
+strnput(char *s, int n)
+{
+	for(; *s && n > 0; s++){
+		cput(*s);
+		n--;
+	}
+	while(n > 0){
+		cput(0);
+		n--;
+	}
 }
 
 void
@@ -89,7 +135,7 @@ asmb(void)
 	cflush();
 	switch(HEADTYPE) {
 	default:
-		diag("unknown header type %d", HEADTYPE);
+		diag("unknown header type %ld", HEADTYPE);
 	case 0:
 		seek(cout, rnd(HEADR+textsize, 8192), 0);
 		break;
@@ -98,6 +144,7 @@ asmb(void)
 		seek(cout, textsize+HEADR, 0);
 		break;
 	case 2:
+	case 5:
 		seek(cout, HEADR+textsize, 0);
 		break;
 	case 3:
@@ -140,6 +187,7 @@ asmb(void)
 			seek(cout, rnd(HEADR+textsize, INITRND)+datsize, 0);
 			break;
 		case 2:
+		case 5:
 			seek(cout, HEADR+textsize+datsize, 0);
 			break;
 		case 3:
@@ -179,7 +227,7 @@ asmb(void)
 		lput(symsize);			/* nsyms */
 		lput((0x38L<<16)|7L);		/* size of optional hdr and flags */
 		lput((0413<<16)|0437L);		/* magic and version */
-		lput(rnd(HEADR+textsize, 4096));	/* sizes */
+		lput(rnd(HEADR+textsize, 4096));/* sizes */
 		lput(datsize);
 		lput(bsssize);
 		lput(entryvalue());		/* va of entry */
@@ -193,7 +241,6 @@ asmb(void)
 		lput(0L);
 		lput(~0L);			/* gp value ?? */
 		break;
-		lputl(0);			/* x */
 	case 1:	/* unix coff */
 		/*
 		 * file header
@@ -216,7 +263,7 @@ asmb(void)
 		/*
 		 * text section header
 		 */
-		s8put(".text");
+		strnput(".text", 8);
 		lputl(HEADR);			/* pa */
 		lputl(HEADR);			/* va */
 		lputl(textsize);		/* text size */
@@ -228,7 +275,7 @@ asmb(void)
 		/*
 		 * data section header
 		 */
-		s8put(".data");
+		strnput(".data", 8);
 		lputl(INITDAT);			/* pa */
 		lputl(INITDAT);			/* va */
 		lputl(datsize);			/* data size */
@@ -240,7 +287,7 @@ asmb(void)
 		/*
 		 * bss section header
 		 */
-		s8put(".bss");
+		strnput(".bss", 8);
 		lputl(INITDAT+datsize);		/* pa */
 		lputl(INITDAT+datsize);		/* va */
 		lputl(bsssize);			/* bss size */
@@ -252,7 +299,7 @@ asmb(void)
 		/*
 		 * comment section header
 		 */
-		s8put(".comment");
+		strnput(".comment", 8);
 		lputl(0);			/* pa */
 		lputl(0);			/* va */
 		lputl(symsize+lcsize);		/* comment size */
@@ -266,7 +313,7 @@ asmb(void)
 		magic = 4*11*11+7;
 		if(dlm)
 			magic |= 0x80000000;
-		lput(magic);		/* magic */
+		lput(magic);			/* magic */
 		lput(textsize);			/* sizes */
 		lput(datsize);
 		lput(bsssize);
@@ -281,56 +328,30 @@ asmb(void)
 	case 4:
 		/* fake MS-DOS .EXE */
 		v = rnd(HEADR+textsize, INITRND)+datsize;
-		wput(0x5A4D);			/* 'MZ' */
-		wput(v % 512);			/* bytes in last page */
-		wput(rnd(v, 512)/512);		/* total number of pages */
-		wput(0x0000);			/* number of reloc items */
+		wputl(0x5A4D);			/* 'MZ' */
+		wputl(v % 512);			/* bytes in last page */
+		wputl(rnd(v, 512)/512);		/* total number of pages */
+		wputl(0x0000);			/* number of reloc items */
 		v = rnd(HEADR-(INITTEXT & 0xFFFF), 16);
-		wput(v/16);			/* size of header */
-		wput(0x0000);			/* minimum allocation */
-		wput(0xFFFF);			/* maximum allocation */
-		wput(0x0000);			/* initial ss value */
-		wput(0x0100);			/* initial sp value */
-		wput(0x0000);			/* complemented checksum */
+		wputl(v/16);			/* size of header */
+		wputl(0x0000);			/* minimum allocation */
+		wputl(0xFFFF);			/* maximum allocation */
+		wputl(0x0000);			/* initial ss value */
+		wputl(0x0100);			/* initial sp value */
+		wputl(0x0000);			/* complemented checksum */
 		v = entryvalue();
-		wput(v);			/* initial ip value (!) */
-		wput(0x0000);			/* initial cs value */
-		wput(0x0000);
-		wput(0x0000);
-		wput(0x003E);			/* reloc table offset */
-		wput(0x0000);			/* overlay number */
+		wputl(v);			/* initial ip value (!) */
+		wputl(0x0000);			/* initial cs value */
+		wputl(0x0000);
+		wputl(0x0000);
+		wputl(0x003E);			/* reloc table offset */
+		wputl(0x0000);			/* overlay number */
+		break;
+	case 5:
+		elf32(I386, ELFDATA2LSB, 0, nil);
 		break;
 	}
 	cflush();
-}
-
-void
-lput(long l)
-{
-	cput(l>>24);
-	cput(l>>16);
-	cput(l>>8);
-	cput(l);
-}
-
-void
-lputl(long l)
-{
-	cput(l);
-	cput(l>>8);
-	cput(l>>16);
-	cput(l>>24);
-}
-
-void
-s8put(char *n)
-{
-	char name[8];
-	int i;
-
-	strncpy(name, n, sizeof(name));
-	for(i=0; i<sizeof(name); i++)
-		cput(name[i]);
 }
 
 void

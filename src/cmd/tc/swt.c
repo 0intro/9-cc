@@ -1,7 +1,7 @@
 #include "gc.h"
 
 int
-swcmp(const void *a1, const void *a2)
+swcmp(void *a1, void *a2)
 {
 	C1 *p1, *p2;
 
@@ -89,7 +89,7 @@ swit1(C1 *q, int nc, long def, Node *n)
 }
 
 void
-cas(void)
+casf(void)
 {
 	Case *c;
 
@@ -196,7 +196,7 @@ outstring(char *s, long n)
 }
 
 long
-outlstring(ushort *s, long n)
+outlstring(TRune *s, long n)
 {
 	char buf[2];
 	int c;

@@ -34,6 +34,7 @@ typedef long long int	vlong;
 typedef unsigned long long int	uvlong;
 typedef unsigned int u32int;
 typedef uvlong u64int;
+typedef size_t usize;
 
 typedef unsigned int	mpdigit;	/* for /sys/include/mp.h */
 typedef unsigned short u16int;
@@ -265,6 +266,8 @@ extern	double	modf(double, double*);
 #define	pow10	infpow10
 extern	double	pow10(int);
 extern	vlong	strtoll(const char*, char**, int);
+#define	qsort	infqsort
+extern	void	qsort(void*, long, long, int (*)(void*, void*));
 extern	uvlong	strtoull(const char*, char**, int);
 extern	void	sysfatal(char*, ...);
 extern	int	dec64(uchar*, int, char*, int);

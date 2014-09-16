@@ -1,7 +1,7 @@
 #include	"l.h"
 
 void*
-mysbrk(ulong size)
+mysbrk(usize size)
 {
 	return sbrk(size);
 }

@@ -55,15 +55,16 @@ struct	Prog
 struct	Case
 {
 	Case*	link;
-	long	val;
+	vlong	val;
 	long	label;
 	char	def;
+	char isv;
 };
 #define	C	((Case*)0)
 
 struct	C1
 {
-	long	val;
+	vlong	val;
 	long	label;
 };
 
@@ -129,6 +130,7 @@ struct	Rgn
 };
 
 EXTERN	long	breakpc;
+EXTERN	long	nbreak;
 EXTERN	Case*	cases;
 EXTERN	Node	constnode;
 EXTERN	Node	fconstnode;
@@ -140,7 +142,6 @@ EXTERN	Prog*	lastp;
 EXTERN	long	maxargsafe;
 EXTERN	int	mnstring;
 EXTERN	Multab	multab[20];
-EXTERN	int	retok;
 EXTERN	int	hintabsize;
 EXTERN	Node*	nodrat;
 EXTERN	Node*	nodret;
@@ -184,6 +185,7 @@ EXTERN	long	regbits;
 EXTERN	long	exregbits;
 
 EXTERN	int	change;
+EXTERN	int	suppress;
 
 EXTERN	Reg*	firstr;
 EXTERN	Reg*	lastr;
@@ -204,7 +206,7 @@ void	codgen(Node*, Node*);
 void	gen(Node*);
 void	noretval(int);
 void	xcom(Node*);
-void	bcomplex(Node*);
+int	bcomplex(Node*, Node*);
 void	usedset(Node*, int);
 
 /*
@@ -254,17 +256,17 @@ void	gpseudo(int, Sym*, Node*);
 /*
  * swt.c
  */
-int	swcmp(const void*, const void*);
+int	swcmp(void*, void*);
 void	doswit(Node*);
-void	swit1(C1*, int, long, Node*, Node*);
-void	cas(void);
+void	swit1(C1*, int, long, Node*);
+void	swit2(C1*, int, long, Node*, Node*);
+void	casf(void);
 void	bitload(Node*, Node*, Node*, Node*, Node*);
 void	bitstore(Node*, Node*, Node*, Node*, Node*);
 long	outstring(char*, long);
 int	mulcon(Node*, Node*);
 Multab*	mulcon0(long);
 void	nullwarn(Node*, Node*);
-void	sextern(Sym*, Node*, long, long);
 void	gextern(Sym*, Node*, long, long);
 void	outcode(void);
 void	ieeedtod(Ieee*, double);
@@ -284,7 +286,7 @@ int	Bconv(Fmt*);
  * reg.c
  */
 Reg*	rega(void);
-int	rcmp(const void*, const void*);
+int	rcmp(void*, void*);
 void	regopt(Prog*);
 void	addmove(Reg*, int, int, int);
 Bits	mkvar(Adr*, int);

@@ -13,7 +13,27 @@ long	BADOFFSET	=	-1;
 		OFFSET++;\
 */
 
-#define	LPUT(c)\
+#define LPUT(l) { \
+		if (little) { \
+			LLEPUT(l); \
+		} else { \
+			LBEPUT(l); \
+		} \
+	}
+
+#define	LLEPUT(c)\
+	{\
+		cbp[0] = (c);\
+		cbp[1] = (c)>>8;\
+		cbp[2] = (c)>>16;\
+		cbp[3] = (c)>>24;\
+		cbp += 4;\
+		cbc -= 4;\
+		if(cbc <= 0)\
+			cflush();\
+	}
+
+#define	LBEPUT(c)\
 	{\
 		cbp[0] = (c)>>24;\
 		cbp[1] = (c)>>16;\
@@ -25,6 +45,35 @@ long	BADOFFSET	=	-1;
 			cflush();\
 	}
 
+#define HPUT(h) { \
+		if (little) { \
+			HLEPUT(h); \
+		} else { \
+			HBEPUT(h); \
+		} \
+	}
+
+#define	HLEPUT(c)\
+	{\
+		cbp[0] = (c);\
+		cbp[1] = (c)>>8;\
+		cbp += 2;\
+		cbc -= 2;\
+		if(cbc <= 0)\
+			cflush();\
+	}
+
+#define	HBEPUT(c)\
+	{\
+		cbp[0] = (c)>>8;\
+		cbp[1] = (c);\
+		cbp += 2;\
+		cbc -= 2;\
+		if(cbc <= 0)\
+			cflush();\
+	}
+
+
 #define	CPUT(c)\
 	{\
 		cbp[0] = (c);\
@@ -33,6 +82,74 @@ long	BADOFFSET	=	-1;
 		if(cbc <= 0)\
 			cflush();\
 	}
+
+void
+cput(long l)
+{
+	CPUT(l);
+}
+
+void
+objput(long l)	/* emit long in byte order appropriate to object machine */
+{
+	LPUT(l);
+}
+
+void
+objhput(short s)
+{
+	HPUT(s);
+}
+
+void
+wput(long l)
+{
+
+	cbp[0] = l>>8;
+	cbp[1] = l;
+	cbp += 2;
+	cbc -= 2;
+	if(cbc <= 0)
+		cflush();
+}
+
+void
+wputl(long l)
+{
+
+	cbp[0] = l;
+	cbp[1] = l>>8;
+	cbp += 2;
+	cbc -= 2;
+	if(cbc <= 0)
+		cflush();
+}
+
+void
+lput(long l)		/* emit long in big-endian byte order */
+{
+	LBEPUT(l);
+}
+
+void
+lputl(long l)		/* emit long in big-endian byte order */
+{
+	LLEPUT(l);
+}
+
+void
+llput(vlong v)
+{
+	lput(v>>32);
+	lput(v);
+}
+
+void
+llputl(vlong v)
+{
+	lputl(v);
+	lputl(v>>32);
+}
 
 long
 entryvalue(void)
@@ -111,6 +228,7 @@ asmb(void)
 	case 2:
 	case 3:
 	case 5:
+	case 6:
 		OFFSET = HEADR+textsize;
 		seek(cout, OFFSET, 0);
 		break;
@@ -138,6 +256,7 @@ asmb(void)
 		case 2:
 		case 1:
 		case 5:
+		case 6:
 			OFFSET = HEADR+textsize+datsize;
 			seek(cout, OFFSET, 0);
 			break;
@@ -203,7 +322,11 @@ asmb(void)
 		lput(0L);			/* complete mystery */
 		break;
 	case 2:
-		lput(0x407);			/* magic */
+		if (little)
+			t = 24;
+		else
+			t = 16;
+		lput(((((4*t)+0)*t)+7));	/* magic */
 		lput(textsize);			/* sizes */
 		lput(datsize);
 		lput(bsssize);
@@ -318,47 +441,10 @@ asmb(void)
 		lput(0x80L);			/* flags */
 		break;
 	case 5:
-		strnput("\177ELF", 4);		/* e_ident */
-		CPUT(1);			/* class = 32 bit */
-		CPUT(2);			/* data = MSB */
-		CPUT(1);			/* version = CURRENT */
-		strnput("", 9);
-		lput((2L<<16)|8L);		/* type = EXEC; machine = MIPS */
-		lput(1L);			/* version = CURRENT */
-		lput(entryvalue());		/* entry vaddr */
-		lput(52L);			/* offset to first phdr */
-		lput(0L);			/* offset to first shdr */
-		lput(0L);			/* flags = MIPS */
-		lput((52L<<16)|32L);		/* Ehdr & Phdr sizes*/
-		lput((3L<<16)|0L);		/* # Phdrs & Shdr size */
-		lput((0L<<16)|0L);		/* # Shdrs & shdr string size */
-
-		lput(1L);			/* text - type = PT_LOAD */
-		lput(0L);			/* file offset */
-		lput(INITTEXT-HEADR);		/* vaddr */
-		lput(INITTEXT-HEADR);		/* paddr */
-		lput(HEADR+textsize);		/* file size */
-		lput(HEADR+textsize);		/* memory size */
-		lput(0x05L);			/* protections = RX */
-		lput(0x10000L);			/* alignment code?? */
-
-		lput(1L);			/* data - type = PT_LOAD */
-		lput(HEADR+textsize);		/* file offset */
-		lput(INITDAT);			/* vaddr */
-		lput(INITDAT);			/* paddr */
-		lput(datsize);			/* file size */
-		lput(datsize+bsssize);		/* memory size */
-		lput(0x06L);			/* protections = RW */
-		lput(0x10000L);			/* alignment code?? */
-
-		lput(0L);			/* data - type = PT_NULL */
-		lput(HEADR+textsize+datsize);	/* file offset */
-		lput(0L);
-		lput(0L);
-		lput(symsize);			/* symbol table size */
-		lput(lcsize);			/* line number size */
-		lput(0x04L);			/* protections = R */
-		lput(0x04L);			/* alignment code?? */
+		elf32(MIPS, little? ELFDATA2LSB: ELFDATA2MSB, 0, nil);
+		break;
+	case 6:
+		break;
 	}
 	cflush();
 }
@@ -372,13 +458,6 @@ strnput(char *s, int n)
 	}
 	for(; n > 0; n--)
 		CPUT(0);
-}
-
-void
-lput(long l)
-{
-
-	LPUT(l);
 }
 
 void
@@ -477,7 +556,7 @@ putsymb(char *s, int t, long v, int ver)
 
 	if(t == 'f')
 		s++;
-	LPUT(v);
+	LBEPUT(v);
 	if(ver)
 		t += 'a' - 'A';
 	CPUT(t+0x80);			/* 0x80 is variable length */
@@ -530,12 +609,12 @@ asmlc(void)
 		if(p->line == oldlc || p->as == ATEXT || p->as == ANOP) {
 			if(p->as == ATEXT)
 				curtext = p;
-			if(debug['L'])
+			if(debug['V'])
 				Bprint(&bso, "%6lux %P\n",
 					p->pc, p);
 			continue;
 		}
-		if(debug['L'])
+		if(debug['V'])
 			Bprint(&bso, "\t\t%6ld", lcsize);
 		v = (p->pc - oldpc) / MINLC;
 		while(v) {
@@ -543,7 +622,7 @@ asmlc(void)
 			if(v < 127)
 				s = v;
 			CPUT(s+128);	/* 129-255 +pc */
-			if(debug['L'])
+			if(debug['V'])
 				Bprint(&bso, " pc+%ld*%d(%ld)", s, MINLC, s+128);
 			v -= s;
 			lcsize++;
@@ -557,7 +636,7 @@ asmlc(void)
 			CPUT(s>>16);
 			CPUT(s>>8);
 			CPUT(s);
-			if(debug['L']) {
+			if(debug['V']) {
 				if(s > 0)
 					Bprint(&bso, " lc+%ld(%d,%ld)\n",
 						s, 0, s);
@@ -572,14 +651,14 @@ asmlc(void)
 		}
 		if(s > 0) {
 			CPUT(0+s);	/* 1-64 +lc */
-			if(debug['L']) {
+			if(debug['V']) {
 				Bprint(&bso, " lc+%ld(%ld)\n", s, 0+s);
 				Bprint(&bso, "%6lux %P\n",
 					p->pc, p);
 			}
 		} else {
 			CPUT(64-s);	/* 65-128 -lc */
-			if(debug['L']) {
+			if(debug['V']) {
 				Bprint(&bso, " lc%ld(%ld)\n", s, 64-s);
 				Bprint(&bso, "%6lux %P\n",
 					p->pc, p);
@@ -592,7 +671,7 @@ asmlc(void)
 		CPUT(s);
 		lcsize++;
 	}
-	if(debug['v'] || debug['L'])
+	if(debug['v'] || debug['V'])
 		Bprint(&bso, "lcsize = %ld\n", lcsize);
 	Bflush(&bso);
 }
@@ -820,7 +899,7 @@ asmout(Prog *p, Optab *o, int aflag)
 		else
 			v = (p->cond->pc - pc-4) >> 2;
 		if(((v << 16) >> 16) != v)
-			diag("short branch too far: %d\n%P", v, p);
+			diag("short branch too far: %ld\n%P", v, p);
 		o1 = OP_IRR(opirr(p->as), v, p->from.reg, p->reg);
 		break;
 

@@ -25,6 +25,10 @@ LIBS=bio 9		# order is important
 BIN=$ROOT/$OBJDIR/bin
 
 <$ROOT/mkfiles/mkone-$SHELLTYPE
+CFLAGS= $CFLAGS -I.
 
 enam.$O:	../kc/enam.c
 	$CC $CFLAGS ../kc/enam.c
+
+$TARGMODEL.$O:	../ld/$TARGMODEL.c
+	$CC $CFLAGS ../ld/$TARGMODEL.c

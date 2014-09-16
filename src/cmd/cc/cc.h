@@ -652,8 +652,8 @@ Node*	uncomargs(Node*);
 void	acom(Node*);
 void	acom1(vlong, Node*);
 void	acom2(Node*, Type*);
-int	acomcmp1(const void*, const void*);
-int	acomcmp2(const void*, const void*);
+int	acomcmp1(void*, void*);
+int	acomcmp2(void*, void*);
 int	addo(Node*);
 void	evconst(Node*);
 

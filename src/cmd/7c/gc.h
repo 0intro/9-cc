@@ -271,7 +271,7 @@ int	usableoffset(Node*, vlong, Node*);
 /*
  * swt.c
  */
-int	swcmp(const void*, const void*);
+int	swcmp(void*, void*);
 void	doswit(Node*);
 void	swit1(C1*, int, long, Node*);
 void	swit2(C1*, int, long, Node*, Node*);
@@ -302,7 +302,7 @@ int	Rconv(Fmt*);
  * reg.c
  */
 Reg*	rega(void);
-int	rcmp(const void*, const void*);
+int	rcmp(void*, void*);
 void	regopt(Prog*);
 void	addmove(Reg*, int, int, int);
 Bits	mkvar(Adr*, int);

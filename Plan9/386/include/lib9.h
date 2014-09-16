@@ -366,6 +366,8 @@ extern	double	strtod(char*, char**);
 extern	long	strtol(char*, char**, int);
 extern	ulong	strtoul(char*, char**, int);
 extern	vlong	strtoll(char*, char**, int);
+#define	qsort	infqsort
+extern	void	qsort(void*, long, long, int (*)(void*, void*));
 extern	uvlong	strtoull(char*, char**, int);
 extern	void	sysfatal(char*, ...);
 #pragma	varargck	argpos	sysfatal	1

@@ -36,6 +36,10 @@ main(int argc, char *argv[])
 		p = ARGF();
 		setinclude(p);
 		break;
+	case  'L':			/* for little-endian mips */
+		thechar = '0';
+		thestring = "spim";
+		break;
 	} ARGEND
 	if(*argv == 0) {
 		print("usage: %ca [-options] file.s\n", thechar);
@@ -458,7 +462,7 @@ cinit(void)
 	if(mygetwd(pathname, 99) == 0) {
 		pathname = allocn(pathname, 100, 900);
 		if(mygetwd(pathname, 999) == 0)
-			strcpy(pathname, "/???");
+			strcpy(pathname, "/?");
 	}
 }
 

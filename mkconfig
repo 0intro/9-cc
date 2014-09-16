@@ -1,0 +1,25 @@
+#
+#	Set the following 4 variables.  The host system is the system where
+#	the software will be built; the target system is where it will run.
+#	They are almost always the same.
+
+#	On Nt systems, the ROOT path MUST be of the form 'drive:/path'
+ROOT=/home/forsyth/hg/ken-cc
+
+#   build system OS type
+SYSHOST=Linux
+
+#   target system OS type
+SYSTARG=Linux
+
+#   target system object type
+OBJTYPE=386
+
+#
+#	no changes required beyond this point
+#
+OBJDIR=$SYSTARG/$OBJTYPE
+
+<$ROOT/mkfiles/mkhost-$SYSHOST			# variables appropriate for host system
+<$ROOT/mkfiles/mkfile-$SYSTARG-$OBJTYPE	# variables used to build target object type
+

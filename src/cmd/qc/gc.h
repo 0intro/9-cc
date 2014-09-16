@@ -27,10 +27,12 @@ typedef	struct	Rgn	Rgn;
 
 struct	Adr
 {
-	long	offset;
-	double dval;
-	char	sval[NSNAME];
-
+/*	union	*/
+/*	{	*/
+		long	offset;
+		double	dval;
+		char	sval[NSNAME];
+/*	};	*/
 	Sym*	sym;
 	char	type;
 	char	reg;
@@ -55,15 +57,16 @@ struct	Prog
 struct	Case
 {
 	Case*	link;
-	long	val;
+	vlong	val;
 	long	label;
 	char	def;
+	char isv;
 };
 #define	C	((Case*)0)
 
 struct	C1
 {
-	long	val;
+	vlong	val;
 	long	label;
 };
 
@@ -106,9 +109,11 @@ struct	Reg
 	long	regu;
 	long	loop;		/* could be shorter */
 
-	Reg*	log5;
-	int	active;
-
+/*	union	*/
+/*	{	*/
+		Reg*	log5;
+		long	active;
+/*	};	*/
 	Reg*	p1;
 	Reg*	p2;
 	Reg*	p2link;
@@ -129,6 +134,7 @@ struct	Rgn
 };
 
 EXTERN	long	breakpc;
+EXTERN	long	nbreak;
 EXTERN	Case*	cases;
 EXTERN	Node	constnode;
 EXTERN	Node	fconstnode;
@@ -141,10 +147,10 @@ EXTERN	int	hintabsize;
 EXTERN	long	maxargsafe;
 EXTERN	Multab	multab[20];
 EXTERN	int	mnstring;
-EXTERN	int	retok;
 EXTERN	Node*	nodrat;
 EXTERN	Node*	nodret;
 EXTERN	Node*	nodsafe;
+EXTERN	Node*	nodretv;
 EXTERN	long	nrathole;
 EXTERN	long	nstring;
 EXTERN	Prog*	p;
@@ -244,8 +250,11 @@ void	regind(Node*, Node*);
 void	gprep(Node*, Node*);
 void	raddr(Node*, Prog*);
 void	naddr(Node*, Adr*);
+void	gloadhi(Node*, Node*, int);
+void	gloadlo(Node*, Node*, int);
 void	gmove(Node*, Node*);
 void	gins(int a, Node*, Node*);
+void	gins3(int a, Node*, Node*, Node*);
 void	gopcode(int, Node*, Node*, Node*);
 int	samaddr(Node*, Node*);
 void	gbranch(int);
@@ -253,6 +262,10 @@ void	patch(Prog*, long);
 int	sconst(Node*);
 int	sval(long);
 int	uconst(Node*);
+long	hi64v(Node*);
+long	lo64v(Node*);
+Node*	hi64(Node*);
+Node*	lo64(Node*);
 void	gpseudo(int, Sym*, Node*);
 
 /*
@@ -260,8 +273,9 @@ void	gpseudo(int, Sym*, Node*);
  */
 int	swcmp(void*, void*);
 void	doswit(Node*);
-void	swit1(C1*, int, long, Node*, Node*);
-void	cas(void);
+void	swit1(C1*, int, long, Node*);
+void	swit2(C1*, int, long, Node*, Node*);
+void	casf(void);
 void	bitload(Node*, Node*, Node*, Node*, Node*);
 void	bitstore(Node*, Node*, Node*, Node*, Node*);
 long	outstring(char*, long);
@@ -269,7 +283,6 @@ int	mulcon(Node*, Node*);
 Multab*	mulcon0(Node*, long);
 int	mulcon1(Node*, long, Node*);
 void	nullwarn(Node*, Node*);
-void	sextern(Sym*, Node*, long, long);
 void	gextern(Sym*, Node*, long, long);
 void	outcode(void);
 void	ieeedtod(Ieee*, double);

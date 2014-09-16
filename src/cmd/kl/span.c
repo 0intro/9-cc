@@ -182,6 +182,7 @@ aclass(Adr *a)
 			instoffset = s->value + a->offset + INITDAT;
 /* not sure why this barfs */
 return C_LCON;
+/*
 			if(instoffset == 0)
 				return C_ZCON;
 			if(instoffset >= -0x1000 && instoffset <= 0xfff)
@@ -189,6 +190,7 @@ return C_LCON;
 			if((instoffset & 0x3ff) == 0)
 				return C_UCON;
 			return C_LCON;
+*/
 
 		case D_AUTO:
 			instoffset = autosize + a->offset;
@@ -333,7 +335,7 @@ cmp(int a, int b)
 }
 
 int
-ocmp(const void *a1, const void *a2)
+ocmp(void *a1, void *a2)
 {
 	Optab *p1, *p2;
 	int n;
