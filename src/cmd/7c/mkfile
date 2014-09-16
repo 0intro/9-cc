@@ -1,0 +1,43 @@
+<../../../mkconfig
+
+TARG=7c
+OFILES=\
+	cgen.$O\
+	enam.$O\
+	list.$O\
+	machcap.$O\
+	mul.$O\
+	peep.$O\
+	pgen.$O\
+	pswt.$O\
+	reg.$O\
+	sgen.$O\
+	swt.$O\
+	txt.$O\
+
+HFILES=\
+	gc.h\
+	7.out.h\
+	../cc/cc.h\
+
+LIBS=cc bio 9		# order is important
+
+BIN=$ROOT/$OBJDIR/bin
+
+<$ROOT/mkfiles/mkone-$SHELLTYPE
+
+$ROOT/$OBJDIR/lib/libcc.a:
+	cd ../cc
+	mk install
+	mk clean
+
+%.$O: ../cc/%.c
+	$CC $CFLAGS ../cc/$stem.c
+
+t:V:	$O.out
+	$O.out -S t
+	$LD -o t.out t.$O
+	t.out
+
+#enam.c: 7.out.h
+#	rc mkenam
