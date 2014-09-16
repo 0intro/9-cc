@@ -42,6 +42,7 @@ typedef long long int	vlong;
 typedef unsigned long long int	uvlong;
 typedef unsigned int u32int;
 typedef uvlong u64int;
+typedef unsigned long usize;
 
 typedef unsigned int	mpdigit;	/* for /sys/include/mp.h */
 typedef unsigned short u16int;
