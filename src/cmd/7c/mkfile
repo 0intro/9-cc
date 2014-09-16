@@ -25,6 +25,7 @@ LIBS=cc bio 9		# order is important
 BIN=$ROOT/$OBJDIR/bin
 
 <$ROOT/mkfiles/mkone-$SHELLTYPE
+CFLAGS=-I. $CFLAGS
 
 $ROOT/$OBJDIR/lib/libcc.a:
 	cd ../cc
