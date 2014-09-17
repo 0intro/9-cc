@@ -4,7 +4,7 @@
 #	They are almost always the same.
 
 #	On Nt systems, the ROOT path MUST be of the form 'drive:/path'
-ROOT=/home/forsyth/hg/ken-cc
+ROOT=$HOME/hg/ken-cc
 
 #   build system OS type
 SYSHOST=Linux
