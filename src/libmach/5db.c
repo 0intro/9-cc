@@ -17,7 +17,7 @@ struct	Instr
 {
 	Map	*map;
 	ulong	w;
-	ulong	addr;
+	uvlong	addr;
 	uchar	op;			/* super opcode */
 
 	uchar	cond;			/* bits 28-31 */
@@ -38,7 +38,7 @@ struct Opcode
 {
 	char*	o;
 	void	(*fmt)(Opcode*, Instr*);
-	ulong	(*foll)(Map*, Rgetter, Instr*, ulong);
+	uvlong	(*foll)(Map*, Rgetter, Instr*, uvlong);
 	char*	a;
 };
 
@@ -49,18 +49,18 @@ static	char	FRAMENAME[] = ".frame";
  * Arm-specific debugger interface
  */
 
-extern	char	*armexcep(Map*, Rgetter);
-static	int	armfoll(Map*, ulong, Rgetter, ulong*);
-static	int	arminst(Map*, ulong, char, char*, int);
-static	int	armdas(Map*, ulong, char*, int);
-static	int	arminstlen(Map*, ulong);
+static	char	*armexcep(Map*, Rgetter);
+static	int	armfoll(Map*, uvlong, Rgetter, uvlong*);
+static	int	arminst(Map*, uvlong, char, char*, int);
+static	int	armdas(Map*, uvlong, char*, int);
+static	int	arminstlen(Map*, uvlong);
 
 /*
  *	Debugger interface
  */
 Machdata armmach =
 {
-	{0, 0, 0, 0xD},		/* break point */
+	{0x70, 0x00, 0x20, 0xD1},		/* break point */	/* D1200070 */
 	4,			/* break point size */
 
 	leswab,			/* short to local byte order */
@@ -78,13 +78,13 @@ Machdata armmach =
 	arminstlen,		/* instruction size */
 };
 
-char*
+static char*
 armexcep(Map *map, Rgetter rget)
 {
-	long c;
+	uvlong c;
 
 	c = (*rget)(map, "TYPE");
-	switch (c&0x1f) {
+	switch ((int)c&0x1f) {
 	case 0x11:
 		return "Fiq interrupt";
 	case 0x12:
@@ -122,7 +122,7 @@ char*	shtype[4] =
 static
 char *hb[4] =
 {
-	"???",	"HU", "B", "H"
+	"?",	"HU", "B", "H"
 };
 
 static
@@ -134,25 +134,38 @@ char*	addsub[2] =
 int
 armclass(long w)
 {
-	int op;
+	int op, done;
 
 	op = (w >> 25) & 0x7;
 	switch(op) {
 	case 0:	/* data processing r,r,r */
 		op = ((w >> 4) & 0xf);
 		if(op == 0x9) {
-			op = 48+16;		/* mul */
+			op = 48+16;		/* mul, swp or *rex */
+			if((w & 0x0ff00fff) == 0x01900f9f) {
+				op = 93;	/* ldrex */
+				break;
+			}
+			if((w & 0x0ff00ff0) == 0x01800f90) {
+				op = 94;	/* strex */
+				break;
+			}
 			if(w & (1<<24)) {
 				op += 2;
 				if(w & (1<<22))
-					op++;	/* swap */
+					op++;	/* swpb */
 				break;
+			}
+			if(w & (1<<23)) {	/* mullu */
+				op = (48+24+4+4+2+2+4);
+				if(w & (1<<22))	/* mull */
+					op += 2;
 			}
 			if(w & (1<<21))
 				op++;		/* mla */
 			break;
 		}
-		if ((op & 0x9) == 0x9)		/* ld/st byte/half s/u */
+		if((op & 0x9) == 0x9)		/* ld/st byte/half s/u */
 		{
 			op = (48+16+4) + ((w >> 22) & 0x1) + ((w >> 19) & 0x2);
 			break;
@@ -161,19 +174,45 @@ armclass(long w)
 		if(w & (1<<4))
 			op += 32;
 		else
-		if(w & (31<<7))
+		if((w & (31<<7)) || (w & (1<<5)))
 			op += 16;
 		break;
 	case 1:	/* data processing i,r,r */
 		op = (48) + ((w >> 21) & 0xf);
 		break;
 	case 2:	/* load/store byte/word i(r) */
+		if ((w & 0xffffff8f) == 0xf57ff00f) {	/* barriers, clrex */
+			done = 1;
+			switch ((w >> 4) & 7) {
+			case 1:
+				op = 95;	/* clrex */
+				break;
+			case 4:
+				op = 96;	/* dsb */
+				break;
+			case 5:
+				op = 97;	/* dmb */
+				break;
+			case 6:
+				op = 98;	/* isb */
+				break;
+			default:
+				done = 0;
+				break;
+			}
+			if (done)
+				break;
+		}
 		op = (48+24) + ((w >> 22) & 0x1) + ((w >> 19) & 0x2);
 		break;
 	case 3:	/* load/store byte/word (r)(r) */
 		op = (48+24+4) + ((w >> 22) & 0x1) + ((w >> 19) & 0x2);
 		break;
 	case 4:	/* block data transfer (r)(r) */
+		if ((w & 0xfe50ffff) == 0xf8100a00) {	/* v7 RFE */
+			op = 99;
+			break;
+		}
 		op = (48+24+4+4) + ((w >> 20) & 0x1);
 		break;
 	case 5:	/* branch / branch link */
@@ -182,17 +221,17 @@ armclass(long w)
 	case 7:	/* coprocessor crap */
 		op = (48+24+4+4+2+2) + ((w >> 3) & 0x2) + ((w >> 20) & 0x1);
 		break;
-	default:
-		op = (48+24+4+4+2+2+4);
+	default:	  
+		op = (48+24+4+4+2+2+4+4);
 		break;
 	}
 	return op;
 }
 
 static int
-decode(Map *map, ulong pc, Instr *i)
+decode(Map *map, uvlong pc, Instr *i)
 {
-	long w;
+	ulong w;
 
 	if(get4(map, pc, &w) < 0) {
 		werrstr("can't read instruction: %r");
@@ -205,6 +244,8 @@ decode(Map *map, ulong pc, Instr *i)
 	i->map = map;
 	return 1;
 }
+
+#pragma	varargck	argpos	bprint		2
 
 static void
 bprint(Instr *i, char *fmt, ...)
@@ -226,7 +267,7 @@ plocal(Instr *i)
 	int offset;
 
 	if(!findsym(i->addr, CTEXT, &s)) {
-		if(debug)fprint(2,"fn not found @%lux: %r\n", i->addr);
+		if(debug)fprint(2,"fn not found @%llux: %r\n", i->addr);
 		return 0;
 	}
 	fn = s.name;
@@ -248,14 +289,14 @@ plocal(Instr *i)
 			class == CAUTO ? " auto" : "param", offset);
 		return 0;
 	}
-	bprint(i, "%s%c%d%s", s.name, class == CPARAM ? '+' : '-', s.value, reg);
+	bprint(i, "%s%c%lld%s", s.name, class == CPARAM ? '+' : '-', s.value, reg);
 	return 1;
 }
 
 /*
  * Print value v as name[+offset]
  */
-int
+static int
 gsymoff(char *buf, int n, long v, int space)
 {
 	Symbol s;
@@ -277,7 +318,7 @@ gsymoff(char *buf, int n, long v, int space)
 	if (!delta)
 		return snprint(buf, n, "%s", s.name);
 	if (s.type != 't' && s.type != 'T')
-		return snprint(buf, n, "%s+%lux", s.name, v-s.value);
+		return snprint(buf, n, "%s+%llux", s.name, v-s.value);
 	else
 		return snprint(buf, n, "#%lux", v);
 }
@@ -443,10 +484,10 @@ armco(Opcode *o, Instr *i)		/* coprocessor instructions */
 	p = (i->w >> 5) & 0x7;
 	if(i->w&(1<<4)) {
 		op = (i->w >> 21) & 0x07;
-		snprint(buf, sizeof(buf), "#%x, #%x, R%d, C(%d), C(%d), #%x\n", cp, op, i->rd, i->rn, i->rs, p);
+		snprint(buf, sizeof(buf), "#%x, #%x, R%d, C(%d), C(%d), #%x", cp, op, i->rd, i->rn, i->rs, p);
 	} else {
 		op = (i->w >> 20) & 0x0f;
-		snprint(buf, sizeof(buf), "#%x, #%x, C(%d), C(%d), C(%d), #%x\n", cp, op, i->rd, i->rn, i->rs, p);
+		snprint(buf, sizeof(buf), "#%x, #%x, C(%d), C(%d), C(%d), #%x", cp, op, i->rd, i->rn, i->rs, p);
 	}
 	format(o->o, i, buf);
 }
@@ -454,7 +495,7 @@ armco(Opcode *o, Instr *i)		/* coprocessor instructions */
 static int
 armcondpass(Map *map, Rgetter rget, uchar cond)
 {
-	ulong psr;
+	uvlong psr;
 	uchar n;
 	uchar z;
 	uchar c;
@@ -467,24 +508,24 @@ armcondpass(Map *map, Rgetter rget, uchar cond)
 	v = (psr >> 28) & 1;
 
 	switch(cond) {
-		case 0:		return z;
-		case 1:		return !z;
-		case 2:		return c;
-		case 3:		return !c;
-		case 4:		return n;
-		case 5:		return !n;
-		case 6:		return v;
-		case 7:		return !v;
-		case 8:		return c && !z;
-		case 9:		return !c || z;
-		case 10:	return n == v;
-		case 11:	return n != v;
-		case 12:	return !z && (n == v);
-		case 13:	return z && (n != v);
-		case 14:	return 1;
-		case 15:	return 0;
+	default:
+	case 0:		return z;
+	case 1:		return !z;
+	case 2:		return c;
+	case 3:		return !c;
+	case 4:		return n;
+	case 5:		return !n;
+	case 6:		return v;
+	case 7:		return !v;
+	case 8:		return c && !z;
+	case 9:		return !c || z;
+	case 10:	return n == v;
+	case 11:	return n != v;
+	case 12:	return !z && (n == v);
+	case 13:	return z && (n != v);
+	case 14:	return 1;
+	case 15:	return 0;
 	}
-	return 0;
 }
 
 static ulong
@@ -503,6 +544,7 @@ armshiftval(Map *map, Rgetter rget, Instr *i)
 		v = rget(map, buf);
 
 		switch((i->w & BITS(4, 6)) >> 4) {
+		default:
 		case 0:					/* LSLIMM */
 			return v << s;
 		case 1:					/* LSLREG */
@@ -548,7 +590,6 @@ armshiftval(Map *map, Rgetter rget, Instr *i)
 			return ROR(v, s & 0xF);
 		}
 	}
-	return 0;
 }
 
 static int
@@ -580,33 +621,30 @@ armmaddr(Map *map, Rgetter rget, Instr *i)
 	nb = nbits(i->w & ((1 << 15) - 1));
 
 	switch((i->w >> 23) & 3) {
-		case 0: return (v - (nb*4)) + 4;
-		case 1: return v;
-		case 2: return v - (nb*4);
-		case 3: return v + 4;
+	default:
+	case 0: return (v - (nb*4)) + 4;
+	case 1: return v;
+	case 2: return v - (nb*4);
+	case 3: return v + 4;
 	}
-	return 0;
 }
 
-static ulong
+static uvlong
 armaddr(Map *map, Rgetter rget, Instr *i)
 {
 	char buf[8];
 	ulong rn;
 
-	sprint(buf, "R%ld", (i->w >> 16) & 0xf);
+	snprint(buf, sizeof(buf), "R%ld", (i->w >> 16) & 0xf);
 	rn = rget(map, buf);
 
-	if((i->w & (1<<24)) == 0) {			/* POSTIDX */
-		sprint(buf, "R%ld", rn);
-		return rget(map, buf);
-	}
+	if((i->w & (1<<24)) == 0)			/* POSTIDX */
+		return rn;
 
 	if((i->w & (1<<25)) == 0) {			/* OFFSET */
-		sprint(buf, "R%ld", rn);
 		if(i->w & (1U<<23))
-			return rget(map, buf) + (i->w & BITS(0,11));
-		return rget(map, buf) - (i->w & BITS(0,11));
+			return rn + (i->w & BITS(0,11));
+		return rn - (i->w & BITS(0,11));
 	} else {					/* REGOFF */
 		ulong index = 0;
 		uchar c;
@@ -634,8 +672,8 @@ armaddr(Map *map, Rgetter rget, Instr *i)
 	}
 }
 
-static ulong
-armfadd(Map *map, Rgetter rget, Instr *i, ulong pc)
+static uvlong
+armfadd(Map *map, Rgetter rget, Instr *i, uvlong pc)
 {
 	char buf[8];
 	int r;
@@ -650,8 +688,8 @@ armfadd(Map *map, Rgetter rget, Instr *i, ulong pc)
 	return rget(map, buf) + armshiftval(map, rget, i);
 }
 
-static ulong
-armfmovm(Map *map, Rgetter rget, Instr *i, ulong pc)
+static uvlong
+armfmovm(Map *map, Rgetter rget, Instr *i, uvlong pc)
 {
 	ulong v;
 	ulong addr;
@@ -661,15 +699,15 @@ armfmovm(Map *map, Rgetter rget, Instr *i, ulong pc)
 		return pc+4;
 
 	addr = armmaddr(map, rget, i) + nbits(i->w & BITS(0,15));
-	if(get4(map, addr, (long*)&v) < 0) {
+	if(get4(map, addr, &v) < 0) {
 		werrstr("can't read addr: %r");
 		return -1;
 	}
 	return v;
 }
 
-static ulong
-armfbranch(Map *map, Rgetter rget, Instr *i, ulong pc)
+static uvlong
+armfbranch(Map *map, Rgetter rget, Instr *i, uvlong pc)
 {
 	if(!armcondpass(map, rget, (i->w >> 28) & 0xf))
 		return pc+4;
@@ -677,11 +715,10 @@ armfbranch(Map *map, Rgetter rget, Instr *i, ulong pc)
 	return pc + (((signed long)i->w << 8) >> 6) + 8;
 }
 
-static ulong
-armfmov(Map *map, Rgetter rget, Instr *i, ulong pc)
+static uvlong
+armfmov(Map *map, Rgetter rget, Instr *i, uvlong pc)
 {
-	ulong rd;
-	ulong v;
+	ulong rd, v;
 
 	rd = (i->w >> 12) & 0xf;
 	if(rd != 15 || !armcondpass(map, rget, (i->w>>28)&0xf))
@@ -690,7 +727,7 @@ armfmov(Map *map, Rgetter rget, Instr *i, ulong pc)
 	 /* LDR */
 	/* BUG: Needs LDH/B, too */
 	if(((i->w>>26)&0x3) == 1) {
-		if(get4(map, armaddr(map, rget, i), (long*)&v) < 0) {
+		if(get4(map, armaddr(map, rget, i), &v) < 0) {
 			werrstr("can't read instruction: %r");
 			return pc+4;
 		}
@@ -698,7 +735,9 @@ armfmov(Map *map, Rgetter rget, Instr *i, ulong pc)
 	}
 
 	 /* MOV */
-	return armshiftval(map, rget, i);
+	v = armshiftval(map, rget, i);
+
+	return v;
 }
 
 static Opcode opcodes[] =
@@ -775,8 +814,8 @@ static Opcode opcodes[] =
 	"MVN%C%S",	armdpi, 0,	"$#%i,R%d",
 
 /* 48+16 */
-	"MUL%C%S",	armdpi, 0,	"R%s,R%M,R%n",
-	"MULA%C%S",	armdpi, 0,	"R%s,R%M,R%n,R%d",
+	"MUL%C%S",	armdpi, 0,	"R%M,R%s,R%n",
+	"MULA%C%S",	armdpi, 0,	"R%M,R%s,R%n,R%d",
 	"SWPW",		armdpi, 0,	"R%s,(R%n),R%d",
 	"SWPB",		armdpi, 0,	"R%s,(R%n),R%d",
 
@@ -808,7 +847,28 @@ static Opcode opcodes[] =
 	"MCR%C",	armco, 0,		"",
 	"MRC%C",	armco, 0,		"",
 
+/* 48+24+4+4+2+2+4 */
+	"MULLU%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
+	"MULALU%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
+	"MULL%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
+	"MULAL%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
+
+/* 48+24+4+4+2+2+4+4 = 92 */
 	"UNK",		armunk, 0,	"",
+
+	/* new v7 arch instructions */
+/* 93 */
+	"LDREX",	armdpi, 0,	"(R%n),R%d",
+	"STREX",	armdpi, 0,	"R%s,(R%n),R%d",
+	"CLREX",	armunk, 0,	"",
+
+/* 96 */
+	"DSB",		armunk, 0,	"",
+	"DMB",		armunk, 0,	"",
+	"ISB",		armunk, 0,	"",
+
+/* 99 */
+	"RFEV7%P%a",	armbdt, 0,	"(R%n)",
 };
 
 static void
@@ -874,11 +934,11 @@ format(char *mnemonic, Instr *i, char *f)
 			break;
 				
 		case 'M':
-			bprint(i, "%d", (i->w>>8) & 0xf);
+			bprint(i, "%lud", (i->w>>8) & 0xf);
 			break;
 				
 		case 'm':
-			bprint(i, "%d", (i->w>>7) & 0x1f);
+			bprint(i, "%lud", (i->w>>7) & 0x1f);
 			break;
 
 		case 'h':
@@ -898,7 +958,7 @@ format(char *mnemonic, Instr *i, char *f)
 			fmt = "#%lx(R%d)";
 			if (i->rn == 15) {
 				/* convert load of offset(PC) to a load immediate */
-				if (get4(i->map, i->addr+i->imm+8, &i->imm) > 0)
+				if (get4(i->map, i->addr+i->imm+8, (ulong*)&i->imm) > 0)
 				{
 					g = 1;
 					fmt = "";
@@ -909,7 +969,7 @@ format(char *mnemonic, Instr *i, char *f)
 				if (i->rd == 11) {
 					ulong nxti;
 
-					if (get4(i->map, i->addr+4, (long*)&nxti) > 0) {
+					if (get4(i->map, i->addr+4, &nxti) > 0) {
 						if ((nxti & 0x0e0f0fff) == 0x060c000b) {
 							i->imm += mach->sb;
 							g = 1;
@@ -995,7 +1055,7 @@ format(char *mnemonic, Instr *i, char *f)
 }
 
 static int
-printins(Map *map, ulong pc, char *buf, int n)
+printins(Map *map, uvlong pc, char *buf, int n)
 {
 	Instr i;
 
@@ -1009,14 +1069,14 @@ printins(Map *map, ulong pc, char *buf, int n)
 }
 
 static int
-arminst(Map *map, ulong pc, char modifier, char *buf, int n)
+arminst(Map *map, uvlong pc, char modifier, char *buf, int n)
 {
 	USED(modifier);
 	return printins(map, pc, buf, n);
 }
 
 static int
-armdas(Map *map, ulong pc, char *buf, int n)
+armdas(Map *map, uvlong pc, char *buf, int n)
 {
 	Instr i;
 
@@ -1031,7 +1091,7 @@ armdas(Map *map, ulong pc, char *buf, int n)
 }
 
 static int
-arminstlen(Map *map, ulong pc)
+arminstlen(Map *map, uvlong pc)
 {
 	Instr i;
 
@@ -1041,9 +1101,9 @@ arminstlen(Map *map, ulong pc)
 }
 
 static int
-armfoll(Map *map, ulong pc, Rgetter rget, ulong *foll)
+armfoll(Map *map, uvlong pc, Rgetter rget, uvlong *foll)
 {
-	ulong d;
+	uvlong d;
 	Instr i;
 
 	if(decode(map, pc, &i) < 0)

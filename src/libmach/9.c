@@ -1,67 +1,64 @@
 /*
- * PowerPC definition
- *	forsyth@terzarima.net
+ * PowerPC 64 definition
+ *	forsyth@vitanuova.com
  */
 #include <lib9.h>
 #include <bio.h>
-#include "uregq.h"
+#include "ureg9.h"
 #include "mach.h"
 
 
-#define	REGOFF(x)	(ulong) (&((struct Ureg *) 0)->x)
+#define	REGOFF(x)	offsetof(struct Ureg, x)
 
-#define SP		REGOFF(sp)
-#define PC		REGOFF(pc)
-#define	R3		REGOFF(r3)	/* return reg */
-#define	LR		REGOFF(lr)
 #define R31		REGOFF(r31)
 #define FP_REG(x)	(R31+4+8*(x))
 
 #define	REGSIZE		sizeof(struct Ureg)
 #define	FPREGSIZE	(8*33)	
 
-Reglist powerreglist[] = {
-	{"CAUSE",	REGOFF(cause),	RINT|RRDONLY,	'X'},
-	{"SRR1",	REGOFF(srr1),	RINT|RRDONLY,	'X'},
-	{"PC",		REGOFF(pc),	RINT,		'X'},
-	{"LR",		REGOFF(lr),	RINT,		'X'},
+Reglist power64reglist[] = {
+	{"CAUSE",	REGOFF(cause),	RINT|RRDONLY,	'Y'},
+	{"TRAP",	REGOFF(cause),	RINT|RRDONLY,	'Y'},	/* alias for acid */
+	{"MSR",	REGOFF(msr),	RINT|RRDONLY,	'Y'},
+	{"PC",		REGOFF(pc),	RINT,		'Y'},
+	{"LR",		REGOFF(lr),	RINT,		'Y'},
 	{"CR",		REGOFF(cr),	RINT,		'X'},
-	{"XER",		REGOFF(xer),	RINT,		'X'},
-	{"CTR",		REGOFF(ctr),	RINT,		'X'},
-	{"PC",		PC,		RINT,		'X'},
-	{"SP",		SP,		RINT,		'X'},
-	{"R0",		REGOFF(r0),	RINT,		'X'},
+	{"XER",		REGOFF(xer),	RINT,		'Y'},
+	{"CTR",		REGOFF(ctr),	RINT,		'Y'},
+	{"PC",		REGOFF(pc),		RINT,		'Y'},
+	{"SP",		REGOFF(sp),		RINT,		'Y'},
+	{"R0",		REGOFF(r0),	RINT,		'Y'},
 	/* R1 is SP */
-	{"R2",		REGOFF(r2),	RINT,		'X'},
-	{"R3",		REGOFF(r3),	RINT,		'X'},
-	{"R4",		REGOFF(r4),	RINT,		'X'},
-	{"R5",		REGOFF(r5),	RINT,		'X'},
-	{"R6",		REGOFF(r6),	RINT,		'X'},
-	{"R7",		REGOFF(r7),	RINT,		'X'},
-	{"R8",		REGOFF(r8),	RINT,		'X'},
-	{"R9",		REGOFF(r9),	RINT,		'X'},
-	{"R10",		REGOFF(r10),	RINT,		'X'},
-	{"R11",		REGOFF(r11),	RINT,		'X'},
-	{"R12",		REGOFF(r12),	RINT,		'X'},
-	{"R13",		REGOFF(r13),	RINT,		'X'},
-	{"R14",		REGOFF(r14),	RINT,		'X'},
-	{"R15",		REGOFF(r15),	RINT,		'X'},
-	{"R16",		REGOFF(r16),	RINT,		'X'},
-	{"R17",		REGOFF(r17),	RINT,		'X'},
-	{"R18",		REGOFF(r18),	RINT,		'X'},
-	{"R19",		REGOFF(r19),	RINT,		'X'},
-	{"R20",		REGOFF(r20),	RINT,		'X'},
-	{"R21",		REGOFF(r21),	RINT,		'X'},
-	{"R22",		REGOFF(r22),	RINT,		'X'},
-	{"R23",		REGOFF(r23),	RINT,		'X'},
-	{"R24",		REGOFF(r24),	RINT,		'X'},
-	{"R25",		REGOFF(r25),	RINT,		'X'},
-	{"R26",		REGOFF(r26),	RINT,		'X'},
-	{"R27",		REGOFF(r27),	RINT,		'X'},
-	{"R28",		REGOFF(r28),	RINT,		'X'},
-	{"R29",		REGOFF(r29),	RINT,		'X'},
-	{"R30",		REGOFF(r30),	RINT,		'X'},
-	{"R31",		REGOFF(r31),	RINT,		'X'},
+	{"R2",		REGOFF(r2),	RINT,		'Y'},
+	{"R3",		REGOFF(r3),	RINT,		'Y'},
+	{"R4",		REGOFF(r4),	RINT,		'Y'},
+	{"R5",		REGOFF(r5),	RINT,		'Y'},
+	{"R6",		REGOFF(r6),	RINT,		'Y'},
+	{"R7",		REGOFF(r7),	RINT,		'Y'},
+	{"R8",		REGOFF(r8),	RINT,		'Y'},
+	{"R9",		REGOFF(r9),	RINT,		'Y'},
+	{"R10",		REGOFF(r10),	RINT,		'Y'},
+	{"R11",		REGOFF(r11),	RINT,		'Y'},
+	{"R12",		REGOFF(r12),	RINT,		'Y'},
+	{"R13",		REGOFF(r13),	RINT,		'Y'},
+	{"R14",		REGOFF(r14),	RINT,		'Y'},
+	{"R15",		REGOFF(r15),	RINT,		'Y'},
+	{"R16",		REGOFF(r16),	RINT,		'Y'},
+	{"R17",		REGOFF(r17),	RINT,		'Y'},
+	{"R18",		REGOFF(r18),	RINT,		'Y'},
+	{"R19",		REGOFF(r19),	RINT,		'Y'},
+	{"R20",		REGOFF(r20),	RINT,		'Y'},
+	{"R21",		REGOFF(r21),	RINT,		'Y'},
+	{"R22",		REGOFF(r22),	RINT,		'Y'},
+	{"R23",		REGOFF(r23),	RINT,		'Y'},
+	{"R24",		REGOFF(r24),	RINT,		'Y'},
+	{"R25",		REGOFF(r25),	RINT,		'Y'},
+	{"R26",		REGOFF(r26),	RINT,		'Y'},
+	{"R27",		REGOFF(r27),	RINT,		'Y'},
+	{"R28",		REGOFF(r28),	RINT,		'Y'},
+	{"R29",		REGOFF(r29),	RINT,		'Y'},
+	{"R30",		REGOFF(r30),	RINT,		'Y'},
+	{"R31",		REGOFF(r31),	RINT,		'Y'},
 	{"F0",		FP_REG(0),	RFLT,		'F'},
 	{"F1",		FP_REG(1),	RFLT,		'F'},
 	{"F2",		FP_REG(2),	RFLT,		'F'},
@@ -99,11 +96,11 @@ Reglist powerreglist[] = {
 };
 
 	/* the machine description */
-Mach mpower =
+Mach mpower64 =
 {
-	"power",
-	MPOWER,		/* machine type */
-	powerreglist,	/* register set */
+	"power64",
+	MPOWER64,		/* machine type */
+	power64reglist,	/* register set */
 	REGSIZE,	/* number of bytes in register set */
 	FPREGSIZE,	/* number of bytes in FP register set */
 	"PC",		/* name of PC */
@@ -113,11 +110,11 @@ Mach mpower =
 	0,		/* value */
 	0x1000,		/* page size */
 	0x80000000U,	/* kernel base */
-	0xF0000000U,	/* kernel text mask */
+	0,		/* kernel text mask */
 	0x7FFFFFFFU,	/* user stack top */
 	4,		/* quantization of pc */
-	4,		/* szaddr */
-	4,		/* szreg */
+	8,		/* szaddr */
+	8,		/* szreg */
 	4,		/* szfloat */
 	8,		/* szdouble */
 };

@@ -1,41 +1,41 @@
 /*
- * 8obj.c - identify and parse a 386 object file
+ * 9obj.c - identify and parse a PowerPC-64 object file
+ *	forsyth@terzarima.net
  */
 #include <lib9.h>
 #include <bio.h>
 #include "mach.h"
-#include "8c/8.out.h"
+#include "9c/9.out.h"
 #include "obj.h"
 
 typedef struct Addr	Addr;
 struct Addr
 {
+	char	type;
 	char	sym;
-	char	flags;
+	char	name;
 };
-static	Addr	addr(Biobuf*);
-static	char	type2char(int);
-static	void	skip(Biobuf*, int);
+static Addr addr(Biobuf*);
+static char type2char(int);
+static void skip(Biobuf*, int);
 
 int
-_is8(char *t)
+_is9(char *s)
 {
-	uchar *s = (uchar*)t;
-
-	return  s[0] == (ANAME&0xff)			/* aslo = ANAME */
-		&& s[1] == ((ANAME>>8)&0xff)
+	return  (s[0]&0377) == ANAME				/* ANAME */
+		&& (s[1]&0377) == ANAME>>8
 		&& s[2] == D_FILE			/* type */
 		&& s[3] == 1				/* sym */
 		&& s[4] == '<';				/* name of file */
 }
 
 int
-_read8(Biobuf *bp, Prog* p)
+_read9(Biobuf *bp, Prog *p)
 {
 	int as, n, c;
 	Addr a;
 
-	as = Bgetc(bp);		/* as(low) */
+	as = Bgetc(bp);			/* as(low) */
 	if(as < 0)
 		return 0;
 	c = Bgetc(bp);		/* as(high) */
@@ -47,7 +47,7 @@ _read8(Biobuf *bp, Prog* p)
 	if(as == ANAME || as == ASIGNAME){
 		if(as == ASIGNAME){
 			Bread(bp, &p->sig, 4);
-			p->sig = leswal(p->sig);
+			p->sig = beswal(p->sig);
 		}
 		p->kind = aName;
 		p->type = type2char(Bgetc(bp));		/* type */
@@ -71,12 +71,15 @@ _read8(Biobuf *bp, Prog* p)
 	}
 	if(as == ATEXT)
 		p->kind = aText;
-	if(as == AGLOBL)
+	else if(as == AGLOBL)
 		p->kind = aData;
+	n = Bgetc(bp);	/* reg and flag */
 	skip(bp, 4);		/* lineno(4) */
 	a = addr(bp);
+	if(n & 0x40)
+		addr(bp);
 	addr(bp);
-	if(!(a.flags & T_SYM))
+	if(a.type != D_OREG || a.name != D_STATIC && a.name != D_EXTERN)
 		p->kind = aNone;
 	p->sym = a.sym;
 	return 1;
@@ -86,33 +89,48 @@ static Addr
 addr(Biobuf *bp)
 {
 	Addr a;
-	int t;
-	long off;
+	vlong off;
+	long l;
 
-	off = 0;
-	a.sym = -1;
-	a.flags = Bgetc(bp);			/* flags */
-	if(a.flags & T_INDEX)
-		skip(bp, 2);
-	if(a.flags & T_OFFSET){
-		off = Bgetc(bp);
-		off |= Bgetc(bp) << 8;
-		off |= Bgetc(bp) << 16;
-		off |= Bgetc(bp) << 24;
+	a.type = Bgetc(bp);	/* a.type */
+	skip(bp,1);		/* reg */
+	a.sym = Bgetc(bp);	/* sym index */
+	a.name = Bgetc(bp);	/* sym type */
+	switch(a.type){
+	default:
+	case D_NONE: case D_REG: case D_FREG: case D_CREG:
+	case D_FPSCR: case D_MSR:
+		break;
+	case D_SPR:
+	case D_OREG:
+	case D_CONST:
+	case D_BRANCH:
+	case D_DCONST:
+	case D_DCR:
+		l = Bgetc(bp);
+		l |= Bgetc(bp) << 8;
+		l |= Bgetc(bp) << 16;
+		l |= Bgetc(bp) << 24;
+		off = l;
+		if(a.type == D_DCONST){
+			l = Bgetc(bp);
+			l |= Bgetc(bp) << 8;
+			l |= Bgetc(bp) << 16;
+			l |= Bgetc(bp) << 24;
+			off = ((vlong)l << 32) | (off & 0xFFFFFFFF);
+			a.type = D_CONST;	/* perhaps */
+		}
 		if(off < 0)
 			off = -off;
-	}
-	if(a.flags & T_SYM)
-		a.sym = Bgetc(bp);
-	if(a.flags & T_FCONST)
-		skip(bp, 8);
-	else
-	if(a.flags & T_SCONST)
-		skip(bp, NSNAME);
-	if(a.flags & T_TYPE) {
-		t = Bgetc(bp);
-		if(a.sym > 0 && (t==D_PARAM || t==D_AUTO))
+		if(a.sym && (a.name==D_PARAM || a.name==D_AUTO))
 			_offset(a.sym, off);
+		break;
+	case D_SCONST:
+		skip(bp, NSNAME);
+		break;
+	case D_FCONST:
+		skip(bp, 8);
+		break;
 	}
 	return a;
 }

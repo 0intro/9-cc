@@ -15,9 +15,10 @@ struct machtab
 	Machdata	*machdata;		/* machine functions */
 };
 
-extern	Mach		mmips, msparc, m68020, mi386, marm, mmips2be, mmips2le, mpower;
-extern	Machdata	mipsmach, sparcmach, m68020mach, i386mach,
-			armmach, mipsmach2be, mipsmach2le, powermach;
+extern	Mach		mmips, msparc, mi386, mamd64,
+			marm, mmips2be, mmips2le, mpower, mpower64;
+extern	Machdata	mipsmach, sparcmach, i386mach,
+			armmach, mipsmach2le, powermach;
 
 /*
  *	machine selection table.  machines with native disassemblers should
@@ -26,18 +27,6 @@ extern	Machdata	mipsmach, sparcmach, m68020mach, i386mach,
  */
 Machtab	machines[] =
 {
-	{	"68020",			/*68020*/
-		F68020,
-		F68020B,
-		A68020,
-		&m68020,
-		&m68020mach,	},
-	{	"68020",			/*Next 68040 bootable*/
-		F68020,
-		FNEXTB,
-		A68020,
-		&m68020,
-		&m68020mach,	},
 	{	"mips2LE",			/*plan 9 mips2 little endian*/
 		FMIPS2LE,
 		0,
@@ -55,7 +44,7 @@ Machtab	machines[] =
 		FMIPSB,
 		AMIPS,
 		&mmips2be,
-		&mipsmach2be, 	},
+		&mipsmach, 	},		/* shares debuggers with native mips */
 	{	"mipsco",			/*native mips - must follow plan 9*/
 		FMIPS,
 		FMIPSB,
@@ -86,17 +75,29 @@ Machtab	machines[] =
 		AI8086,
 		&mi386,
 		&i386mach,	},
+	{	"amd64",			/*amd64*/
+		FAMD64,
+		FAMD64B,
+		AAMD64,
+		&mamd64,
+		&i386mach,	},
 	{	"arm",				/*ARM*/
 		FARM,
-		FNONE,
+		FARMB,
 		AARM,
 		&marm,
 		&armmach,	},
 	{	"power",			/*PowerPC*/
 		FPOWER,
-		FNONE,
+		FPOWERB,
 		APOWER,
 		&mpower,
+		&powermach,	},
+	{	"power64",			/*PowerPC*/
+		FPOWER64,
+		FPOWER64B,
+		APOWER64,
+		&mpower64,
 		&powermach,	},
 	{	0		},		/*the terminator*/
 };

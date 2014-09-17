@@ -2,20 +2,20 @@
  *	Definitions needed for  accessing Irix ELF headers
  */
 typedef struct {
-	unsigned char	ident[16];	/* ident bytes */
-	ushort		type;		/* file type */
-	ushort		machine;	/* target machine */
-	int		version;	/* file version */
-	ulong		elfentry;	/* start address */
-	ulong		phoff;		/* phdr file offset */
-	ulong		shoff;		/* shdr file offset */
-	int		flags;		/* file flags */
-	ushort		ehsize;		/* sizeof ehdr */
-	ushort		phentsize;	/* sizeof phdr */
-	ushort		phnum;		/* number phdrs */
-	ushort		shentsize;	/* sizeof shdr */
-	ushort		shnum;		/* number shdrs */
-	ushort		shstrndx;	/* shdr string index */
+	uchar	ident[16];	/* ident bytes */
+	ushort	type;		/* file type */
+	ushort	machine;	/* target machine */
+	int	version;	/* file version */
+	ulong	elfentry;	/* start address */
+	ulong	phoff;		/* phdr file offset */
+	ulong	shoff;		/* shdr file offset */
+	int	flags;		/* file flags */
+	ushort	ehsize;		/* sizeof ehdr */
+	ushort	phentsize;	/* sizeof phdr */
+	ushort	phnum;		/* number phdrs */
+	ushort	shentsize;	/* sizeof shdr */
+	ushort	shnum;		/* number shdrs */
+	ushort	shstrndx;	/* shdr string index */
 } Ehdr;
 
 typedef struct {
@@ -78,8 +78,12 @@ enum {
 	I860 = 7,		/* Intel i860 */
 	MIPS = 8,		/* Mips R2000 */
 	S370 = 9,		/* Amdhal	*/
+	SPARC64 = 18,		/* Sun SPARC v9 */
 	POWER = 20,		/* PowerPC */
+	POWER64 = 21,		/* PowerPC64 */
+	ARM = 40,		/* ARM */
 	AMD64 = 62,		/* Amd64 */
+	ARM64 = 183,		/* ARM64 */
 
 	NO_VERSION = 0,		/* version, ident[VERSION] */
 	CURRENT = 1,
@@ -96,6 +100,15 @@ enum {
 	R = 0x4,		/* flags */
 	W = 0x2,
 	X = 0x1,
+
+	/* Shdr Codes */
+	Progbits = 1,	/* section types */
+	Strtab = 3,
+	Nobits = 8,
+
+	Swrite = 1,	/* section attributes */
+	Salloc = 2,
+	Sexec = 4,
 };
 
 #define	ELF_MAG		((0x7f<<24) | ('E'<<16) | ('L'<<8) | 'F')
