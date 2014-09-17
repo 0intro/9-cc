@@ -16,13 +16,11 @@ CFLAGS=		-g\
 		-O\
 		-I$ROOT/Linux/386/include\
 		-I$ROOT/include\
- 		-I/usr/X11R6/include\
 		-DLINUX_386
 
 ANSICPP=
 LD=		cc -m32
-LDFLAGS=	-L/usr/openwin/lib\
-		-L/usr/X11R6/lib\
+LDFLAGS=
 
 SYSLIBS=
 

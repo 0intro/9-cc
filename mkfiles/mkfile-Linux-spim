@@ -16,12 +16,10 @@ CFLAGS=		-g\
 		-Os\
 		-I$ROOT/Linux/spim/include\
 		-I$ROOT/include\
- 		-I/usr/X11R6/include
 
 ANSICPP=
 LD=		mipsel-linux-uclibc-gcc
-LDFLAGS=	-L/usr/openwin/lib\
-		-L/usr/X11R6/lib\
+LDFLAGS=
 
 SYSLIBS=
 

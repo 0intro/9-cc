@@ -16,12 +16,10 @@ CFLAGS=		-g\
 		-O\
 		-I$ROOT/Linux/power/include\
 		-I$ROOT/include\
-		-I/usr/X11R6/include
 
 ANSICPP=
 LD=		cc -m32
-LDFLAGS=	-L/usr/openwin/lib\
-		-L/usr/X11R6/lib\
+LDFLAGS=
 
 SYSLIBS=
 
