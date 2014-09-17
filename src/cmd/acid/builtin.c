@@ -342,7 +342,7 @@ follow(Node *r, Node *args)
 {
 	int n, i;
 	Node res;
-	ulong f[10];
+	uvlong f[10];
 	List **tail, *l;
 
 	if(args == 0)
@@ -369,7 +369,7 @@ funcbound(Node *r, Node *args)
 {
 	int n;
 	Node res;
-	ulong bounds[2];
+	uvlong bounds[2];
 	List *l;
 
 	if(args == 0)
@@ -915,10 +915,10 @@ patom(char type, Store *res)
 		Bprint(bout, "%3d", (int)res->u0.sival&0xff);
 		break;
 	case 'X':
-		Bprint(bout, "%.8lux", (int)res->u0.sival);
+		Bprint(bout, "%.8ux", (int)res->u0.sival);
 		break;
 	case 'x':
-		Bprint(bout, "%.4lux", (int)res->u0.sival&0xffff);
+		Bprint(bout, "%.4ux", (int)res->u0.sival&0xffff);
 		break;
 	case 'Y':
 		Bprint(bout, "%.16llux", res->u0.sival);
@@ -933,7 +933,7 @@ patom(char type, Store *res)
 		Bprint(bout, "%ud", (int)res->u0.sival&0xffff);
 		break;
 	case 'U':
-		Bprint(bout, "%ud", (ulong)res->u0.sival);
+		Bprint(bout, "%lud", (ulong)res->u0.sival);
 		break;
 	case 'Z':
 		Bprint(bout, "%llud", res->u0.sival);
@@ -972,7 +972,7 @@ patom(char type, Store *res)
 		if(type != TSTRING)
 			Bprint(bout, "*%c<%s>*", res->fmt, typenames[type]);
 		else
-			Bprint(bout, "%S", res->u0.sstring->string);
+			Bprint(bout, "%S", (Rune*)res->u0.sstring->string);
 		break;
 	case 'a':
 	case 'A':

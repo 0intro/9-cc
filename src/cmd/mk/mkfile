@@ -34,6 +34,7 @@ LIBS=	regexp bio 9
 BIN=$ROOT/$OBJDIR/bin
 
 <$ROOT/mkfiles/mkone-$SHELLTYPE
+CFLAGS=$CFLAGS -I$ROOT/include -DROOT'="'$ROOT'"'
 
 
 <mkfile-$HOSTMODEL
