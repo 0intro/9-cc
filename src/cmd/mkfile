@@ -16,7 +16,7 @@ ALWAYS=\
 	5coff\
 	5cv\
 	sqz\
-	tc\
+#	tc\
 	acid\
 	srclist\
 	ms2\
