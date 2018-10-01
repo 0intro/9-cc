@@ -9,6 +9,7 @@ ALWAYS=\
 	libmach\
 	libregexp\
 	iar\
+	iyacc\
 	cc\
 	5a\
 	5c\
@@ -30,7 +31,6 @@ ALWAYS=\
 #	Utils we build on Posix and Nt, which already exist on Plan 9.
 #
 NOTPLAN9=\
-	iyacc\
 	6a\
 	6c\
 	6l\
