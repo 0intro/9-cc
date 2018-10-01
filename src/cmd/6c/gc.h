@@ -270,7 +270,7 @@ void	gpseudo(int, Sym*, Node*);
 /*
  * swt.c
  */
-int	swcmp(const void*, const void*);
+int	swcmp(void*, void*);
 void	doswit(Node*);
 void	swit1(C1*, int, long, Node*);
 void	casf(void);

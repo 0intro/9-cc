@@ -12,6 +12,9 @@ OFILES=\
 	sgen.$O\
 	swt.$O\
 	txt.$O\
+	pgen.$O\
+	pswt.$O\
+	div.$O\
 
 HFILES=\
 	gc.h\
@@ -28,3 +31,6 @@ $ROOT/$OBJDIR/lib/libcc.a:
 	cd ../cc
 	mk $MKFLAGS install
 	mk $MKFLAGS clean
+
+%.$O: ../cc/%.c
+	$CC -I. $CFLAGS ../cc/$stem.c

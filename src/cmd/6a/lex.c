@@ -1673,4 +1673,3 @@ outhist(void)
 
 #include "../cc/lexbody"
 #include "../cc/macbody"
-#include "../cc/compat"

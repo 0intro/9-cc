@@ -1,5 +1,6 @@
 #include	"l.h"
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/times.h>
 #undef getwd
 #include <unistd.h>	/* For sysconf() and _SC_CLK_TCK */
@@ -77,4 +78,12 @@ cputime(void)
 	ret_val *= sysconf(_SC_CLK_TCK);
 	return ret_val;
 	
+}
+
+int
+fileexists(char *name)
+{
+	struct stat sb;
+
+	return stat(name, &sb) >= 0;
 }
