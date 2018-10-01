@@ -298,7 +298,7 @@ int	Bconv(Fmt*);
  * reg.c
  */
 Reg*	rega(void);
-int	rcmp(const void*, const void*);
+int	rcmp(void*, void*);
 void	regopt(Prog*);
 void	addmove(Reg*, int, int, int);
 Bits	mkvar(Reg*, Adr*);
