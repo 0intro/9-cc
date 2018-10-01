@@ -24,6 +24,8 @@
 
 #define	getwd	infgetwd
 
+#undef isnan
+
 #ifndef EMU
 typedef struct Proc Proc;
 #endif
