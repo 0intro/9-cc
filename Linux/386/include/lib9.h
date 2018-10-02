@@ -1,4 +1,7 @@
 /* define _BSD_SOURCE to use ISO C, POSIX, and 4.3BSD things. */
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
+#endif
 #ifndef _BSD_SOURCE
 #define _BSD_SOURCE
 #endif
