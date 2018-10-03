@@ -26,6 +26,7 @@ ALWAYS=\
 	kprof\
 	mkppcimage\
 	nm\
+	sed\
 
 #
 #	Utils we build on Posix and Nt, which already exist on Plan 9.
