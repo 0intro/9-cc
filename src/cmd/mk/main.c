@@ -120,6 +120,7 @@ main(int argc, char **argv)
 		iflag = 1;
 	usage();
 	syminit();
+	initshell();
 	initenv();
 	usage();
 

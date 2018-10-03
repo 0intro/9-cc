@@ -16,9 +16,11 @@ OFILES=	arc.$O\
 	parse.$O\
 	$TARGMODEL.$O\
 	recipe.$O\
+	rc.$O\
 	rule.$O\
 	run.$O\
-	$TARGSHTYPE.$O\
+	sh.$O\
+	shell.$O\
 	shprint.$O\
 	symtab.$O\
 	var.$O\

@@ -37,21 +37,20 @@ readenv(void)
  *	to exec immediately after this.
  */
 void
-exportenv(Envy *e)
+exportenv(Envy *e, Shell *sh)
 {
 	int i;
 	char **p;
-	char *values;
+	static char buf[16384];
 
 	p = 0;
 	for(i = 0; e->name; e++, i++) {
 		p = (char**) Realloc(p, (i+2)*sizeof(char*));
-		if (e->values)
-			values = wtos(e->values, IWS);
+		if(e->values)
+			snprint(buf, sizeof buf, "%s=%s", e->name,  wtos(e->values, sh->iws));
 		else
-			values = "";
-		p[i] = malloc(strlen(e->name) + strlen(values) + 2);
-		sprint(p[i], "%s=%s", e->name,  values);
+			snprint(buf, sizeof buf, "%s=", e->name);
+		p[i] = strdup(buf);
 	}
 	p[i] = 0;
 	environ = p;
@@ -87,9 +86,29 @@ expunge(int pid, char *msg)
 }
 
 int
-execsh(char *args, char *cmd, Bufblock *buf, Envy *e)
+shargv(Word *cmd, int extra, char ***pargv)
 {
-	char *p;
+	char **argv;
+	int i, n;
+	Word *w;
+
+	n = 0;
+	for(w=cmd; w; w=w->next)
+		n++;
+
+	argv = Malloc((n+extra+1)*sizeof(argv[0]));
+	i = 0;
+	for(w=cmd; w; w=w->next)
+		argv[i++] = w->s;
+	argv[n] = 0;
+	*pargv = argv;
+	return n;
+}
+
+int
+execsh(char *args, char *cmd, Bufblock *buf, Envy *e, Shell *sh, Word *shellcmd)
+{
+	char *p, **argv;
 	int tot, n, pid, in[2], out[2];
 
 	if(buf && pipe(out) < 0){
@@ -122,11 +141,11 @@ execsh(char *args, char *cmd, Bufblock *buf, Envy *e)
 			close(in[0]);
 			close(in[1]);
 			if (e)
-				exportenv(e);
-			if(shflags)
-				execl(shell, shellname, shflags, args, nil);
-			else
-				execl(shell, shellname, args, nil);
+				exportenv(e, sh);
+			n = shargv(shellcmd, 1, &argv);
+			argv[n++] = args;
+			argv[n] = 0;
+			execvp(argv[0], argv);
 			perror(shell);
 			_exits("exec");
 		}
@@ -164,9 +183,11 @@ execsh(char *args, char *cmd, Bufblock *buf, Envy *e)
 }
 
 int
-pipecmd(char *cmd, Envy *e, int *fd)
+pipecmd(char *cmd, Envy *e, int *fd, Shell *sh, Word *shellcmd)
 {
 	int pid, pfd[2];
+	int n;
+	char **argv;
 
 	if(DEBUG(D_EXEC))
 		fprint(1, "pipecmd='%s'\n", cmd);/**/
@@ -187,11 +208,12 @@ pipecmd(char *cmd, Envy *e, int *fd)
 			close(pfd[1]);
 		}
 		if(e)
-			exportenv(e);
-		if(shflags)
-			execl(shell, shellname, shflags, "-c", cmd, nil);
-		else
-			execl(shell, shellname, "-c", cmd, nil);
+			exportenv(e, sh);
+		n = shargv(shellcmd, 2, &argv);
+		argv[n++] = "-c";
+		argv[n++] = cmd;
+		argv[n] = 0;
+		execvp(argv[0], argv);
 		perror(shell);
 		_exits("exec");
 	}
