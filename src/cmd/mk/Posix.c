@@ -17,8 +17,8 @@ readenv(void)
 	Word *w;
 
 	for(p = environ; *p; p++){
-		s = shname(*p);
-		if(*s == '=') {
+		s = strchr(*p, '=');
+		if(s){
 			*s = 0;
 			w = newword(s+1);
 		} else
