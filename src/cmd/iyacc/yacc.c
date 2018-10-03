@@ -142,7 +142,7 @@ Biobuf*	foutput;	/* y.output file */
 
 char*	infile;			/* input file name */
 int	numbval;		/* value of an input number */
-char	tokname[NAMESIZE+4];	/* input token name, slop for runes and 0 */
+char	tokname[NAMESIZE+UTFmax+1]; /* input token name, slop for runes and 0 */
 
 	/* structure declarations */
 
@@ -1166,6 +1166,13 @@ intr(void)
 }
 
 void
+usage(void)
+{
+	fprint(2, "usage: yacc [-Dn] [-vdS] [-o outputfile] [-s stem] grammar\n");
+	exits("usage");
+}
+
+void
 setup(int argc, char *argv[])
 {
 	long c, t;
@@ -1187,14 +1194,14 @@ setup(int argc, char *argv[])
 		vflag++;
 		break;
 	case 'D':
-		yydebug = ARGF();
+		yydebug = EARGF(usage());
 		break;
 	case 'd':
 		dflag++;
 		break;
 	case 'o':
 		ytab++;
-		ytabc = ARGF();
+		ytabc = EARGF(usage());
 		break;
 	case 's':
 		stem++;
@@ -1911,17 +1918,22 @@ skipcom(void)
 
 	/* i is the number of lines skipped */
 	i = 0;
-	if(Bgetrune(finput) != '*')
-		error("illegal comment");
 	c = Bgetrune(finput);
-	while(c != Beof) {
-		while(c == '*')
-			if((c=Bgetrune(finput)) == '/')
-				return i;
-		if(c == '\n')
-			i++;
-		c = Bgetrune(finput);
-	}
+	if(c == '/'){			/* C++ //: skip to end of line */
+		while((c = Bgetrune(finput)) != Beof)
+			if(c == '\n')
+				return 1;
+	}else if(c == '*'){		/* normal C comment */
+		while((c = Bgetrune(finput)) != Beof) {
+			while(c == '*')
+				if((c = Bgetrune(finput)) == '/')
+					return i;
+			if(c == '\n')
+				i++;
+		}
+	}else
+		error("illegal comment");
+
 	error("EOF inside comment");
 	return 0;
 }
@@ -2050,7 +2062,7 @@ swt:
 		if(c != '*')
 			goto swt;
 
-		/* it really is a comment */
+		/* it really is a comment; copy it */
 		Bputrune(faction, c);
 		c = Bgetrune(finput);
 		while(c >= 0) {
@@ -2083,11 +2095,12 @@ swt:
 				c = Bgetrune(finput);
 				if(c == '\n')
 					lineno++;
-			} else
+			} else {
 				if(c == match)
 					goto lcopy;
 				if(c == '\n')
 					error("newline in string or char. const.");
+			}
 			Bputrune(faction, c);
 		}
 		error("EOF in string or character constant");
@@ -2111,26 +2124,26 @@ openup(char *stem, int dflag, int vflag, int ytab, char *ytabc)
 	char buf[256];
 
 	if(vflag) {
-		sprint(buf, "%s.%s", stem, FILEU);
+		snprint(buf, sizeof buf, "%s.%s", stem, FILEU);
 		foutput = Bopen(buf, OWRITE);
 		if(foutput == 0)
 			error("cannot open %s", buf);
 	}
 	if(yydebug) {
-		sprint(buf, "%s.%s", stem, FILEDEBUG);
+		snprint(buf, sizeof buf, "%s.%s", stem, FILEDEBUG);
 		if((fdebug = Bopen(buf, OWRITE)) == 0)
 			error("can't open %s", buf);
 	}
 	if(dflag) {
-		sprint(buf, "%s.%s", stem, FILED);
+		snprint(buf, sizeof buf, "%s.%s", stem, FILED);
 		fdefine = Bopen(buf, OWRITE);
 		if(fdefine == 0)
 			error("can't create %s", buf);
 	}
 	if(ytab == 0)
-		sprint(buf, "%s.%s", stem, OFILE);
+		snprint(buf, sizeof buf, "%s.%s", stem, OFILE);
 	else
-		strcpy(buf, ytabc);
+		strecpy(buf, buf+sizeof buf, ytabc);
 	ftable = Bopen(buf, OWRITE);
 	if(ftable == 0)
 		error("cannot open table file %s", buf);
