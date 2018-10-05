@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/0intro/9-cc.svg?branch=master)](https://travis-ci.org/0intro/9-cc)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/0intro-9-cc/badge.svg)](https://scan.coverity.com/projects/0intro-9-cc)
+
 Highly portable C compiler suite, including supporting tools, originally developed for Plan 9 from Bell Labs and later also used for Inferno.
 
 It targets x86, amd64, SPARC, MIPS, ARM, and PowerPC. ARM64 will shortly be added.
