@@ -1,0 +1,10 @@
+language: c
+
+before_install:
+  - ./configure
+  - . ./env
+  - mkdir Linux/amd64/lib
+
+script:
+  - mk nuke
+  - mk install
