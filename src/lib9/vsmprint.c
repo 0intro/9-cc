@@ -20,9 +20,9 @@ fmtStrFlush(Fmt *f)
 	char *s;
 	int n;
 
-	n = (int)f->farg;
+	n = (int)(uintptr)f->farg;
 	n += 256;
-	f->farg = (void*)n;
+	f->farg = (void*)(uintptr)n;
 	s = f->start;
 	f->start = realloc(s, n);
 	if(f->start == nil){
@@ -49,7 +49,7 @@ fmtstrinit(Fmt *f)
 	f->to = f->start;
 	f->stop = (char*)f->start + n - 1;
 	f->flush = fmtStrFlush;
-	f->farg = (void*)n;
+	f->farg = (void*)(uintptr)n;
 	f->nfmt = 0;
 	return 0;
 }
@@ -65,8 +65,9 @@ vsmprint(char *fmt, va_list args)
 
 	if(fmtstrinit(&f) < 0)
 		return nil;
-	f.args = args;
+	va_copy(f.args, args);
 	n = dofmt(&f, fmt);
+	va_end(f.args);
 	if(n < 0)
 		return nil;
 	*(char*)f.to = '\0';

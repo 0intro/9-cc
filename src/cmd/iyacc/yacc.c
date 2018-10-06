@@ -616,10 +616,13 @@ summary(void)
 void
 error(char *s, ...)
 {
+	va_list arg;
 
 	nerrors++;
 	fprint(2, "\n fatal error:");
-	fprint(2, s, (&s)[1]);
+	va_start(arg, s);
+	vfprint(2, s, arg);
+	va_end(arg);
 	fprint(2, ", %s:%d\n", infile, lineno);
 	if(!fatfl)
 		return;

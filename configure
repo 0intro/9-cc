@@ -32,8 +32,11 @@ then
   ppc|powerpc)
    HOST_ARCH="power"
    ;;
-  x86|x86_32|i386|i586|i686|486|586|686|x86_64)
+  x86|x86_32|i386|i586|i686|486|586|686)
    HOST_ARCH="386"
+   ;;
+  x86_64)
+   HOST_ARCH="amd64"
    ;;
  esac
 
